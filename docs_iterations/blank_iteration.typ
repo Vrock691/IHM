@@ -36,7 +36,27 @@ Tâches à réaliser :
 #table(
   columns: 6,
   table.header([Acteur], [Tâches], [Début], [Fin prévue], [Fin réelle], [Commentaires]),
-  [], [], [], [], [], []
+  [Paul Maget], [Établir le modèle d'architecture], [27/01], [03/02], [], [Établir l'achitecture et le modèle des différentes classes de l'application.],
+  [Paul Maget], [Faire le widgets d'affichage des photos sur la vue galerie], [27/01], [03/02], [], [Définir la grille de photo, et les différents widgets qui en découlent],
+  [Khadija Ammari], [Faire la toolbar de la vue galerie], [27/01], [03/02], [], [],
+  [Valentin Mary], [Créer la vue galerie vide], [27/01], [03/02], [], [Créer un conteneur permettant l'existence de la toolbar et la grille photo],
+  [Valentin Mary], [Créer la vue galerie vide], [27/01], [03/02], [], [Créer un conteneur permettant l'existence de la toolbar et la grille photo],
+  [Valentin Mary], [Écrire le modèle des métadonnées des images], [27/01], [03/02], [], [],
+  [Valentin Mary], [Écrire le modèle des métadonnées des images], [27/01], [03/02], [], [Créer un modèle incluant les métadonnées existantes de l'image + commencer implémenter des métadonnées spécifique à notre logiciel],
+  [Sokhna Diop], [Faire la vue inspecteur], [27/01], [03/02], [], [Créer le widget de la vue inspecteur et quelques propriétés basiques (cf #10 #7)],
+  [Vanessa Qufaj], [Écrire un modèle/programme permettant de deserialiser les métadonnées existantes des images ], [27/01], [03/02], [], [Faire une recherche de l'état de l'art des différentes propriétés sérialisable de png, jpeg, etc
+  Si possible écrire un programme pour traiter ces opérations.
+
+  Par exemple :
+
+  taille du fichier
+  taille de l'image en pixel
+  ...],
+  [Khadija Ammari], [Faire le programme de recherche/indexage des images], [27/01], [03/02], [], [Programme de recherche/indexation des images dans un dossier donné.
+  Créer une classe IndexationService()],
+  [Sokhna Diop], [Créer la splitview de l'écran pincipal], [27/01], [03/02], [], [Créer la splitview de l'écran pincipal permettant le redimensionnement des vues galerie et inspecteurs],
+  [Sokhna Diop], [Conception interface avec figma], [27/01], [03/02], [], [],
+    [Sokhna Diop], [Conception interface avec figma], [27/01], [03/02], [], [],
 )
 
 #align(center)[
@@ -46,5 +66,5 @@ Tâches à réaliser :
 #table(
   columns: 6,
   table.header([Acteur], [Tâches], [Début], [Fin prévue], [Fin réelle], [Commentaires]),
-  [], [], [], [], [], []
+  [], [], [], [], [], [],
 )
