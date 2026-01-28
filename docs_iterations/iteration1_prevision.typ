@@ -4,7 +4,7 @@
 #set page(header: [
   Paul Maget,
   Khadija Ammari,
-  Valentin Mary#h(1fr) Projets IHM -- 2025-2026\
+  Valentin Mary#h(1fr) Projets IHM -- 2025-2026 - Groupe 3\
   Vanessa Qufaj,
   Sokhna Diop
 ])
@@ -21,7 +21,7 @@
 }
 
 #title[Gestion d’une bibliothèque de photos]
-#subtitle[Fiche d'itération n°1 du 27/01/2026 au ]
+#subtitle[Fiche d'itération n°1 du 27/01/2026 au 03/02/2026]
 
 Objectifs :
 - S'approprier le projet
