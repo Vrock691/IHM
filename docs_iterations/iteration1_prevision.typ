@@ -1,5 +1,6 @@
 // LTeX: language=fr
 
+
 #set text(font: "FreeSans")
 #set page(header: [
   Paul Maget,
