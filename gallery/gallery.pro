@@ -9,13 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    galleryvue.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    galleryvue.h \
     mainwindow.h
 
 FORMS += \
+    galleryvue.ui \
     mainwindow.ui
 
 # Default rules for deployment.
