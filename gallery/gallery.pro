@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     imageStruct.cpp \
     imagecell.cpp \
+    galleryvue.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -20,7 +21,8 @@ HEADERS += \
 
 FORMS += \
     imagecell.ui \
-    mainwindow.ui
+    galleryvue.h \
+    mainwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
