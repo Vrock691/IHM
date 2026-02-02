@@ -43,10 +43,135 @@
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>10</y>
+        <width>93</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Accueil</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>10</y>
+        <width>121</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Photo mariage</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>10</y>
+        <width>71</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>2016</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>10</y>
+        <width>51</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string>...</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>2010</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Anniversaire</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>10</y>
+        <width>31</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_2">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>50</y>
+        <width>91</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string>Trier par :</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Date de capture</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="comboBox_3">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>50</y>
+        <width>101</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+      <property name="currentText">
+       <string>Affichage :</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>4 colonnes</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6 colonnes</string>
+       </property>
+      </item>
+     </widget>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="gallertGrid" native="true">
+    <widget class="QWidget" name="galleryGrid" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
