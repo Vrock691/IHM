@@ -10,16 +10,21 @@ CONFIG += c++17
 
 SOURCES += \
     imageStruct.cpp \
+    imagecell.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    imagecell.h \
     mainwindow.h
 
 FORMS += \
+    imagecell.ui \
     mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
