@@ -14,17 +14,19 @@ SOURCES += \
     imagecell.cpp \
     main.cpp \
     mainwindow.cpp \
-    meta.cpp
+    meta.cpp \
+    indexationservice.cpp
 
 HEADERS += \
     galleryvue.h \
     mainwindow.h \
-    imagecell.h
+    imagecell.h \
+    indexationservice.h
 
 FORMS += \
     galleryvue.ui \
     imagecell.ui \
-    mainwindow.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
