@@ -2,7 +2,7 @@
 #define IMAGECELL_H
 
 #include <QWidget>
-#include "imageStruct.cpp"
+#include "imagemodel.cpp"
 
 namespace Ui {
 class ImageCell;

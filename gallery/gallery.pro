@@ -9,21 +9,22 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    imageStruct.cpp \
+    galleryview.cpp \
     imagecell.cpp \
-    galleryvue.cpp \
+    imagemodel.cpp \
     main.cpp \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp
 
 HEADERS += \
-    imagecell.h \
+    galleryview.h \
     mainwindow.h \
     imagecell.h \
     indexationservice.h
 
 FORMS += \
+    galleryview.ui \
     imagecell.ui \
     mainwindow.ui
 
