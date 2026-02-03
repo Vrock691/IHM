@@ -9,18 +9,22 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    galleryvue.cpp \
     imageStruct.cpp \
     imagecell.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    meta.cpp
 
 HEADERS += \
-    imagecell.h \
-    mainwindow.h
+    galleryvue.h \
+    mainwindow.h \
+    imagecell.h
 
 FORMS += \
+    galleryvue.ui \
     imagecell.ui \
-    mainwindow.ui
+    mainwindow.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
