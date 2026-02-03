@@ -13,7 +13,8 @@ SOURCES += \
     imageStruct.cpp \
     imagecell.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    meta.cpp
 
 HEADERS += \
     galleryvue.h \
