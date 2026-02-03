@@ -17,12 +17,13 @@ SOURCES += \
 
 HEADERS += \
     imagecell.h \
-    mainwindow.h
+    mainwindow.h \
+    imagecell.h
 
 FORMS += \
     imagecell.ui \
-    galleryvue.h \
-    mainwindow.h
+    galleryvue.ui \
+    mainwindow.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
