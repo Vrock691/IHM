@@ -1,6 +1,6 @@
 #include <string>
 
-struct Image {
+struct ImageModel {
     std::string filename;
     std::string path;
     unsigned int width;
