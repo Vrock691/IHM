@@ -18,7 +18,10 @@ SOURCES += \
     indexationservice.cpp
 
 HEADERS += \
+    color.h \
+    feeling.h \
     galleryview.h \
+    imagemodel.h \
     mainwindow.h \
     imagecell.h \
     indexationservice.h

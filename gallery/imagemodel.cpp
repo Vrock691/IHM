@@ -1,12 +1,6 @@
-#include <string>
 
-struct ImageModel {
-    std::string filename;
-    std::string path;
-    unsigned int width;
-    unsigned int height;
-    std::string format;
-    unsigned long sizeBytes;
-    std::string creationDate;
-    std::string modificationDate;
+
+class ImageModel {
+    // Mettre getter et setter
+
 };
