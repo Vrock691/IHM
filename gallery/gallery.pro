@@ -15,13 +15,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     meta.cpp \
-    indexationservice.cpp
+    indexationservice.cpp \
+    serializationservice.cpp \
+    tabmodel.cpp
 
 HEADERS += \
     galleryview.h \
     mainwindow.h \
     imagecell.h \
-    indexationservice.h
+    indexationservice.h \
+    serializationservice.h
 
 FORMS += \
     galleryview.ui \
