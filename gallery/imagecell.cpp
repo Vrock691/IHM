@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QDir>
 
-ImageCell::ImageCell(Image imageModel, QWidget *parent)
+ImageCell::ImageCell(ImageModel imageModel, QWidget *parent)
     : QWidget(parent), ui(new Ui::ImageCell), _imageModel(imageModel)
 {
     ui->setupUi(this);
@@ -11,7 +11,7 @@ ImageCell::ImageCell(Image imageModel, QWidget *parent)
     QImage image;
     // qDebug() << "Exists?" << QFile::exists(QString::fromStdString(_imageModel.path));
     // qDebug() << "CWD:" << QDir::currentPath();
-    image.load(QString::fromStdString(_imageModel.path));
+    image.load(QString::fromStdString(_imageModel.path()));
 
     _pixmap = QPixmap::fromImage(image);
     _pixmap.scaled(_pixmap.size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);

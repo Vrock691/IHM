@@ -2,7 +2,7 @@
 #define IMAGECELL_H
 
 #include <QWidget>
-#include "imagemodel.cpp"
+#include "imagemodel.h"
 
 namespace Ui {
 class ImageCell;
@@ -13,12 +13,12 @@ class ImageCell : public QWidget
     Q_OBJECT
 
 public:
-    explicit ImageCell(Image imageModel, QWidget *parent = nullptr);
+    explicit ImageCell(ImageModel imageModel, QWidget *parent = nullptr);
     ~ImageCell();
 
 private:
     Ui::ImageCell *ui;
-    Image _imageModel;
+    ImageModel _imageModel;
     QPixmap _pixmap;
 
 

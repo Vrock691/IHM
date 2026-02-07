@@ -26,6 +26,26 @@ class ImageModel {
     Feeling _feeling;
 
     // TODO: Ajouter rognage
+
+public:
+    unsigned int width() const;
+    unsigned int height() const;
+    std::string format() const;
+    std::string fileName() const;
+    unsigned long sizeBytes() const;
+    std::string creationDate() const;
+    std::string lastModificationDate() const;
+    Color mainColor() const;
+
+    std::string description() const;
+    void setDescription(const std::string &newDescription);
+    std::vector<std::string> keyWords() const;
+    void setKeyWords(const std::vector<std::string> &newKeyWords);
+    unsigned int score() const;
+    void setScore(unsigned int newScore);
+    Feeling feeling() const;
+    void setFeeling(Feeling newFeeling);
+    std::string path() const;
 };
 
 
