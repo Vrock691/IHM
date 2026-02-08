@@ -18,13 +18,8 @@ QVector<ImageModel> IndexationService::indexFiles(const QString &folderPath)
         const QFileInfo &file = files[i];
         QString path = file.absoluteFilePath();
 
-        if (cache.contains(path)) {
-            models.append(*cache[path]);
-        } else {
-            auto model = std::make_shared<ImageModel>(path.toStdString());
-            cache[path] = model;
-            models.append(*model);
-        }
+        models.append(ImageModel(path.toStdString()));
+
     }
 
     QFileInfoList subDirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);

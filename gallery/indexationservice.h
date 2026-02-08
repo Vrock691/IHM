@@ -13,9 +13,6 @@ class IndexationService
 public:
     IndexationService();
     QVector<ImageModel> indexFiles(const QString &folderPath);
-
-private:
-    QMap<QString, std::shared_ptr<ImageModel>> cache;
 };
 
 #endif // INDEXATIONSERVICE_H
