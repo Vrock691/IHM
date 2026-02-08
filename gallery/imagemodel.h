@@ -28,6 +28,18 @@ class ImageModel {
     // TODO: Ajouter rognage
 
 public:
+    ImageModel(
+        const std::string &path,
+        unsigned int width, unsigned int height,
+        const std::string &format, const std::string &fileName,
+        unsigned long sizeBytes, const std::string &creationDate,
+        const std::string &lastModificationDate, const Color &mainColor,
+        const std::string &description = "",
+        const std::vector<std::string> &keyWords = {},
+        unsigned int score = 0,
+        Feeling feeling = Feeling::UNKNOWN_FEELING
+    );
+
     unsigned int width() const;
     unsigned int height() const;
     std::string format() const;

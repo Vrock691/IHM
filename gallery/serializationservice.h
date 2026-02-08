@@ -5,6 +5,7 @@
 #include "QStandardPaths"
 #include "QDir"
 #include "QCryptographicHash"
+#include <QJsonArray>
 
 #ifndef SERIALIZATIONSERVICE_H
 #define SERIALIZATIONSERVICE_H
@@ -18,11 +19,13 @@ public:
 
     void serializeTabModel(TabModel tabModel);
 
-    ImageModel deserializeImageModels();
+    std::vector<ImageModel> deserializeImageModels();
 
     TabModel deserializeTabModels();
 private:
-    QString getSha1FromString(const QString &value);
+    QString getSha1FromString(const QString value);
+    Color getColorFromString(const QString value);
+    Feeling getFeelingFromString(const QString value);
 };
 
 #endif // SERIALIZATIONSERVICE_H

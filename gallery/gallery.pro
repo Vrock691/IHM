@@ -9,6 +9,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    defaultfilter.cpp \
+    defaultorderer.cpp \
     galleryview.cpp \
     imagecell.cpp \
     imagemodel.cpp \
@@ -23,11 +25,14 @@ HEADERS += \
     color.h \
     feeling.h \
     galleryview.h \
+    ifilter.h \
     imagemodel.h \
+    iorderer.h \
     mainwindow.h \
     imagecell.h \
     indexationservice.h \
-    serializationservice.h
+    serializationservice.h \
+    tabmodel.h
 
 FORMS += \
     galleryview.ui \
