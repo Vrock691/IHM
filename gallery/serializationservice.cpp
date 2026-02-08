@@ -8,6 +8,7 @@ serializationservice::serializationservice() {
 
 void serializationservice::serializeImageModel(ImageModel imageModel) {
 
+    /*
     QString fileID = getSha1FromString(QString::fromStdString(imageModel.path));
 
     QJsonObject jobject;
@@ -27,6 +28,7 @@ void serializationservice::serializeImageModel(ImageModel imageModel) {
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
     file.close();
+    */
 
 }
 
