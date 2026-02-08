@@ -12,6 +12,7 @@ SOURCES += \
     galleryview.cpp \
     imagecell.cpp \
     imagemodel.cpp \
+    inspectorview.cpp \
     main.cpp \
     mainwindow.cpp \
     meta.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     color.h \
     feeling.h \
     galleryview.h \
+    inspectorview.h \
     imagemodel.h \
     mainwindow.h \
     imagecell.h \
@@ -32,6 +34,7 @@ HEADERS += \
 FORMS += \
     galleryview.ui \
     imagecell.ui \
+    inspectorview.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -40,3 +43,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES +=
+
+RESOURCES += \
+    resources.qrc
