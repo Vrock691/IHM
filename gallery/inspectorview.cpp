@@ -18,4 +18,5 @@ InspectorView::InspectorView(QWidget *parent)
         QPixmap(":/icons/heart-icon.png")
             .scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
+
 }
