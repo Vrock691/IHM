@@ -44,6 +44,7 @@ InspectorView::InspectorView(QWidget *parent)
             .scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
 
+    refreshModel();
 }
 
 InspectorView::~InspectorView()
@@ -55,6 +56,11 @@ void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
 
+    refreshModel();
+}
+
+void InspectorView::refreshModel()
+{
     if (!_selected) {
         ui->labelFileName->setText("Aucune image sélectionnée");
         ui->labelPath->clear();
@@ -87,4 +93,3 @@ void InspectorView::setSelected(ImageModel* imageModel)
         QString::number(sizeKB, 'f', 2) + " Ko"
         );
 }
-

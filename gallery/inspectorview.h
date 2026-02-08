@@ -13,6 +13,7 @@ public:
     ~InspectorView();
 
     void setSelected(ImageModel* imageModel);
+    void refreshModel();
 
 private:
     Ui::InspectorView *ui;
