@@ -113,7 +113,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QDockWidget" name="dockWidget_2">
+         <widget class="QDockWidget" name="dockInspector">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
