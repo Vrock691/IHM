@@ -28,6 +28,8 @@ class ImageModel {
     // TODO: Ajouter rognage
 
 public:
+    explicit ImageModel(const std::string& path);
+
     unsigned int width() const;
     unsigned int height() const;
     std::string format() const;
