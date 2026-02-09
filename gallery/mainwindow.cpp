@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     // ui->dockInspector->setMaximumHeight(400);
 
     // Test
-    ImageModel* testImage = new ImageModel(":/icons/image-icon.png");
-    inspector->setSelected(testImage);
+    //ImageModel* testImage = new ImageModel(":/icons/image-icon.png");
+    //inspector->setSelected(testImage);
 }
 
 MainWindow::~MainWindow() {}
