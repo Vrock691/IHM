@@ -74,6 +74,9 @@ InspectorView::InspectorView(QWidget *parent)
     _tagInput = new QLineEdit(ui->tagsContainer);
     _tagInput->setPlaceholderText("Mot clé");
     _tagInput->hide();
+
+    _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
+    _addTagBtn->hide();
     _addTagBtn->setStyleSheet(R"(
         QPushButton {
             background-color: white;
@@ -90,9 +93,6 @@ InspectorView::InspectorView(QWidget *parent)
             background-color: #E0E0E0;
         }
         )");
-
-    _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
-    _addTagBtn->hide();
 
     // Supprimer l'ancien layout si besoin
     QLayout* oldLayout = ui->tagsContainer->layout();
