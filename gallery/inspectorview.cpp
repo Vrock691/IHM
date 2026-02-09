@@ -52,10 +52,44 @@ InspectorView::InspectorView(QWidget *parent)
 
     QToolButton* plusBtn = new QToolButton(ui->tagsContainer);
     plusBtn->setText("+");
+    plusBtn->setFixedSize(28, 28);
+    plusBtn->setToolTip("Ajouter un mot-clé");
+    plusBtn->setStyleSheet(R"(
+        QToolButton {
+            background-color: white;
+            color: black;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid #CCCCCC;
+        }
+        QToolButton:hover {
+            background-color: #F2F2F2;
+        }
+        QToolButton:pressed {
+            background-color: #E0E0E0;
+        }
+        )");
 
     _tagInput = new QLineEdit(ui->tagsContainer);
     _tagInput->setPlaceholderText("Mot clé");
     _tagInput->hide();
+    _addTagBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: white;
+            color: black;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #CCCCCC;
+        }
+        QPushButton:hover {
+            background-color: #F2F2F2;
+        }
+        QPushButton:pressed {
+            background-color: #E0E0E0;
+        }
+        )");
 
     _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
     _addTagBtn->hide();
@@ -80,7 +114,7 @@ InspectorView::InspectorView(QWidget *parent)
     containerLayout->addLayout(_tagsLayout);
     containerLayout->addStretch();
 
-    // --- Connexions ---
+    // ------- Connexions ------- //
     connect(plusBtn, &QToolButton::clicked, this, [=]() {
         _tagInput->show();
         _addTagBtn->show();
@@ -98,13 +132,18 @@ InspectorView::InspectorView(QWidget *parent)
 
     // ------- Titre (infos générales) ------- //
 
+    ui->genInfosTitle->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    ui->genInfosTitle->setSpacing(4);
+    ui->genInfosTitle->setContentsMargins(0, 0, 0, 0);
 
 
     // ------- Grille des propriétés (infos générales) ------- //
+
     ui->propsGridLayout->setColumnStretch(0, 1);
     ui->propsGridLayout->setColumnStretch(1, 3);
 
     // ------- Gestion des étoiles ------- //
+
     QHBoxLayout* ratingLayout = new QHBoxLayout();
     ratingLayout->setContentsMargins(0, 0, 0, 0);
     ratingLayout->setSpacing(0);
@@ -129,6 +168,16 @@ InspectorView::InspectorView(QWidget *parent)
     }
 
     ui->ratingContainer->setLayout(ratingLayout);
+
+    // ------- Gestion des couleurs dominantes ------- //
+
+    QVBoxLayout* colorsTitleLayout = qobject_cast<QVBoxLayout*>(ui->colorsTitleContainer);
+    colorsTitleLayout->setSpacing(0);
+    colorsTitleLayout->setContentsMargins(0, 0, 0, 0);
+
+    ui->colorsTitle1->setContentsMargins(0, 0, 0, 0);
+    ui->colorsTitle2->setContentsMargins(0, 0, 0, 0);
+
 
 }
 
