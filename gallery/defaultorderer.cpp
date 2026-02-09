@@ -5,4 +5,8 @@ public:
     std::vector<ImageModel> order(std::vector<ImageModel> images) override {
         return images;
     }
+
+    AvailableOrderers id() override {
+        return DEFAULT_ORDERER;
+    }
 };
