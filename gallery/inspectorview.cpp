@@ -14,12 +14,12 @@ InspectorView::InspectorView(QWidget *parent)
     ui->iconEdit->setIcon(
         QIcon(":/icons/edit-icon.png")
         );
-    ui->iconEdit->setIconSize(QSize(24, 24));
+    ui->iconEdit->setIconSize(QSize(18, 18));
 
     ui->iconHeart->setIcon(
         QIcon(":/icons/heart-icon.png")
         );
-    ui->iconHeart->setIconSize(QSize(24, 24));
+    ui->iconHeart->setIconSize(QSize(18, 18));
 
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
@@ -37,11 +37,11 @@ InspectorView::InspectorView(QWidget *parent)
         );
 
     // Taille des icônes dans la barre d’onglets
-    ui->tabWidget->setIconSize(QSize(32, 32));
+    ui->tabWidget->setIconSize(QSize(24, 24));
 
     ui->iconInfo->setPixmap(
         QPixmap(":/icons/info-icon.png")
-            .scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            .scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
 
     ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
@@ -94,6 +94,14 @@ InspectorView::InspectorView(QWidget *parent)
         _tagInput->hide();
         _addTagBtn->hide();
     });
+
+    // ------- Titre (infos générales) ------- //
+
+
+
+    // ------- Grille des propriétés (infos générales) ------- //
+    ui->propsGridLayout->setColumnStretch(0, 1);
+    ui->propsGridLayout->setColumnStretch(1, 3);
 
 }
 

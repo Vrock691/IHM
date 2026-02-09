@@ -13,6 +13,23 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow, QWidget#centralWidget {
+    background-color: #1E1E1E;
+}
+
+QDockWidget {
+    background-color: #1E1E1E;
+    border: none;
+}
+
+QDockWidget::title {
+    background-color: #1E1E1E;
+    padding: 2px 4px;
+    border-bottom: none;
+    color: #E0E0E0; 
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
@@ -115,7 +132,27 @@
         <item>
          <widget class="QDockWidget" name="dockInspector">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QDockWidget {
+        background-color: #1E1E1E;
+        titlebar-close-icon: url(:/icons/close-icon.png);
+        border: 1px solid #2A2A2A; 
+    }
+
+    /* Barre de titre */
+    QDockWidget::title {
+        background: #1E1E1E;
+        padding: 2px 4px;
+        border: none;
+        spacing: 2px;
+    }
+
+    /* Bouton fermer (croix) */
+    QDockWidget::close-button {
+        border: none;
+        margin: 0px; 
+        padding: 0px;
+    }
+</string>
           </property>
           <widget class="QWidget" name="dockWidgetContents_2"/>
          </widget>

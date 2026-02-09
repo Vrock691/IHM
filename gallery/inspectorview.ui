@@ -20,7 +20,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #1E1E1E;</string>
+   <string notr="true">QDockWidget {
+    background-color: #1E1E1E;
+    border: none; 
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -67,7 +70,7 @@
          <property name="styleSheet">
           <string notr="true">QLabel {
     color: #C1C1C1;
-    font: 500 12pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Arial&quot;;
 }</string>
          </property>
          <property name="text">
@@ -148,9 +151,21 @@ QTabBar::tab:hover {
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="genInfosTitle">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QLabel" name="iconInfo">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -158,111 +173,15 @@ QTabBar::tab:hover {
            </item>
            <item>
             <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string notr="true">QLabel{
+	font: 500 14pt &quot;Arial&quot;;
+}</string>
+             </property>
              <property name="text">
               <string>Informations générales</string>
              </property>
             </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Orientation::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>68</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Dimensions</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Format</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_7">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Taille</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Dossier</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="labelPath">
-               <property name="text">
-                <string>/Photos/Voyages</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="labelFormat">
-               <property name="text">
-                <string>JPG</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="labelDimensions">
-               <property name="text">
-                <string>5616 x 3744</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="labelSize">
-               <property name="text">
-                <string>2.4 Mo</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
            </item>
           </layout>
          </item>
@@ -275,80 +194,22 @@ QTabBar::tab:hover {
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>25</width>
                <height>40</height>
               </size>
              </property>
             </spacer>
            </item>
            <item>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_14">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
+            <layout class="QGridLayout" name="propsGridLayout">
+             <item row="2" column="1">
+              <widget class="QLabel" name="labelDimensions">
                <property name="text">
-                <string>Note</string>
+                <string>5616 x 3744</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_15">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Ressenti</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_16">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Couleurs dominantes</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Description</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="styleSheet">
-                <string notr="true">QLabel {
-    color: #B5B5B5;
-    font: 500 12pt &quot;Segoe UI&quot;;
-}</string>
-               </property>
-               <property name="text">
-                <string>Mots-clés</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
+             <item row="4" column="1">
               <widget class="QTextEdit" name="descriptionEdit">
                <property name="styleSheet">
                 <string notr="true">QTextEdit {
@@ -366,13 +227,115 @@ QTabBar::tab:hover {
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QSpinBox" name="spinBox"/>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Format</string>
+               </property>
+              </widget>
              </item>
-             <item row="3" column="1">
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Taille</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
               <widget class="QComboBox" name="comboBox"/>
              </item>
-             <item row="4" column="1">
+             <item row="1" column="1">
+              <widget class="QLabel" name="labelFormat">
+               <property name="text">
+                <string>JPG</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Dimensions</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_14">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Note</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Ressenti</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Mots-clés</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_12">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Description</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="labelSize">
+               <property name="text">
+                <string>2.4 Mo</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
                 <spacer name="verticalSpacer_3">
@@ -410,10 +373,67 @@ QTabBar::tab:hover {
                </item>
               </layout>
              </item>
-             <item row="1" column="1">
+             <item row="6" column="1">
+              <widget class="QSpinBox" name="spinBox"/>
+             </item>
+             <item row="5" column="1">
               <widget class="QWidget" name="tagsContainer" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_6"/>
               </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+               </property>
+               <property name="text">
+                <string>Dossier</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelPath">
+               <property name="text">
+                <string>/Photos/Voyages</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+	margin: 0;
+	padding: 0;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Couleurs</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_8">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+	margin: 0;
+	padding: 0;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>dominantes</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
