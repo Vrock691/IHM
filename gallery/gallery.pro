@@ -19,8 +19,7 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
-    serializationservice.cpp \
-    tabmodel.cpp
+    serializationservice.cpp
 
 HEADERS += \
     color.h \
