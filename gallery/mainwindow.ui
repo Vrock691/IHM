@@ -44,6 +44,40 @@ QDockWidget::title {
             <height>500</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QTabWidget {
+	background-color: #383838;
+	border: none;
+}
+
+QTabWidget::pane {
+	border: none;
+	background: #1E1E1E;
+	margin: 0px;
+	padding: 0px;
+}
+
+QTabBar::tab {
+	background: transparent;
+	color: white; 
+	border: 1px solid white;
+	border-radius: 15px;
+	padding: 6px 12px;
+	margin-right: 8px;
+}
+
+QTabBar::tab:selected {
+	background: rgba(255,255,255,0.1);
+}
+
+QTabBar::tab:hover {
+	background: rgba(255,255,255,0.05);
+}
+
+QTabBar {
+	qproperty-drawBase: 0;
+}</string>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -57,7 +91,7 @@ QDockWidget::title {
               <item row="0" column="1">
                <widget class="QLabel" name="label_2">
                 <property name="text">
-                 <string>Affichage</string>
+                 <string>Affichage :</string>
                 </property>
                </widget>
               </item>
@@ -70,6 +104,23 @@ QDockWidget::title {
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox">
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: #383838;
+    color: white; 
+    border: 1px solid white;
+	border-radius: 10px;
+    border-radius: 3px;
+    padding: 4px 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2C2C2C;
+    color: white;
+    selection-background-color: #444444;
+    selection-color: white;
+}</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>Récent</string>
@@ -89,6 +140,23 @@ QDockWidget::title {
               </item>
               <item row="1" column="1">
                <widget class="QComboBox" name="comboBox_2">
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: #383838;
+    color: white; 
+    border: 1px solid white;
+	border-radius: 10px;
+    border-radius: 3px;
+    padding: 4px 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2C2C2C;
+    color: white;
+    selection-background-color: #444444;
+    selection-color: white;
+}</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>2 Colonnes</string>
@@ -134,7 +202,6 @@ QDockWidget::title {
           <property name="styleSheet">
            <string notr="true">QDockWidget {
         background-color: #1E1E1E;
-        titlebar-close-icon: url(:/icons/close-icon.png);
         border: 1px solid #2A2A2A; 
     }
 

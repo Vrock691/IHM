@@ -52,16 +52,16 @@ InspectorView::InspectorView(QWidget *parent)
 
     QToolButton* plusBtn = new QToolButton(ui->tagsContainer);
     plusBtn->setText("+");
-    plusBtn->setFixedSize(28, 28);
+    plusBtn->setFixedSize(30, 30);
     plusBtn->setToolTip("Ajouter un mot-clé");
     plusBtn->setStyleSheet(R"(
         QToolButton {
             background-color: white;
             color: black;
-            font-weight: bold;
-            font-size: 18px;
-            border-radius: 6px;
-            border: 1px solid #CCCCCC;
+            font-size: 16px;
+            border-radius: 15px;
+            border: none;
+            padding: 5px;
         }
         QToolButton:hover {
             background-color: #F2F2F2;
@@ -76,15 +76,15 @@ InspectorView::InspectorView(QWidget *parent)
     _tagInput->hide();
 
     _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
+    _addTagBtn->setFixedSize(70, 25);
     _addTagBtn->hide();
     _addTagBtn->setStyleSheet(R"(
         QPushButton {
             background-color: white;
             color: black;
-            font-weight: 600;
             padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            border: none;
         }
         QPushButton:hover {
             background-color: #F2F2F2;
@@ -178,7 +178,36 @@ InspectorView::InspectorView(QWidget *parent)
     ui->colorsTitle1->setContentsMargins(0, 0, 0, 0);
     ui->colorsTitle2->setContentsMargins(0, 0, 0, 0);
 
+    // Création du layout vertical pour les couleurs
+    QVBoxLayout* colorsLayout = new QVBoxLayout();
+    colorsLayout->setContentsMargins(0,0,0,0);
+    colorsLayout->setSpacing(4);
 
+    // Couleurs codées en dur (il faut qu'on récupére les vraies couleurs et qu'on les stocke ici
+    QStringList colors = { "#AABBCC", "#334455", "#FF9900" };
+
+    for (const QString& color : colors) {
+        // Widget ligne
+        QWidget* rowWidget = new QWidget(ui->dominantColorsContainer);
+        QHBoxLayout* rowLayout = new QHBoxLayout(rowWidget);
+        rowLayout->setContentsMargins(0,0,0,0);
+        rowLayout->setSpacing(4);
+
+        QFrame* square = new QFrame(rowWidget);
+        square->setFixedSize(24,24);
+        square->setStyleSheet(QString("background-color: %1; border-radius:3px;").arg(color));
+
+        QLabel* label = new QLabel(color, rowWidget);
+
+        rowLayout->addWidget(square);
+        rowLayout->addWidget(label);
+        rowLayout->addStretch();
+
+        colorsLayout->addWidget(rowWidget);
+    }
+
+    // Affecte le layout vertical au container
+    ui->dominantColorsContainer->setLayout(colorsLayout);
 }
 
 InspectorView::~InspectorView()
@@ -243,9 +272,9 @@ void InspectorView::addTag(const QString &text)
     tagLayout->addWidget(removeBtn);
 
     tag->setStyleSheet(R"(
-        QWidget { background-color: #3A3A3A; border-radius: 10px; }
-        QLabel { color: #E0E0E0; }
-        QToolButton { border: none; background: transparent; color: #AAAAAA; }
+        QWidget { background-color: #FFFFFF; border-radius: 10px; }
+        QLabel { color: #1E1E1E; }
+        QToolButton { border: none; background: transparent; color: #1E1E1E; }
         QToolButton:hover { color: #FF5C5C; }
     )");
 
