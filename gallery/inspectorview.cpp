@@ -48,51 +48,51 @@ InspectorView::InspectorView(QWidget *parent)
     ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
 
     refreshModel();
-}
 
-InspectorView::~InspectorView()
-{
-    delete ui;
-}
+    // ------- Gestion des Tags ------- //
 
-void InspectorView::setSelected(ImageModel* imageModel)
-{
-    _selected = imageModel;
+    _tagsLayout = nullptr;
 
-    refreshModel();
-}
+    // --- Layout Tags ---
+    QToolButton* plusBtn = new QToolButton(ui->tagsContainer);
+    plusBtn->setText("+");
 
-void InspectorView::refreshModel()
-{
-    if (!_selected) {
-        ui->labelFileName->setText("Aucune image sélectionnée");
-        ui->labelPath->clear();
-        ui->labelFormat->clear();
-        ui->labelSize->clear();
-        ui->labelDimensions->clear();
-        return;
-    }
+    _tagInput = new QLineEdit(ui->tagsContainer);
+    _tagInput->setPlaceholderText("Mot clé");
+    _tagInput->hide();
 
-    ui->labelFileName->setText(
-        QString::fromStdString(_selected->fileName())
-        );
+    _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
+    _addTagBtn->hide();
 
-    ui->labelPath->setText(
-        QString::fromStdString(_selected->path())
-        );
+    // Layout vertical principal
+    QVBoxLayout* mainLayout = new QVBoxLayout(ui->tagsContainer);
+    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setSpacing(4);
 
-    ui->labelFormat->setText(
-        QString::fromStdString(_selected->format())
-        );
+    mainLayout->addWidget(plusBtn);
+    mainLayout->addWidget(_tagInput);
+    mainLayout->addWidget(_addTagBtn);
 
-    ui->labelDimensions->setText(
-        QString("%1 x %2")
-            .arg(_selected->width())
-            .arg(_selected->height())
-        );
+    // Layout horizontal pour les tags
+    _tagsLayout = new QHBoxLayout();
+    _tagsLayout->setSpacing(4);
+    mainLayout->addLayout(_tagsLayout);
 
-    double sizeKB = _selected->sizeBytes() / 1024.0;
-    ui->labelSize->setText(
-        QString::number(sizeKB, 'f', 2) + " Ko"
-        );
+    // --- Connexions ---
+    connect(plusBtn, &QToolButton::clicked, this, [=]() {
+        _tagInput->show();
+        _addTagBtn->show();
+        _tagInput->setFocus();
+    });
+
+    connect(_addTagBtn, &QPushButton::clicked, this, [=]() {
+        QString text = _tagInput->text().trimmed();
+        if (text.isEmpty()) return;
+
+        addTag(text);
+
+        _tagInput->clear();
+        _tagInput->hide();
+        _addTagBtn->hide();
+    });
 }
