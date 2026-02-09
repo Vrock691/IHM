@@ -21,6 +21,7 @@ InspectorView::InspectorView(QWidget *parent)
         );
     ui->iconHeart->setIconSize(QSize(24, 24));
 
+    ui->tabWidget->setTabPosition(QTabWidget::West);
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
 
@@ -43,6 +44,8 @@ InspectorView::InspectorView(QWidget *parent)
         QPixmap(":/icons/info-icon.png")
             .scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
+
+    ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
 
     refreshModel();
 }
