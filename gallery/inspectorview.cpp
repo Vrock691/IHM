@@ -21,7 +21,6 @@ InspectorView::InspectorView(QWidget *parent)
         );
     ui->iconHeart->setIconSize(QSize(24, 24));
 
-    ui->tabWidget->setTabPosition(QTabWidget::West);
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
 
@@ -94,5 +93,81 @@ InspectorView::InspectorView(QWidget *parent)
         _tagInput->clear();
         _tagInput->hide();
         _addTagBtn->hide();
+    });
+
+}
+
+InspectorView::~InspectorView()
+{
+    delete ui;
+}
+
+void InspectorView::setSelected(ImageModel* imageModel)
+{
+    _selected = imageModel;
+
+    refreshModel();
+}
+
+void InspectorView::refreshModel()
+{
+    if (!_selected) {
+        ui->labelFileName->setText("Aucune image sélectionnée");
+        ui->labelPath->clear();
+        ui->labelFormat->clear();
+        ui->labelSize->clear();
+        ui->labelDimensions->clear();
+        return;
+    }
+
+    ui->labelFileName->setText(
+        QString::fromStdString(_selected->fileName())
+        );
+
+    ui->labelPath->setText(
+        QString::fromStdString(_selected->path())
+        );
+
+    ui->labelFormat->setText(
+        QString::fromStdString(_selected->format())
+        );
+
+    ui->labelDimensions->setText(
+        QString("%1 x %2")
+            .arg(_selected->width())
+            .arg(_selected->height())
+        );
+
+    double sizeKB = _selected->sizeBytes() / 1024.0;
+    ui->labelSize->setText(
+        QString::number(sizeKB, 'f', 2) + " Ko"
+        );
+}
+
+void InspectorView::addTag(const QString& text)
+{
+    QWidget* tag = new QWidget(ui->tagsContainer);
+    QHBoxLayout* tagLayout = new QHBoxLayout(tag);
+    tagLayout->setContentsMargins(8,2,6,2);
+    tagLayout->setSpacing(4);
+
+    QLabel* label = new QLabel(text);
+    QToolButton* removeBtn = new QToolButton();
+    removeBtn->setText("✕");
+
+    tagLayout->addWidget(label);
+    tagLayout->addWidget(removeBtn);
+
+    tag->setStyleSheet(R"(
+        QWidget { background-color: #3A3A3A; border-radius: 10px; }
+        QLabel { color: #E0E0E0; }
+        QToolButton { border: none; background: transparent; color: #AAAAAA; }
+        QToolButton:hover { color: #FF5C5C; }
+    )");
+
+    _tagsLayout->addWidget(tag);
+
+    connect(removeBtn, &QToolButton::clicked, this, [=]() {
+        tag->deleteLater();
     });
 }
