@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>heart-icon.png</file>
+        <file>edit-icon.png</file>
+        <file>image-icon.png</file>
+        <file>info-icon.png</file>
+        <file>redimension-icon.png</file>
+        <file>eye-icon.png</file>
+    </qresource>
+</RCC>

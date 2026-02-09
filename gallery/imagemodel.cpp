@@ -1,4 +1,5 @@
 #include "imagemodel.h"
+#include <filesystem>
 
 ImageModel::ImageModel(
     const std::string &path,
@@ -107,4 +108,23 @@ std::string ImageModel::path() const
 unsigned int ImageModel::width() const
 {
     return _width;
+}
+
+ImageModel::ImageModel(const std::string& path)
+    : _path(path)
+{
+    std::filesystem::path p(path);
+
+    _fileName = p.filename().string();
+    _format = p.extension().string();
+
+    if (std::filesystem::exists(p)) {
+        _sizeBytes = std::filesystem::file_size(p);
+    } else {
+        _sizeBytes = 0;
+    }
+
+    _width = 0;
+    _height = 0;
+    _score =0;
 }

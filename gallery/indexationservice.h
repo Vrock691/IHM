@@ -1,14 +1,18 @@
 #ifndef INDEXATIONSERVICE_H
 #define INDEXATIONSERVICE_H
 
+#include "imagemodel.h"
+
 #include <QString>
-#include <QStringList>
+#include <QVector>
+#include <QMap>
+#include <memory>
 
 class IndexationService
 {
 public:
     IndexationService();
-    QStringList indexFolder(const QString &folderPath);
+    QVector<ImageModel> indexFiles(const QString &folderPath);
 };
 
 #endif // INDEXATIONSERVICE_H
