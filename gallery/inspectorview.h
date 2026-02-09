@@ -11,6 +11,7 @@
 #include <QToolButton>
 #include <QPushButton>
 #include <QLabel>
+#include <QList>
 
 class InspectorView : public QWidget, private Ui::InspectorView
 {
@@ -30,6 +31,9 @@ private:
     QHBoxLayout* _tagsLayout;
     QLineEdit* _tagInput;
     QPushButton* _addTagBtn;
+    QList<QToolButton*> _starButtons;
+    int _currentRating = 0;
+    void setRating(int rating);
 };
 
 #endif // INSPECTORVIEW_H

@@ -50,9 +50,6 @@ InspectorView::InspectorView(QWidget *parent)
 
     // ------- Gestion des Tags ------- //
 
-    _tagsLayout = nullptr;
-
-    // --- Layout Tags ---
     QToolButton* plusBtn = new QToolButton(ui->tagsContainer);
     plusBtn->setText("+");
 
@@ -63,19 +60,25 @@ InspectorView::InspectorView(QWidget *parent)
     _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
     _addTagBtn->hide();
 
-    // Layout vertical principal
-    QVBoxLayout* mainLayout = new QVBoxLayout(ui->tagsContainer);
-    mainLayout->setContentsMargins(0,0,0,0);
-    mainLayout->setSpacing(4);
+    // Supprimer l'ancien layout si besoin
+    QLayout* oldLayout = ui->tagsContainer->layout();
+    if (oldLayout) delete oldLayout;
 
-    mainLayout->addWidget(plusBtn);
-    mainLayout->addWidget(_tagInput);
-    mainLayout->addWidget(_addTagBtn);
+    // Layout vertical principal
+    QVBoxLayout* containerLayout = new QVBoxLayout(ui->tagsContainer);
+    containerLayout->setContentsMargins(0,0,0,0);
+    containerLayout->setSpacing(4);
 
     // Layout horizontal pour les tags
     _tagsLayout = new QHBoxLayout();
     _tagsLayout->setSpacing(4);
-    mainLayout->addLayout(_tagsLayout);
+
+    // Ajouter en vertical : boutons puis tags
+    containerLayout->addWidget(plusBtn);
+    containerLayout->addWidget(_tagInput);
+    containerLayout->addWidget(_addTagBtn);
+    containerLayout->addLayout(_tagsLayout);
+    containerLayout->addStretch();
 
     // --- Connexions ---
     connect(plusBtn, &QToolButton::clicked, this, [=]() {
@@ -87,9 +90,7 @@ InspectorView::InspectorView(QWidget *parent)
     connect(_addTagBtn, &QPushButton::clicked, this, [=]() {
         QString text = _tagInput->text().trimmed();
         if (text.isEmpty()) return;
-
         addTag(text);
-
         _tagInput->clear();
         _tagInput->hide();
         _addTagBtn->hide();
@@ -102,6 +103,32 @@ InspectorView::InspectorView(QWidget *parent)
     // ------- Grille des propriétés (infos générales) ------- //
     ui->propsGridLayout->setColumnStretch(0, 1);
     ui->propsGridLayout->setColumnStretch(1, 3);
+
+    // ------- Gestion des étoiles ------- //
+    QHBoxLayout* ratingLayout = new QHBoxLayout();
+    ratingLayout->setContentsMargins(0, 0, 0, 0);
+    ratingLayout->setSpacing(0);
+    ratingLayout->setAlignment(Qt::AlignLeft);
+
+    const int maxStars = 5;
+    for (int i = 0; i < maxStars; ++i) {
+        QToolButton* star = new QToolButton(ui->ratingContainer);
+        star->setCheckable(false);
+        star->setIcon(QIcon(":/icons/star-empty-icon.png"));
+        star->setIconSize(QSize(20, 20));
+        star->setStyleSheet(
+            "QToolButton { border: none; background: transparent; }"
+            );
+
+        ratingLayout->addWidget(star);
+        _starButtons.append(star);
+
+        connect(star, &QToolButton::clicked, this, [=]() {
+            setRating(i + 1);
+        });
+    }
+
+    ui->ratingContainer->setLayout(ratingLayout);
 
 }
 
@@ -152,7 +179,7 @@ void InspectorView::refreshModel()
         );
 }
 
-void InspectorView::addTag(const QString& text)
+void InspectorView::addTag(const QString &text)
 {
     QWidget* tag = new QWidget(ui->tagsContainer);
     QHBoxLayout* tagLayout = new QHBoxLayout(tag);
@@ -178,4 +205,19 @@ void InspectorView::addTag(const QString& text)
     connect(removeBtn, &QToolButton::clicked, this, [=]() {
         tag->deleteLater();
     });
+}
+
+void InspectorView::setRating(int rating)
+{
+    _currentRating = rating;
+
+    for (int i = 0; i < _starButtons.size(); ++i) {
+        if (i < rating)
+            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
+        else
+            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+    }
+
+    if (_selected)
+        _selected->setScore(rating);
 }

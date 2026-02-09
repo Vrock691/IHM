@@ -120,13 +120,14 @@
 QTabWidget::pane {
     border: none;
 	background-color: #1E1E1E;
+	padding: 0px;
 }
 
 QTabBar::tab {
     background: transparent;
     border: none;
     border-bottom: 1px solid #FFFFFF;
-    padding: 10px;
+    padding: 0px;
 	margin-left: 0px;
 }
 
@@ -211,6 +212,12 @@ QTabBar::tab:hover {
              </item>
              <item row="4" column="1">
               <widget class="QTextEdit" name="descriptionEdit">
+               <property name="minimumSize">
+                <size>
+                 <width>81</width>
+                 <height>35</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QTextEdit {
         background-color: #4A4A4A;
@@ -218,7 +225,7 @@ QTabBar::tab:hover {
         border-radius: 7px;
         color: #E0E0E0;
         padding: 6px;
-        font: 10pt &quot;Segoe UI&quot;;
+        font: 10pt &quot;Arial&quot;;
     }
 
     QTextEdit:focus {
@@ -373,12 +380,13 @@ QTabBar::tab:hover {
                </item>
               </layout>
              </item>
-             <item row="6" column="1">
-              <widget class="QSpinBox" name="spinBox"/>
-             </item>
              <item row="5" column="1">
               <widget class="QWidget" name="tagsContainer" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_6"/>
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayoutTags"/>
+                </item>
+               </layout>
               </widget>
              </item>
              <item row="0" column="0">
@@ -434,6 +442,9 @@ QTabBar::tab:hover {
                 </widget>
                </item>
               </layout>
+             </item>
+             <item row="6" column="1">
+              <widget class="QWidget" name="ratingContainer" native="true"/>
              </item>
             </layout>
            </item>
