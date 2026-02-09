@@ -5,8 +5,8 @@
 #include <vector>
 #include <QGridLayout>
 #include "ui_galleryview.h"
-#include "imagemodel.h" 
-#include "tabmodel.h"   
+#include "imagemodel.h"
+#include "tabmodel.cpp"
 
 class GalleryView : public QWidget, private Ui::GalleryVue
 {
