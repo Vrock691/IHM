@@ -21,6 +21,8 @@ private:
     // GalleryView _galleryView;
     InspectorView* _inspectorView;
 
+    void setSelected(ImageModel* imageModel);
+
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
 
