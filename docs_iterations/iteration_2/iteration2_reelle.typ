@@ -54,8 +54,8 @@ Documentation :
   [Paul et Vanessa], [Finir ImageModel], [04/02], [10/02], [08/02], [Contenu d'ImageModel défini. Getter et Setter implémentés.],
   [Valentin], [Faire TabModel], [04/02], [10/02], [08/02], [TabModel défini, avec gestion des filtres et tris.],
   [Vanessa], [Implémenter l'initialisation de Gallery], [04/02], [10/02], [09/10], [Méthodes à étendre lors de la prochaine itérations.],
-  [Paul], [Implémenter GalleryView. onRequestSelect], [04/02], [10/02], [--/--], [Retard du à des tâches dépendantes.],
+  [Paul], [Implémenter GalleryView. onRequestSelect], [04/02], [10/02], [10/02], [],
   [Sokhna], [Ajouter InspectorView. setSelected()], [04/02], [10/02], [09/02], [Style à améliorer.],
-  [Paul], [Implémenter le lancement de l'application], [04/02], [10/02], [--/--], [Retard du à des tâches dépendantes.],
+  [Paul], [Implémenter le lancement de l'application], [04/02], [10/02], [10/02], [À étendre avec la nouvelle organisation des onglets dans la prochaine itération.],
   [Sokhna], [Conception de l'interface avec Figma], [04/02], [10/02], [10/02], []
   )
