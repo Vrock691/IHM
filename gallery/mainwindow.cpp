@@ -26,4 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     inspector->setSelected(testImage);
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow() {
+    delete ui;
+}

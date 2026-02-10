@@ -14,12 +14,12 @@ InspectorView::InspectorView(QWidget *parent)
     ui->iconEdit->setIcon(
         QIcon(":/icons/edit-icon.png")
         );
-    ui->iconEdit->setIconSize(QSize(24, 24));
+    ui->iconEdit->setIconSize(QSize(18, 18));
 
     ui->iconHeart->setIcon(
         QIcon(":/icons/heart-icon.png")
         );
-    ui->iconHeart->setIconSize(QSize(24, 24));
+    ui->iconHeart->setIconSize(QSize(18, 18));
 
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
@@ -37,14 +37,177 @@ InspectorView::InspectorView(QWidget *parent)
         );
 
     // Taille des icônes dans la barre d’onglets
-    ui->tabWidget->setIconSize(QSize(32, 32));
+    ui->tabWidget->setIconSize(QSize(24, 24));
 
     ui->iconInfo->setPixmap(
         QPixmap(":/icons/info-icon.png")
-            .scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+            .scaled(18, 18, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
 
+    ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
+
     refreshModel();
+
+    // ------- Gestion des Tags ------- //
+
+    QToolButton* plusBtn = new QToolButton(ui->tagsContainer);
+    plusBtn->setText("+");
+    plusBtn->setFixedSize(30, 30);
+    plusBtn->setToolTip("Ajouter un mot-clé");
+    plusBtn->setStyleSheet(R"(
+        QToolButton {
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            border-radius: 15px;
+            border: none;
+            padding: 5px;
+        }
+        QToolButton:hover {
+            background-color: #F2F2F2;
+        }
+        QToolButton:pressed {
+            background-color: #E0E0E0;
+        }
+        )");
+
+    _tagInput = new QLineEdit(ui->tagsContainer);
+    _tagInput->setPlaceholderText("Mot clé");
+    _tagInput->hide();
+
+    _addTagBtn = new QPushButton("Ajouter", ui->tagsContainer);
+    _addTagBtn->setFixedSize(70, 25);
+    _addTagBtn->hide();
+    _addTagBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: white;
+            color: black;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+        }
+        QPushButton:hover {
+            background-color: #F2F2F2;
+        }
+        QPushButton:pressed {
+            background-color: #E0E0E0;
+        }
+        )");
+
+    // Supprimer l'ancien layout si besoin
+    QLayout* oldLayout = ui->tagsContainer->layout();
+    if (oldLayout) delete oldLayout;
+
+    // Layout vertical principal
+    QVBoxLayout* containerLayout = new QVBoxLayout(ui->tagsContainer);
+    containerLayout->setContentsMargins(0,0,0,0);
+    containerLayout->setSpacing(4);
+
+    // Layout horizontal pour les tags
+    _tagsLayout = new QHBoxLayout();
+    _tagsLayout->setSpacing(4);
+
+    // Ajouter en vertical : boutons puis tags
+    containerLayout->addWidget(plusBtn);
+    containerLayout->addWidget(_tagInput);
+    containerLayout->addWidget(_addTagBtn);
+    containerLayout->addLayout(_tagsLayout);
+    containerLayout->addStretch();
+
+    // ------- Connexions ------- //
+    connect(plusBtn, &QToolButton::clicked, this, [=]() {
+        _tagInput->show();
+        _addTagBtn->show();
+        _tagInput->setFocus();
+    });
+
+    connect(_addTagBtn, &QPushButton::clicked, this, [=]() {
+        QString text = _tagInput->text().trimmed();
+        if (text.isEmpty()) return;
+        addTag(text);
+        _tagInput->clear();
+        _tagInput->hide();
+        _addTagBtn->hide();
+    });
+
+    // ------- Titre (infos générales) ------- //
+
+    ui->genInfosTitle->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    ui->genInfosTitle->setSpacing(4);
+    ui->genInfosTitle->setContentsMargins(0, 0, 0, 0);
+
+
+    // ------- Grille des propriétés (infos générales) ------- //
+
+    ui->propsGridLayout->setColumnStretch(0, 1);
+    ui->propsGridLayout->setColumnStretch(1, 3);
+
+    // ------- Gestion des étoiles ------- //
+
+    QHBoxLayout* ratingLayout = new QHBoxLayout();
+    ratingLayout->setContentsMargins(0, 0, 0, 0);
+    ratingLayout->setSpacing(0);
+    ratingLayout->setAlignment(Qt::AlignLeft);
+
+    const int maxStars = 5;
+    for (int i = 0; i < maxStars; ++i) {
+        QToolButton* star = new QToolButton(ui->ratingContainer);
+        star->setCheckable(false);
+        star->setIcon(QIcon(":/icons/star-empty-icon.png"));
+        star->setIconSize(QSize(20, 20));
+        star->setStyleSheet(
+            "QToolButton { border: none; background: transparent; }"
+            );
+
+        ratingLayout->addWidget(star);
+        _starButtons.append(star);
+
+        connect(star, &QToolButton::clicked, this, [=]() {
+            setRating(i + 1);
+        });
+    }
+
+    ui->ratingContainer->setLayout(ratingLayout);
+
+    // ------- Gestion des couleurs dominantes ------- //
+
+    QVBoxLayout* colorsTitleLayout = qobject_cast<QVBoxLayout*>(ui->colorsTitleContainer);
+    colorsTitleLayout->setSpacing(0);
+    colorsTitleLayout->setContentsMargins(0, 0, 0, 0);
+
+    ui->colorsTitle1->setContentsMargins(0, 0, 0, 0);
+    ui->colorsTitle2->setContentsMargins(0, 0, 0, 0);
+
+    // Création du layout vertical pour les couleurs
+    QVBoxLayout* colorsLayout = new QVBoxLayout();
+    colorsLayout->setContentsMargins(0,0,0,0);
+    colorsLayout->setSpacing(4);
+
+    // Couleurs codées en dur (il faut qu'on récupére les vraies couleurs et qu'on les stocke ici
+    QStringList colors = { "#AABBCC", "#334455", "#FF9900" };
+
+    for (const QString& color : colors) {
+        // Widget ligne
+        QWidget* rowWidget = new QWidget(ui->dominantColorsContainer);
+        QHBoxLayout* rowLayout = new QHBoxLayout(rowWidget);
+        rowLayout->setContentsMargins(0,0,0,0);
+        rowLayout->setSpacing(4);
+
+        QFrame* square = new QFrame(rowWidget);
+        square->setFixedSize(24,24);
+        square->setStyleSheet(QString("background-color: %1; border-radius:3px;").arg(color));
+
+        QLabel* label = new QLabel(color, rowWidget);
+
+        rowLayout->addWidget(square);
+        rowLayout->addWidget(label);
+        rowLayout->addStretch();
+
+        colorsLayout->addWidget(rowWidget);
+    }
+
+    // Affecte le layout vertical au container
+    ui->dominantColorsContainer->setLayout(colorsLayout);
 }
 
 InspectorView::~InspectorView()
@@ -92,4 +255,47 @@ void InspectorView::refreshModel()
     ui->labelSize->setText(
         QString::number(sizeKB, 'f', 2) + " Ko"
         );
+}
+
+void InspectorView::addTag(const QString &text)
+{
+    QWidget* tag = new QWidget(ui->tagsContainer);
+    QHBoxLayout* tagLayout = new QHBoxLayout(tag);
+    tagLayout->setContentsMargins(8,2,6,2);
+    tagLayout->setSpacing(4);
+
+    QLabel* label = new QLabel(text);
+    QToolButton* removeBtn = new QToolButton();
+    removeBtn->setText("✕");
+
+    tagLayout->addWidget(label);
+    tagLayout->addWidget(removeBtn);
+
+    tag->setStyleSheet(R"(
+        QWidget { background-color: #FFFFFF; border-radius: 10px; }
+        QLabel { color: #1E1E1E; }
+        QToolButton { border: none; background: transparent; color: #1E1E1E; }
+        QToolButton:hover { color: #FF5C5C; }
+    )");
+
+    _tagsLayout->addWidget(tag);
+
+    connect(removeBtn, &QToolButton::clicked, this, [=]() {
+        tag->deleteLater();
+    });
+}
+
+void InspectorView::setRating(int rating)
+{
+    _currentRating = rating;
+
+    for (int i = 0; i < _starButtons.size(); ++i) {
+        if (i < rating)
+            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
+        else
+            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+    }
+
+    if (_selected)
+        _selected->setScore(rating);
 }

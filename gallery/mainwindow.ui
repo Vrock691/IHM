@@ -13,6 +13,23 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow, QWidget#centralWidget {
+    background-color: #1E1E1E;
+}
+
+QDockWidget {
+    background-color: #1E1E1E;
+    border: none;
+}
+
+QDockWidget::title {
+    background-color: #1E1E1E;
+    padding: 2px 4px;
+    border-bottom: none;
+    color: #E0E0E0; 
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
@@ -27,6 +44,40 @@
             <height>500</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QTabWidget {
+	background-color: #383838;
+	border: none;
+}
+
+QTabWidget::pane {
+	border: none;
+	background: #1E1E1E;
+	margin: 0px;
+	padding: 0px;
+}
+
+QTabBar::tab {
+	background: transparent;
+	color: white; 
+	border: 1px solid white;
+	border-radius: 15px;
+	padding: 6px 12px;
+	margin-right: 8px;
+}
+
+QTabBar::tab:selected {
+	background: rgba(255,255,255,0.1);
+}
+
+QTabBar::tab:hover {
+	background: rgba(255,255,255,0.05);
+}
+
+QTabBar {
+	qproperty-drawBase: 0;
+}</string>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -40,7 +91,7 @@
               <item row="0" column="1">
                <widget class="QLabel" name="label_2">
                 <property name="text">
-                 <string>Affichage</string>
+                 <string>Affichage :</string>
                 </property>
                </widget>
               </item>
@@ -53,6 +104,23 @@
               </item>
               <item row="1" column="0">
                <widget class="QComboBox" name="comboBox">
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: #383838;
+    color: white; 
+    border: 1px solid white;
+	border-radius: 10px;
+    border-radius: 3px;
+    padding: 4px 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2C2C2C;
+    color: white;
+    selection-background-color: #444444;
+    selection-color: white;
+}</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>Récent</string>
@@ -72,6 +140,23 @@
               </item>
               <item row="1" column="1">
                <widget class="QComboBox" name="comboBox_2">
+                <property name="styleSheet">
+                 <string notr="true">QComboBox {
+    background-color: #383838;
+    color: white; 
+    border: 1px solid white;
+	border-radius: 10px;
+    border-radius: 3px;
+    padding: 4px 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2C2C2C;
+    color: white;
+    selection-background-color: #444444;
+    selection-color: white;
+}</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>2 Colonnes</string>
@@ -115,7 +200,26 @@
         <item>
          <widget class="QDockWidget" name="dockInspector">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QDockWidget {
+        background-color: #1E1E1E;
+        border: 1px solid #2A2A2A; 
+    }
+
+    /* Barre de titre */
+    QDockWidget::title {
+        background: #1E1E1E;
+        padding: 2px 4px;
+        border: none;
+        spacing: 2px;
+    }
+
+    /* Bouton fermer (croix) */
+    QDockWidget::close-button {
+        border: none;
+        margin: 0px; 
+        padding: 0px;
+    }
+</string>
           </property>
           <widget class="QWidget" name="dockWidgetContents_2"/>
          </widget>
