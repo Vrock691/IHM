@@ -110,7 +110,7 @@ unsigned int ImageModel::width() const
     return _width;
 }
 
-/*ImageModel::ImageModel(const std::string& path)
+ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
     std::filesystem::path p(path);
@@ -127,4 +127,4 @@ unsigned int ImageModel::width() const
     _width = 0;
     _height = 0;
     _score =0;
-}*/
+}

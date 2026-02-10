@@ -1,5 +1,5 @@
-#include "imagemodel.cpp"
-#include "tabmodel.cpp"
+#include "imagemodel.h"
+#include "tabmodel.h"
 #include "QString"
 #include "QFile"
 #include "QStandardPaths"

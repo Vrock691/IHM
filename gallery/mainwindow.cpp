@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "inspectorview.h"
-#include "imagemodel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),

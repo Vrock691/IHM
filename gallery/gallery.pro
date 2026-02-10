@@ -19,7 +19,8 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
-    serializationservice.cpp
+    serializationservice.cpp \
+    tabmodel.cpp
 
 HEADERS += \
     color.h \
@@ -46,7 +47,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES +=
+DISTFILES += \
+    edit-icon.png \
+    eye-icon.png \
+    heart-icon.png \
+    image-icon.png \
+    info-icon.png \
+    redimension-icon.png
 
 RESOURCES += \
+    resources.qrc \
     resources.qrc

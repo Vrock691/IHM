@@ -38,7 +38,11 @@ public:
         const std::vector<std::string> &keyWords = {},
         unsigned int score = 0,
         Feeling feeling = Feeling::UNKNOWN_FEELING
-    );
+        );
+
+    ImageModel(
+        const std::string& path
+        );
 
     unsigned int width() const;
     unsigned int height() const;
