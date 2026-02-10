@@ -7,25 +7,30 @@ MainWindow::MainWindow(QWidget *parent)
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    _selected = nullptr;
 
-    InspectorView* inspector = new InspectorView(this);
-
-    ui->dockInspector->setWidget(inspector);
+    _inspectorView = new InspectorView(this);
+    ui->dockInspector->setWidget(_inspectorView);
 
     // Bloque le dock
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    // Fixe la taille
-    // ui->dockInspector->setMinimumWidth(250);
-    // ui->dockInspector->setMaximumWidth(250);
-    // ui->dockInspector->setMinimumHeight(400);
-    // ui->dockInspector->setMaximumHeight(400);
+    //QObject::connect(_galleryView, &GalleryView::onRequestSelected);
 
     // Test
     ImageModel* testImage = new ImageModel(":/icons/image-icon.png");
-    inspector->setSelected(testImage);
+    _inspectorView->setSelected(testImage);
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
+}
+
+// TODO: relier au slot "onRequestSelect" de GalleryView
+void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
+{
+    _selected = /*A supprimer -> */&/* <-*/imageModel;    // le paramètre sera déjà un pointeur après la refacto
+    //_galleryView.setSelected(imageModel);
+    _inspectorView->setSelected(/*A supprimer -> */&/* <-*/imageModel);   // idem
 }
