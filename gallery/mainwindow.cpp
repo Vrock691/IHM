@@ -28,28 +28,28 @@ MainWindow::MainWindow(QWidget *parent)
     //inspector->setSelected(testImage);
 
     SerializationService service;
-    std::vector<std::unique_ptr<IFilter>> filters;
-    filters.push_back(std::unique_ptr<IFilter>(new DefaultFilter()));
-    TabModel tabmodel = TabModel(
-                            0,
-                            "Tab",
-                            std::move(filters),
-                            std::unique_ptr<IOrderer>(new DefaultOrderer())
+    std::vector<std::string> keywords;
+    keywords.push_back("Key1");
+    keywords.push_back("Key2");
+    ImageModel imageModel = ImageModel(
+        "path2",
+        200,
+        200,
+        "png",
+        "name",
+        500,
+        "28/25/20",
+        "29/05/02",
+        Color::WHITE,
+        "desc",
+        keywords,
+        0,
+        Feeling::HAPPY
         );
-    service.serializeTabModel(tabmodel);
-
-    std::vector<std::unique_ptr<IFilter>> filters2;
-    filters.push_back(std::unique_ptr<IFilter>(new DefaultFilter()));
-    TabModel tabmodel2 = TabModel(
-        1,
-        "Tab1",
-        std::move(filters2),
-        std::unique_ptr<IOrderer>(new DefaultOrderer())
-        );
-    service.serializeTabModel(tabmodel2);
-
-    std::vector<TabModel> tabs = service.deserializeTabModels();
-    qDebug() << "debug";
+    service.serializeImageModel(imageModel);
+    qDebug() << "qDebug";
+    std::vector<ImageModel> images = service.deserializeImageModels();
+    qDebug() << "qDebug";
 }
 
 MainWindow::~MainWindow() {}

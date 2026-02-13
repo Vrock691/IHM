@@ -30,6 +30,14 @@ Color SerializationService::getColorFromString(const QString value) {
     }
 }
 
+QString SerializationService::colorToString(const Color color) {
+    if (color == Color::WHITE) {
+        return "WHITE";
+    } else {
+        return "UNKNOWN_COLOR";
+    }
+}
+
 Feeling SerializationService::getFeelingFromString(const QString value) {
     std::string lowerStr = value.toStdString();
     std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),
@@ -39,6 +47,14 @@ Feeling SerializationService::getFeelingFromString(const QString value) {
         return HAPPY;
     } else {
         return UNKNOWN_FEELING;
+    }
+}
+
+QString SerializationService::feelingToString(const Feeling feeling) {
+    if (feeling == Feeling::HAPPY) {
+        return "HAPPY";
+    } else {
+        return "UNKNOWN_FEELING";
     }
 }
 
@@ -56,10 +72,10 @@ void SerializationService::serializeImageModel(ImageModel imageModel) {
     jobject["sizeBytes"] = QJsonValue::fromVariant(QVariant(static_cast<qlonglong>(imageModel.sizeBytes())));
     jobject["creationDate"] = QString::fromStdString(imageModel.creationDate());
     jobject["lastModificationDate"] = QString::fromStdString(imageModel.lastModificationDate());
-    jobject["mainColor"] = imageModel.mainColor();
+    jobject["mainColor"] = colorToString(imageModel.mainColor());
     jobject["description"] = QString::fromStdString(imageModel.description());
     jobject["score"] = QJsonValue::fromVariant(QVariant(imageModel.score()));
-    jobject["feeling"] = imageModel.feeling();
+    jobject["feeling"] = feelingToString(imageModel.feeling());
 
     QJsonArray keywords;
     for (const auto& str : imageModel.keyWords()) {
@@ -70,9 +86,9 @@ void SerializationService::serializeImageModel(ImageModel imageModel) {
     QJsonDocument doc( jobject );
 
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QString configFilePath = QString("%1/configs/images/%2.json").arg(fileID)
-                                 .arg(configsPath)
-                                 .arg(fileID);
+    QString configFilePath = QString("%1/configs/images/%2.json")
+                                .arg(configsPath)
+                                .arg(fileID);
     QFile file(configFilePath);
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
