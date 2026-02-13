@@ -9,4 +9,10 @@ public:
     AvailableOrderers id() override {
         return DEFAULT_ORDERER;
     }
+
+    QJsonObject serialize() override {
+        QJsonObject json;
+        json["id"] = "DEFAULT_ORDERER";
+        return json;
+    }
 };

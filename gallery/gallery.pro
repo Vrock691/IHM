@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     defaultfilter.cpp \
     defaultorderer.cpp \
+    filterfactory.cpp \
     galleryview.cpp \
     imagecell.cpp \
     imagemodel.cpp \
@@ -19,12 +20,14 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
+    ordererfactory.cpp \
     serializationservice.cpp \
     tabmodel.cpp
 
 HEADERS += \
     color.h \
     feeling.h \
+    filterfactory.h \
     galleryview.h \
     ifilter.h \
     inspectorview.h \
@@ -33,6 +36,7 @@ HEADERS += \
     mainwindow.h \
     imagecell.h \
     indexationservice.h \
+    ordererfactory.h \
     serializationservice.h \
     tabmodel.h
 

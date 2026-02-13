@@ -1,8 +1,10 @@
 #include "serializationservice.h"
+#include "filterfactory.h"
+#include "ordererfactory.h"
 #include "qjsonarray.h"
 #include "qjsonobject.h"
 
-serializationservice::serializationservice() {
+SerializationService::SerializationService() {
     QDir dir = QDir();
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     dir.mkpath(configsPath);
@@ -10,13 +12,13 @@ serializationservice::serializationservice() {
     dir.mkpath(configsPath + QDir::separator() + "configs" + QDir::separator() + "tabs");
 }
 
-QString serializationservice::getSha1FromString(const QString value) {
+QString SerializationService::getSha1FromString(const QString value) {
     QByteArray pathBytes = value.toUtf8();
     QByteArray hashBytes = QCryptographicHash::hash(pathBytes, QCryptographicHash::Sha1);
     return QString(hashBytes.toHex());
 }
 
-Color serializationservice::getColorFromString(const QString value) {
+Color SerializationService::getColorFromString(const QString value) {
     std::string lowerStr = value.toStdString();
     std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),
                    [](unsigned char c) { return std::tolower(c); });
@@ -28,7 +30,7 @@ Color serializationservice::getColorFromString(const QString value) {
     }
 }
 
-Feeling serializationservice::getFeelingFromString(const QString value) {
+Feeling SerializationService::getFeelingFromString(const QString value) {
     std::string lowerStr = value.toStdString();
     std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),
                    [](unsigned char c) { return std::tolower(c); });
@@ -40,7 +42,7 @@ Feeling serializationservice::getFeelingFromString(const QString value) {
     }
 }
 
-void serializationservice::serializeImageModel(ImageModel imageModel) {
+void SerializationService::serializeImageModel(ImageModel imageModel) {
 
     QString fileID = getSha1FromString(QString::fromStdString(imageModel.path()));
 
@@ -67,7 +69,10 @@ void serializationservice::serializeImageModel(ImageModel imageModel) {
 
     QJsonDocument doc( jobject );
 
-    QString configFilePath = QString("configs/images/%1.json").arg(fileID);
+    QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString configFilePath = QString("%1/configs/images/%2.json").arg(fileID)
+                                 .arg(configsPath)
+                                 .arg(fileID);
     QFile file(configFilePath);
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
@@ -75,10 +80,11 @@ void serializationservice::serializeImageModel(ImageModel imageModel) {
 
 }
 
-std::vector<ImageModel> serializationservice::deserializeImageModels()
+std::vector<ImageModel> SerializationService::deserializeImageModels()
 {
     std::vector<ImageModel> models;
-    QDir configDir("configs/images");
+    QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir configDir(configsPath + "/configs/images");
     QStringList jsonFiles = configDir.entryList(QStringList() << "*.json", QDir::Files);
 
     for (const QString& jsonFileName : jsonFiles) {
@@ -126,33 +132,35 @@ std::vector<ImageModel> serializationservice::deserializeImageModels()
     return models;
 }
 
-void serializationservice::serializeTabModel(TabModel tabModel) {
-    QString fileID = &"tab_"[tabModel.getIndex()];
-
+void SerializationService::serializeTabModel(const TabModel& tabModel) {
     QJsonObject jobject;
     jobject["index"] = tabModel.getIndex();
     jobject["name"] = tabModel.getName();
-    jobject["orderer"] = tabModel.getOrderer()->id();
+    jobject["orderer"] = tabModel.getOrderer()->serialize();
 
     QJsonArray filters;
     for (const auto& filter : tabModel.getFilters()) {
-        filters.append(filter->id());
+        filters.append(filter->serialize());
     }
     jobject["filters"] = filters;
 
     QJsonDocument doc( jobject );
 
-    QString configFilePath = QString("configs/tabs/%1.json").arg(fileID);
+    QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString configFilePath = QString("%1/configs/tabs/%2.json")
+                                 .arg(configsPath)
+                                 .arg(tabModel.getIndex());
     QFile file(configFilePath);
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
     file.close();
 }
 
-std::vector<TabModel> serializationservice::deserializeTabModels() {
+std::vector<TabModel> SerializationService::deserializeTabModels() {
     std::vector<TabModel> tabs;
 
-    /*QDir configDir("configs/tabs");
+    QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir configDir(configsPath + "/configs/tabs");
     QStringList jsonFiles = configDir.entryList(QStringList() << "*.json", QDir::Files);
 
     for (const QString& jsonFileName : jsonFiles) {
@@ -179,14 +187,22 @@ std::vector<TabModel> serializationservice::deserializeTabModels() {
             nullptr
         );
 
-        QJsonArray filtersArray = jobject["keyWords"].toArray();
+        QJsonArray filtersArray = jobject["filters"].toArray();
         std::vector<std::unique_ptr<IFilter>> filters;
-        for (const QJsonValue& filter : filtersArray) {
-            filters.push_back(nullptr);
+        FilterFactory filterFactory;
+        for (const QJsonValue& filterValue : filtersArray) {
+            qDebug() << filterValue.toObject();
+            std::unique_ptr<IFilter> filter = filterFactory.parse(filterValue.toObject());
+            filters.push_back(std::move(filter));
         }
-        model.setFilters(filters);
-        tabs.push_back(model);
-    }*/
+        model.setFilters(std::move(filters));
+
+        OrdererFactory ordererFactory;
+        std::unique_ptr<IOrderer> orderer = ordererFactory.parse(jobject["orderer"].toObject());
+        model.setOrderer(std::move(orderer));
+
+        tabs.push_back(std::move(model));
+    }
 
     return tabs;
 

@@ -1,6 +1,7 @@
 #ifndef IFILTER_H
 #define IFILTER_H
 
+#include "qjsonvalue.h"
 #include <QString>
 
 enum AvailableFilters {
@@ -12,6 +13,7 @@ class IFilter {
         virtual ~IFilter() = default;
         virtual bool isAcceptable() = 0;
         virtual AvailableFilters id() = 0;
+        virtual QJsonObject serialize() = 0;
 };
 
 #endif // IFILTER_H

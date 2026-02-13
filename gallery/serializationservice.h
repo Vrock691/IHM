@@ -10,14 +10,14 @@
 #ifndef SERIALIZATIONSERVICE_H
 #define SERIALIZATIONSERVICE_H
 
-class serializationservice
+class SerializationService
 {
 public:
-    serializationservice();
+    SerializationService();
 
     void serializeImageModel(ImageModel imageModel);
 
-    void serializeTabModel(TabModel tabModel);
+    void serializeTabModel(const TabModel& tabModel);
 
     std::vector<ImageModel> deserializeImageModels();
 
