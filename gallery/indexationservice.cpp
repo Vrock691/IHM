@@ -18,7 +18,7 @@ QVector<ImageModel> IndexationService::indexFiles(const QString &folderPath)
         const QFileInfo &file = files[i];
         QString path = file.absoluteFilePath();
 
-        models.append(ImageModel(path.toStdString()));
+        //models.append(ImageModel(path.toStdString()));
 
     }
 

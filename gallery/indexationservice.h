@@ -6,7 +6,6 @@
 #include <QString>
 #include <QVector>
 #include <QMap>
-#include <memory>
 
 class IndexationService
 {

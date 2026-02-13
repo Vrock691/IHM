@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "indexationservice.h"
 #include "inspectorview.h"
-#include "imagemodel.h"
+#include "serializationservice.h"
+#include "defaultfilter.cpp"
+#include "defaultorderer.cpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),

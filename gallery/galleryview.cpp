@@ -1,7 +1,7 @@
 #include "galleryview.h"
-#include "imagecell.h" 
+#include "imagecell.h"
 
-GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> tabs, QWidget *parent)
+GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel>& tabs, QWidget *parent)
     : QWidget(parent), _allImages(images), _tabs(tabs)
 {
     setupUi(this);
