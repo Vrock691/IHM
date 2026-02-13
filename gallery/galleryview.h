@@ -19,6 +19,9 @@ public:
 
     void refreshModel();
 
+signals:
+    void onRequestSelect(ImageModel imageModel);
+
 private:
     void openTab(int tabId);
 

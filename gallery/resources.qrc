@@ -6,5 +6,7 @@
         <file>info-icon.png</file>
         <file>redimension-icon.png</file>
         <file>eye-icon.png</file>
+        <file>star-empty-icon.png</file>
+        <file>star-filled-icon.png</file>
     </qresource>
 </RCC>

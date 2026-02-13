@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "indexationservice.h"
 #include "inspectorview.h"
 #include "serializationservice.h"
 #include "defaultfilter.cpp"
@@ -10,22 +11,42 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    InspectorView* inspector = new InspectorView(this);
+    IndexationService indexService = IndexationService();
+    QVector<ImageModel> fileImages = indexService.indexFiles("/");
 
-    ui->dockInspector->setWidget(inspector);
+    // deserializedImages = SerialisationService::deserializeImageModels()
 
-    // Bloque le dock
-    ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    // TODO: Union des deux (on peut faire une méthode privée à part)
 
-    // Fixe la taille
-    // ui->dockInspector->setMinimumWidth(250);
-    // ui->dockInspector->setMaximumWidth(250);
-    // ui->dockInspector->setMinimumHeight(400);
-    // ui->dockInspector->setMaximumHeight(400);
+
+    // TODO: Affichage de GalleryView
+    //QObject::connect(_galleryView, &GalleryView::onRequestSelected);
+
+    _inspectorView = new InspectorView(this);
+    ui->dockInspector->setWidget(_inspectorView);
+    ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);  // Bloque le dock
+
+    setSelected(nullptr);
 
     // Test
     //ImageModel* testImage = new ImageModel(":/icons/image-icon.png");
-    //inspector->setSelected(testImage);
+    //_inspectorView->setSelected(testImage);
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::setSelected(ImageModel* imageModel)
+{
+    _selected = imageModel;
+    //_galleryView.setSelected(imageModel);
+    _inspectorView->setSelected(imageModel);
+}
+
+// TODO: relier au slot "onRequestSelect" de GalleryView
+void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
+{
+    setSelected(/*A supprimer -> */&/* <-*/imageModel); // le paramètre sera déjà un pointeur après la refacto
+}
