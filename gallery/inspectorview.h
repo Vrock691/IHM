@@ -24,6 +24,7 @@ public:
     void setSelected(ImageModel* imageModel);
     void refreshModel();
     void addTag(const QString& text);
+    void setCurrentTab(int index);
 
 private:
     Ui::InspectorView *ui;
@@ -34,6 +35,7 @@ private:
     QList<QToolButton*> _starButtons;
     int _currentRating = 0;
     void setRating(int rating);
+    int _currentTabIndex = 0;
 };
 
 #endif // INSPECTORVIEW_H
