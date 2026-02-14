@@ -9,4 +9,13 @@
         <file>star-empty-icon.png</file>
         <file>star-filled-icon.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>fairy tail.png</file>
+        <file>909184-slam-dunk-le-film-adapte-du-manga-culte-arrive-cet-ete-au-cinema.jpg</file>
+        <file>conception-paysage-pop-lumineux.jpg</file>
+        <file>lanternes-illuminent-nuit-lors-festival-plein-air-genere-par-ia.jpg</file>
+        <file>sommet-montagne-majestueux-dans-paysage-hivernal-paisible-genere-par-ia_188544-15662.avif</file>
+        <file>nuit-automne-lanterne-illuminee-feuille-jaune-generee-par-ia.jpg</file>
+        <file>the-first-slam-dunk-teaser.png</file>
+    </qresource>
 </RCC>

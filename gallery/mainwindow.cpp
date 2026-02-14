@@ -2,6 +2,9 @@
 #include "indexationservice.h"
 #include "inspectorview.h"
 #include "imagemodel.h"
+#include "tabmanager.h"
+#include "galleryview.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -10,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     IndexationService indexService = IndexationService();
-    QVector<ImageModel> fileImages = indexService.indexFiles("/");
+
+    QVector<ImageModel> fileImages = indexService.indexFiles(":/images");
 
     // deserializedImages = SerialisationService::deserializeImageModels()
 
@@ -19,6 +23,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     // TODO: Affichage de GalleryView
     //QObject::connect(_galleryView, &GalleryView::onRequestSelected);
+
+    // ------- Tab Manager ------- //
+    std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
+    _tabManager = new TabManager(imagesVector, this);
+    QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+    layout->addWidget(_tabManager);
+
 
     _inspectorView = new InspectorView(this);
     ui->dockInspector->setWidget(_inspectorView);

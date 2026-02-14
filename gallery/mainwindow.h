@@ -4,6 +4,7 @@
 #include "imagemodel.h"
 #include "inspectorview.h"
 #include "ui_mainwindow.h"
+#include "tabmanager.h"
 
 #include <QMainWindow>
 
@@ -22,6 +23,7 @@ private:
     InspectorView* _inspectorView;
 
     void setSelected(ImageModel* imageModel);
+    TabManager* _tabManager = nullptr;
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
