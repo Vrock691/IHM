@@ -4,7 +4,7 @@
 #include "imagemodel.h"
 #include "inspectorview.h"
 #include "ui_mainwindow.h"
-#include "tabmanager.h"
+#include "tabcontainer.h"
 #include "sidebarempty.h"
 
 #include <QMainWindow>
@@ -24,7 +24,7 @@ private:
     InspectorView* _inspectorView;
 
     void setSelected(ImageModel* imageModel);
-    TabManager* _tabManager = nullptr;
+    TabContainer* _tabContainer = nullptr;
     SideBarEmpty* _sideBarEmpty;
     QStackedWidget* _sidebarStack;
     void clearSelection();

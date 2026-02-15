@@ -2,7 +2,7 @@
 #include "indexationservice.h"
 #include "inspectorview.h"
 #include "imagemodel.h"
-#include "tabmanager.h"
+#include "tabcontainer.h"
 #include "galleryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -31,18 +31,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setWidget(_sidebarStack);
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    // ------- Tab Manager ------- //
+    // ------- Tab Container ------- //
     std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
-    _tabManager = new TabManager(imagesVector, this);
+    _tabContainer = new TabContainer(imagesVector, this);
 
-    connect(_tabManager, &TabManager::imageClicked, this, [this](ImageModel img) {
+    connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
         setSelected(&img);  // Utilise la méthode existante
     });
 
     QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
-    layout->addWidget(_tabManager);
+    layout->addWidget(_tabContainer);
 }
 
 MainWindow::~MainWindow()

@@ -1,12 +1,12 @@
-#include "tabmanager.h"
+#include "tabcontainer.h"
 #include "galleryview.h"
 #include "tabbuttonwidget.h"
 #include <QInputDialog>
 #include <QVBoxLayout>
 
-TabManager::TabManager(std::vector<ImageModel> images, QWidget *parent)
+TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::TabManager),
+    ui(new Ui::TabContainer),
     _initialImages(images)
 {
     ui->setupUi(this);
@@ -54,7 +54,7 @@ TabManager::TabManager(std::vector<ImageModel> images, QWidget *parent)
     )");
 }
 
-void TabManager::addTab(const QString &name)
+void TabContainer::addTab(const QString &name)
 {
     TabButtonWidget* tabBtn = new TabButtonWidget(name);
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
@@ -62,7 +62,7 @@ void TabManager::addTab(const QString &name)
     GalleryView* gallery = new GalleryView(_initialImages, {}, ui->contentStack);
     ui->contentStack->addWidget(gallery);
 
-    connect(gallery, &GalleryView::imageClicked, this, &TabManager::imageClicked);
+    connect(gallery, &GalleryView::imageClicked, this, &TabContainer::imageClicked);
 
     // Connexion clic sur onglet
     connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
@@ -101,12 +101,12 @@ void TabManager::addTab(const QString &name)
     tabBtn->setActive(true);
 }
 
-GalleryView* TabManager::currentGallery()
+GalleryView* TabContainer::currentGallery()
 {
     return qobject_cast<GalleryView*>(ui->contentStack->currentWidget());
 }
 
-TabManager::~TabManager()
+TabContainer::~TabContainer()
 {
     delete ui;
 }

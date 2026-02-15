@@ -20,7 +20,7 @@ SOURCES += \
     serializationservice.cpp \
     sidebarempty.cpp \
     tabbuttonwidget.cpp \
-    tabmanager.cpp
+    tabcontainer.cpp
 
 HEADERS += \
     color.h \
@@ -34,7 +34,7 @@ HEADERS += \
     serializationservice.h \
     sidebarempty.h \
     tabbuttonwidget.h \
-    tabmanager.h
+    tabcontainer.h
 
 FORMS += \
     galleryview.ui \
@@ -42,7 +42,7 @@ FORMS += \
     inspectorview.ui \
     mainwindow.ui \
     sidebarempty.ui \
-    tabmanager.ui
+    tabcontainer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
