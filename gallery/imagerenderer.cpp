@@ -27,5 +27,7 @@ ImageRenderer::~ImageRenderer()
 void ImageRenderer::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    ui->_label->setPixmap(_pixmap.scaled(ui->_label->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    QPixmap transformedPixmap = _pixmap.scaled(ui->_label->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    transformedPixmap = transformedPixmap.copy(_imageModel.cropRect());
+    ui->_label->setPixmap(transformedPixmap);
 }

@@ -87,6 +87,16 @@ unsigned int ImageModel::width() const
     return _width;
 }
 
+void ImageModel::cropRect(QRect cropRect)
+{
+    _cropRect = cropRect;
+}
+
+QRect ImageModel::cropRect() const
+{
+    return _cropRect;
+}
+
 ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
@@ -104,4 +114,9 @@ ImageModel::ImageModel(const std::string& path)
     _width = 0;
     _height = 0;
     _score =0;
+
+    // TODO: intialiser le rect de crop :
+    //QPoint topLeft = ...
+    //QPoint bottomRight = ...
+    //_cropRect = {topLeft, bottomRight}
 }
