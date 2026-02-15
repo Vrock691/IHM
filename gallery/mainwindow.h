@@ -5,6 +5,7 @@
 #include "inspectorview.h"
 #include "ui_mainwindow.h"
 #include "tabmanager.h"
+#include "sidebarempty.h"
 
 #include <QMainWindow>
 
@@ -24,6 +25,9 @@ private:
 
     void setSelected(ImageModel* imageModel);
     TabManager* _tabManager = nullptr;
+    SideBarEmpty* _sideBarEmpty;
+    QStackedWidget* _sidebarStack;
+    void clearSelection();
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);

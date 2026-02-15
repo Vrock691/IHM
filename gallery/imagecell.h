@@ -21,10 +21,12 @@ private:
     ImageModel _imageModel;
     QPixmap _pixmap;
 
-
-
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
+signals:
+    void clicked(ImageModel image);
 };
 
 #endif // IMAGECELL_H

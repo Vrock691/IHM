@@ -8,11 +8,9 @@ GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> t
 {
     setupUi(this);
 
-    // S'assure que le widget prend tout l'espace
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     galleryGrid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // Si galleryGrid n'a pas de layout, on en crée un
     _gridLayout = qobject_cast<QGridLayout*>(galleryGrid->layout());
     if (!_gridLayout) {
         _gridLayout = new QGridLayout(galleryGrid);
@@ -23,14 +21,18 @@ GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> t
         _gridLayout->setSpacing(10);
     }
 
-    // Remplit les images
+    _gridLayout->setRowStretch(0, 1);
+    _gridLayout->setColumnStretch(0, 1);
+    _gridLayout->setColumnStretch(1, 1);
+    _gridLayout->setColumnStretch(2, 1);
+    _gridLayout->setColumnStretch(3, 1);
+
     openTab(0);
 }
 
 void GalleryView::openTab(int tabId)
 {
     Q_UNUSED(tabId);
-
     qDebug() << "Images count =" << _allImages.size();
 
     // Supprime les anciennes cellules
@@ -44,12 +46,19 @@ void GalleryView::openTab(int tabId)
     int columnCount = 4;
 
     for (size_t i = 0; i < _allImages.size(); ++i) {
-        ImageCell* cell = new ImageCell(_allImages[i]); // PAS galleryGrid comme parent
-        cell->setMinimumSize(120,120);
+        ImageCell* cell = new ImageCell(_allImages[i]);
+        cell->setMinimumSize(120, 120);
+        cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        connect(cell, &ImageCell::clicked, this, [this](ImageModel image) {
+            emit imageClicked(image);
+        });
 
         int row = i / columnCount;
         int col = i % columnCount;
 
         _gridLayout->addWidget(cell, row, col);
+
+        _gridLayout->setRowStretch(row, 1);
     }
 }

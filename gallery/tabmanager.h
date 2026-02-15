@@ -3,7 +3,6 @@
 
 #include "ui_tabmanager.h"
 #include "galleryview.h"
-
 #include <QWidget>
 
 class TabManager : public QWidget, Ui::TabManager
@@ -15,6 +14,10 @@ public:
     ~TabManager();
 
     void addTab(const QString &name);
+    GalleryView* currentGallery();
+
+signals:
+    void imageClicked(ImageModel imageModel);
 
 private:
     Ui::TabManager *ui;

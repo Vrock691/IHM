@@ -21,6 +21,7 @@ public:
 
 signals:
     void onRequestSelect(ImageModel imageModel);
+    void imageClicked(ImageModel imageModel);  // NOUVEAU SIGNAL
 
 private:
     void openTab(int tabId);
@@ -29,7 +30,6 @@ private:
     std::vector<ImageModel> _allImages;
     std::vector<TabModel> _tabs;
 
-    //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
     void populate();
 

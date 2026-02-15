@@ -18,6 +18,7 @@ SOURCES += \
     meta.cpp \
     indexationservice.cpp \
     serializationservice.cpp \
+    sidebarempty.cpp \
     tabbuttonwidget.cpp \
     tabmanager.cpp
 
@@ -31,6 +32,7 @@ HEADERS += \
     imagecell.h \
     indexationservice.h \
     serializationservice.h \
+    sidebarempty.h \
     tabbuttonwidget.h \
     tabmanager.h
 
@@ -39,6 +41,7 @@ FORMS += \
     imagecell.ui \
     inspectorview.ui \
     mainwindow.ui \
+    sidebarempty.ui \
     tabmanager.ui
 
 # Default rules for deployment.

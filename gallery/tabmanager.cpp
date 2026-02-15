@@ -19,7 +19,7 @@ TabManager::TabManager(std::vector<ImageModel> images, QWidget *parent)
         addTab("Nouvel onglet");
     });
 
-    // Style général des onglets
+    // Style général
     setStyleSheet(R"(
         #tabItem {
             background-color: #2b2b2b;
@@ -59,9 +59,10 @@ void TabManager::addTab(const QString &name)
     TabButtonWidget* tabBtn = new TabButtonWidget(name);
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
 
-    // Crée la GalleryView pour ce nouvel onglet avec parent = contentStack
     GalleryView* gallery = new GalleryView(_initialImages, {}, ui->contentStack);
     ui->contentStack->addWidget(gallery);
+
+    connect(gallery, &GalleryView::imageClicked, this, &TabManager::imageClicked);
 
     // Connexion clic sur onglet
     connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
@@ -98,6 +99,11 @@ void TabManager::addTab(const QString &name)
     // Active automatiquement le nouvel onglet
     ui->contentStack->setCurrentWidget(gallery);
     tabBtn->setActive(true);
+}
+
+GalleryView* TabManager::currentGallery()
+{
+    return qobject_cast<GalleryView*>(ui->contentStack->currentWidget());
 }
 
 TabManager::~TabManager()
