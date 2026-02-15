@@ -1,29 +1,6 @@
 #include "imagemodel.h"
 #include <filesystem>
-
-ImageModel::ImageModel(
-    const std::string &path,
-    unsigned int width, unsigned int height,
-    const std::string &format, const std::string &fileName,
-    unsigned long sizeBytes, const std::string &creationDate,
-    const std::string &lastModificationDate, const Color &mainColor,
-    const std::string &description,
-    const std::vector<std::string> &keyWords,
-    unsigned int score,
-    Feeling feeling
-    ) :
-    _path(path),
-    _width(width), _height(height),
-    _format(format), _fileName(fileName),
-    _sizeBytes(sizeBytes),
-    _creationDate(creationDate),
-    _lastModificationDate(lastModificationDate),
-    _mainColor(mainColor),
-    _description(description),
-    _keyWords(keyWords),
-    _score(score),
-    _feeling(feeling)
-{}
+#include <QImage>
 
 unsigned int ImageModel::height() const
 {
@@ -125,6 +102,7 @@ ImageModel::ImageModel(const std::string& path)
 {
     std::filesystem::path p(path);
 
+    // informations sur le fichier 
     _fileName = p.filename().string();
     _format = p.extension().string();
 
@@ -133,13 +111,26 @@ ImageModel::ImageModel(const std::string& path)
     } else {
         _sizeBytes = 0;
     }
+    // charge l'image 
+    QImage img(QString::fromStdString(path));
 
-    _width = 0;
-    _height = 0;
-    _score =0;
+    if (!img.isNull()) {
+        _width = img.width();
+        _height = img.height();
+        
+        _cropRect = QRect(0, 0, _width, _height);
+    } else {
+        //si l'image ne peut pas être vu
+        _width = 0;
+        _height = 0;
+        _cropRect = QRect(0, 0, 0, 0);
+    }
 
-    // TODO: intialiser le rect de crop :
-    //QPoint topLeft = ...
-    //QPoint bottomRight = ...
-    //_cropRect = {topLeft, bottomRight}
+    //propriétés utilisateur
+    _score = 0;
+    _feeling = HAPPY; 
+    _mainColor = WHITE; 
 }
+
+
+
