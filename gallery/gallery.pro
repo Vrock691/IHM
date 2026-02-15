@@ -17,7 +17,10 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
-    serializationservice.cpp
+    serializationservice.cpp \
+    sidebarempty.cpp \
+    tabbuttonwidget.cpp \
+    tabmanager.cpp
 
 HEADERS += \
     color.h \
@@ -28,13 +31,18 @@ HEADERS += \
     mainwindow.h \
     imagecell.h \
     indexationservice.h \
-    serializationservice.h
+    serializationservice.h \
+    sidebarempty.h \
+    tabbuttonwidget.h \
+    tabmanager.h
 
 FORMS += \
     galleryview.ui \
     imagecell.ui \
     inspectorview.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    sidebarempty.ui \
+    tabmanager.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
