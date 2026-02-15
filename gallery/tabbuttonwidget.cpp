@@ -59,4 +59,3 @@ void TabButtonWidget::setActive(bool active)
     else
         setStyleSheet("");
 }
-

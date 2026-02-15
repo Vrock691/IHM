@@ -30,6 +30,4 @@ protected:
 
 };
 
-#endif
- // TABBUTTONWIDGET_H
-
+#endif // TABBUTTONWIDGET_H
