@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "imagemodel.h"
+#include "imagerenderer.h"
 
 namespace Ui {
 class ImageCell;
@@ -18,13 +19,13 @@ public:
 
 private:
     Ui::ImageCell *ui;
-    ImageModel _imageModel;
-    QPixmap _pixmap;
-
-
+    ImageRenderer* _imageRenderer;
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
+signals:
+    void clicked(ImageModel image);
 };
 
 #endif // IMAGECELL_H

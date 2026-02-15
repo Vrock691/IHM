@@ -2,6 +2,8 @@
 #include "indexationservice.h"
 #include "inspectorview.h"
 #include "imagemodel.h"
+#include "tabcontainer.h"
+#include "galleryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -10,25 +12,37 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     IndexationService indexService = IndexationService();
-    QVector<ImageModel> fileImages = indexService.indexFiles("/");
+    QVector<ImageModel> fileImages = indexService.indexFiles(":/images");
 
-    // deserializedImages = SerialisationService::deserializeImageModels()
+    _sidebarStack = new QStackedWidget(this);
 
-    // TODO: Union des deux (on peut faire une méthode privée à part)
+    // Empty state
+    _sideBarEmpty = new SideBarEmpty(this);
+    _sidebarStack->addWidget(_sideBarEmpty); // index 0
 
-
-    // TODO: Affichage de GalleryView
-    //QObject::connect(_galleryView, &GalleryView::onRequestSelected);
-
+    // Inspecteur
     _inspectorView = new InspectorView(this);
-    ui->dockInspector->setWidget(_inspectorView);
-    ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);  // Bloque le dock
+    _sidebarStack->addWidget(_inspectorView); // index 1
 
-    setSelected(nullptr);
+    // Affiche par défaut l'empty state
+    _sidebarStack->setCurrentWidget(_sideBarEmpty);
 
-    // Test
-    //ImageModel* testImage = new ImageModel(":/icons/image-icon.png");
-    //_inspectorView->setSelected(testImage);
+    // Mets le stacked widget dans le dock
+    ui->dockInspector->setWidget(_sidebarStack);
+    ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+    // ------- Tab Container ------- //
+    std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
+    _tabContainer = new TabContainer(imagesVector, this);
+
+    connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
+        setSelected(&img);  // Utilise la méthode existante
+    });
+
+    QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+    layout->addWidget(_tabContainer);
 }
 
 MainWindow::~MainWindow()
@@ -39,12 +53,22 @@ MainWindow::~MainWindow()
 void MainWindow::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
-    //_galleryView.setSelected(imageModel);
-    _inspectorView->setSelected(imageModel);
+
+    if(_selected) {
+        _inspectorView->setSelected(_selected);
+        _sidebarStack->setCurrentWidget(_inspectorView);
+    } else {
+        _sidebarStack->setCurrentWidget(_sideBarEmpty);
+    }
 }
 
-// TODO: relier au slot "onRequestSelect" de GalleryView
 void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
 {
-    setSelected(/*A supprimer -> */&/* <-*/imageModel); // le paramètre sera déjà un pointeur après la refacto
+    setSelected(&imageModel);
+}
+
+void MainWindow::clearSelection()
+{
+    _selected = nullptr;
+    _sidebarStack->setCurrentWidget(_sideBarEmpty);
 }
