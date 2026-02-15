@@ -50,38 +50,62 @@
          <widget class="QComboBox" name="comboBox_3">
           <property name="styleSheet">
            <string notr="true">QComboBox {
-    background-color: #F5F5F5;
-    color: #333333;
-    border: 1px solid #CCCCCC;
+    background-color: #2b2b2b;
+    color: white;
+    border: 1px solid #3a3a3a;
     border-radius: 6px;
-    padding: 4px 30px 4px 8px;
-    min-width: 100px;
+    padding: 6px 30px 6px 10px;
+    min-width: 120px;
+    font-size: 11pt;
+}
+
+QComboBox:hover {
+    background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
+}
+
+QComboBox:focus {
+    border: 1px solid #5a5a5a;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: 20px;
-    border-left: none;
-    background: transparent;
+    width: 25px;
+    border-left: 1px solid #3a3a3a;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-color: transparent;
 }
 
+/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    width: 10px;
-    height: 10px;
-    border: none;
-    image: none;
-    background-color: transparent;
-    color: #333333;
+    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    width: 12px;
+    height: 12px;
 }
 
 QComboBox QAbstractItemView {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    selection-background-color: #E8F0FE;
-    color: #333333;
+    background-color: #2b2b2b;
+    border: 1px solid #3a3a3a;
+    selection-background-color: #3a3a3a;
+    selection-color: white;
+    color: white;
+    outline: none;
 }
-</string>
+
+QComboBox QAbstractItemView::item {
+    padding: 6px;
+    min-height: 25px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #3a3a3a;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #4a4a4a;
+}</string>
           </property>
           <property name="editable">
            <bool>true</bool>
@@ -131,38 +155,62 @@ QComboBox QAbstractItemView {
          <widget class="QComboBox" name="comboBox_2">
           <property name="styleSheet">
            <string notr="true">QComboBox {
-    background-color: #F5F5F5;
-    color: #333333;
-    border: 1px solid #CCCCCC;
+    background-color: #2b2b2b;
+    color: white;
+    border: 1px solid #3a3a3a;
     border-radius: 6px;
-    padding: 4px 30px 4px 8px;
-    min-width: 100px;
+    padding: 6px 30px 6px 10px;
+    min-width: 120px;
+    font-size: 11pt;
+}
+
+QComboBox:hover {
+    background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
+}
+
+QComboBox:focus {
+    border: 1px solid #5a5a5a;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: 20px;
-    border-left: none;
-    background: transparent;
+    width: 25px;
+    border-left: 1px solid #3a3a3a;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-color: transparent;
 }
 
+/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    width: 10px;
-    height: 10px;
-    border: none;
-    image: none;
-    background-color: transparent;
-    color: #333333;
+    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    width: 12px;
+    height: 12px;
 }
 
 QComboBox QAbstractItemView {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    selection-background-color: #E8F0FE;
-    color: #333333;
+    background-color: #2b2b2b;
+    border: 1px solid #3a3a3a;
+    selection-background-color: #3a3a3a;
+    selection-color: white;
+    color: white;
+    outline: none;
 }
-</string>
+
+QComboBox QAbstractItemView::item {
+    padding: 6px;
+    min-height: 25px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #3a3a3a;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #4a4a4a;
+}</string>
           </property>
           <property name="editable">
            <bool>true</bool>
@@ -194,38 +242,62 @@ QComboBox QAbstractItemView {
          <widget class="QComboBox" name="comboBox">
           <property name="styleSheet">
            <string notr="true">QComboBox {
-    background-color: #F5F5F5;
-    color: #333333;
-    border: 1px solid #CCCCCC;
+    background-color: #2b2b2b;
+    color: white;
+    border: 1px solid #3a3a3a;
     border-radius: 6px;
-    padding: 4px 30px 4px 8px;
-    min-width: 100px;
+    padding: 6px 30px 6px 10px;
+    min-width: 120px;
+    font-size: 11pt;
+}
+
+QComboBox:hover {
+    background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
+}
+
+QComboBox:focus {
+    border: 1px solid #5a5a5a;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
-    width: 20px;
-    border-left: none;
-    background: transparent;
+    width: 25px;
+    border-left: 1px solid #3a3a3a;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-color: transparent;
 }
 
+/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    width: 10px;
-    height: 10px;
-    border: none;
-    image: none;
-    background-color: transparent;
-    color: #333333;
+    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    width: 12px;
+    height: 12px;
 }
 
 QComboBox QAbstractItemView {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    selection-background-color: #E8F0FE;
-    color: #333333;
+    background-color: #2b2b2b;
+    border: 1px solid #3a3a3a;
+    selection-background-color: #3a3a3a;
+    selection-color: white;
+    color: white;
+    outline: none;
 }
-</string>
+
+QComboBox QAbstractItemView::item {
+    padding: 6px;
+    min-height: 25px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #3a3a3a;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #4a4a4a;
+}</string>
           </property>
          </widget>
         </item>

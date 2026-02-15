@@ -8,6 +8,7 @@
         <file>eye-icon.png</file>
         <file>star-empty-icon.png</file>
         <file>star-filled-icon.png</file>
+        <file>arrow-down.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>fairy tail.png</file>
