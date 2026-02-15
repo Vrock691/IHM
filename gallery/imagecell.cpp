@@ -2,6 +2,7 @@
 #include "ui_imagecell.h"
 #include <QFile>
 #include <QDir>
+#include <QMouseEvent>
 
 ImageCell::ImageCell(ImageModel imageModel, QWidget *parent)
     : QWidget(parent), ui(new Ui::ImageCell), _imageModel(imageModel)
@@ -27,6 +28,12 @@ ImageCell::~ImageCell()
 void ImageCell::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    qDebug() << "works";
+    // qDebug() << "works";
     ui->_label->setPixmap(_pixmap.scaled(ui->_label->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+}
+
+void ImageCell::mousePressEvent(QMouseEvent *event)
+{
+    QWidget::mousePressEvent(event);
+    emit clicked(_imageModel);
 }
