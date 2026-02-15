@@ -78,9 +78,8 @@ QComboBox::drop-down {
     background-color: transparent;
 }
 
-/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    image: url(:/icons/arrow-down.png);  
     width: 12px;
     height: 12px;
 }
@@ -183,9 +182,8 @@ QComboBox::drop-down {
     background-color: transparent;
 }
 
-/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    image: url(:/icons/arrow-down.png);  
     width: 12px;
     height: 12px;
 }
@@ -270,9 +268,8 @@ QComboBox::drop-down {
     background-color: transparent;
 }
 
-/* Utiliser votre image PNG */
 QComboBox::down-arrow {
-    image: url(:/icons/arrow-down.png);  /* Remplacez par le nom exact de votre fichier */
+    image: url(:/icons/arrow-down.png); 
     width: 12px;
     height: 12px;
 }
