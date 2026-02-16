@@ -15,14 +15,18 @@ SOURCES += \
     galleryview.cpp \
     imagecell.cpp \
     imagemodel.cpp \
+    imagerenderer.cpp \
     inspectorview.cpp \
     main.cpp \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
     ordererfactory.cpp \
+    tabmodel.cpp \
     serializationservice.cpp \
-    tabmodel.cpp
+    sidebarempty.cpp \
+    tabbuttonwidget.cpp \
+    tabcontainer.cpp
 
 HEADERS += \
     color.h \
@@ -30,6 +34,7 @@ HEADERS += \
     filterfactory.h \
     galleryview.h \
     ifilter.h \
+    imagerenderer.h \
     inspectorview.h \
     imagemodel.h \
     iorderer.h \
@@ -38,13 +43,19 @@ HEADERS += \
     indexationservice.h \
     ordererfactory.h \
     serializationservice.h \
-    tabmodel.h
+    tabmodel.h \
+    sidebarempty.h \
+    tabbuttonwidget.h \
+    tabcontainer.h
 
 FORMS += \
     galleryview.ui \
     imagecell.ui \
+    imagerenderer.ui \
     inspectorview.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    sidebarempty.ui \
+    tabcontainer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

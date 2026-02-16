@@ -5,6 +5,7 @@
 #include "feeling.h"
 #include <string>
 #include <vector>
+#include <QRect>
 
 class ImageModel {
     std::string _path;
@@ -25,7 +26,7 @@ class ImageModel {
     unsigned int _score;
     Feeling _feeling;
 
-    // TODO: Ajouter rognage
+    QRect _cropRect;
 
 public:
     ImageModel(
@@ -62,6 +63,9 @@ public:
     Feeling feeling() const;
     void setFeeling(Feeling newFeeling);
     std::string path() const;
+
+    void cropRect(QRect cropRect);
+    QRect cropRect() const;
 };
 
 

@@ -21,6 +21,7 @@ public:
 
 signals:
     void onRequestSelect(ImageModel imageModel);
+    void imageClicked(ImageModel imageModel);  // NOUVEAU SIGNAL
 
 private:
     void openTab(int tabId);
@@ -31,6 +32,8 @@ private:
     
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
+    void populate();
+
 };
 
 #endif // GALLERYVIEW_H
