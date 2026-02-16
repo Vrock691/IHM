@@ -3,7 +3,7 @@
 #include <QGridLayout>
 #include <QDebug>
 
-GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> tabs, QWidget *parent)
+GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel>& tabs, QWidget *parent)
     : QWidget(parent), _allImages(images), _tabs(tabs)
 {
     setupUi(this);

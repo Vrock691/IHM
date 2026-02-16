@@ -9,6 +9,9 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    defaultfilter.cpp \
+    defaultorderer.cpp \
+    filterfactory.cpp \
     galleryview.cpp \
     imagecell.cpp \
     imagemodel.cpp \
@@ -18,6 +21,8 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
+    ordererfactory.cpp \
+    tabmodel.cpp \
     serializationservice.cpp \
     sidebarempty.cpp \
     tabbuttonwidget.cpp \
@@ -26,14 +31,19 @@ SOURCES += \
 HEADERS += \
     color.h \
     feeling.h \
+    filterfactory.h \
     galleryview.h \
+    ifilter.h \
     imagerenderer.h \
     inspectorview.h \
     imagemodel.h \
+    iorderer.h \
     mainwindow.h \
     imagecell.h \
     indexationservice.h \
+    ordererfactory.h \
     serializationservice.h \
+    tabmodel.h \
     sidebarempty.h \
     tabbuttonwidget.h \
     tabcontainer.h
@@ -52,7 +62,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES +=
+DISTFILES += \
+    edit-icon.png \
+    eye-icon.png \
+    heart-icon.png \
+    image-icon.png \
+    info-icon.png \
+    redimension-icon.png
 
 RESOURCES += \
+    resources.qrc \
     resources.qrc
