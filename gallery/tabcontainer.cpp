@@ -59,7 +59,9 @@ void TabContainer::addTab(const QString &name)
     TabButtonWidget* tabBtn = new TabButtonWidget(name);
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
 
-    GalleryView* gallery = new GalleryView(_initialImages, {}, ui->contentStack);
+    std::vector<TabModel> _tabs;
+
+    GalleryView* gallery = new GalleryView(_initialImages, _tabs, ui->contentStack);
     ui->contentStack->addWidget(gallery);
 
     connect(gallery, &GalleryView::imageClicked, this, &TabContainer::imageClicked);
