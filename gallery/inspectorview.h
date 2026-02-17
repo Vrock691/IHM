@@ -1,6 +1,7 @@
 #ifndef INSPECTORVIEW_H
 #define INSPECTORVIEW_H
 
+#include "tabmodel.h"
 #include "ui_inspectorview.h"
 #include "imagemodel.h"
 

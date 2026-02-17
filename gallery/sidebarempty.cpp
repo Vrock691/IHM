@@ -21,3 +21,8 @@ SideBarEmpty::~SideBarEmpty()
 {
     delete ui;
 }
+
+void SideBarEmpty::setCurrentTab(TabModel* tab)
+{
+    _currentTab = tab;
+}
