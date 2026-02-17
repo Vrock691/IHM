@@ -208,11 +208,6 @@ InspectorView::InspectorView(QWidget *parent)
 
     // Affecte le layout vertical au container
     ui->dominantColorsContainer->setLayout(colorsLayout);
-
-    // Connexion au signal changement onglet
-    connect(ui->tabWidget, &QTabWidget::currentChanged, this, [=](int index){
-        _currentTabIndex = index;
-    });
 }
 
 InspectorView::~InspectorView()
@@ -235,7 +230,6 @@ void InspectorView::refreshModel()
         ui->labelFormat->clear();
         ui->labelSize->clear();
         ui->labelDimensions->clear();
-        ui->tabWidget->setCurrentIndex(_currentTabIndex);
         return;
     }
 
@@ -304,11 +298,4 @@ void InspectorView::setRating(int rating)
 
     if (_selected)
         _selected->setScore(rating);
-}
-
-void InspectorView::setCurrentTab(int index)
-{
-    if (!ui->tabWidget) return;
-    _currentTabIndex = index;
-    ui->tabWidget->setCurrentIndex(index);
 }
