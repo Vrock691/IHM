@@ -6,6 +6,7 @@
 #include "ui_mainwindow.h"
 #include "tabcontainer.h"
 #include "sidebarempty.h"
+#include "imageviewer.h"
 
 #include <QMainWindow>
 
@@ -28,6 +29,8 @@ private:
     SideBarEmpty* _sideBarEmpty;
     QStackedWidget* _sidebarStack;
     void clearSelection();
+
+
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
