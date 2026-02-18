@@ -31,6 +31,8 @@ private:
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
+    void onInspectorModelChanged();
+    void onSidebarEmptyModelChanged();
 
 };
 #endif // MAINWINDOW_H

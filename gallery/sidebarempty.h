@@ -12,10 +12,16 @@ public:
     explicit SideBarEmpty(QWidget *parent = nullptr);
     ~SideBarEmpty();
     void setCurrentTab(TabModel* tab);
+    void refreshModel();
+
+signals:
+    void onModelChanged();
 
 private:
     Ui::SideBarEmpty *ui;
     TabModel* _currentTab = nullptr;
+
+
 };
 
 #endif // SIDEBAREMPTY_H
