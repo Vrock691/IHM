@@ -26,6 +26,9 @@ public:
     void refreshModel();
     void addTag(const QString& text);
 
+signals:
+    void onModelChanged();
+
 private:
     Ui::InspectorView *ui;
     ImageModel* _selected = nullptr;

@@ -70,6 +70,16 @@ void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
     setSelected(&imageModel);
 }
 
+void MainWindow::onInspectorModelChanged()
+{
+    //_gallery_view.refreshModel();
+}
+
+void MainWindow::onSidebarEmptyModelChanged()
+{
+    //_gallery_view.refreshModel();
+}
+
 void MainWindow::clearSelection()
 {
     _selected = nullptr;
