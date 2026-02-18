@@ -19,6 +19,8 @@ public:
 
     void refreshModel();
 
+    std::vector<ImageModel> getImages();
+
 signals:
     void onRequestSelect(ImageModel imageModel);
     void imageClicked(ImageModel imageModel);  // NOUVEAU SIGNAL
