@@ -26,3 +26,8 @@ void SideBarEmpty::setCurrentTab(TabModel* tab)
 {
     _currentTab = tab;
 }
+
+void SideBarEmpty::refreshModel()
+{
+    // TODO: à implémenter
+}
