@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "indexationservice.h"
 #include "inspectorview.h"
 #include "serializationservice.h"
 #include "defaultfilter.cpp"
@@ -13,9 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    IndexationService indexService = IndexationService();
-    QVector<ImageModel> fileImages = indexService.indexFiles(":/images");
 
     _sidebarStack = new QStackedWidget(this);
 
@@ -35,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     // ------- Tab Container ------- //
-    std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
-    _tabContainer = new TabContainer(imagesVector, this);
+    std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
+    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
         setSelected(&img);  // TODO: Corriger, devrait prendre un pointeur
