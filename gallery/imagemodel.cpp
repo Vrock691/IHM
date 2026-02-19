@@ -1,6 +1,8 @@
 #include "imagemodel.h"
 #include <filesystem>
 #include <QImage>
+#include <QFileInfo>
+#include <QDateTime>
 ImageModel::ImageModel(
     const std::string &path,
     unsigned int width, unsigned int height,
@@ -123,11 +125,17 @@ QRect ImageModel::cropRect() const
 ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
-    std::filesystem::path p(path);
+    QString qPath = QString::fromStdString(path);
+    QFileInfo fileInfo(qPath);
 
     // informations sur le fichier 
     _fileName = p.filename().string();
     _format = p.extension().string();
+    _sizeBytes = fileInfo.size();
+    //récupère les dates de création et modification
+    _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
+    _lastModificationDate = fileInfo.lastModified().toString(Qt::ISODate).toStdString();
+
 
     if (std::filesystem::exists(p)) {
         _sizeBytes = std::filesystem::file_size(p);
@@ -135,7 +143,7 @@ ImageModel::ImageModel(const std::string& path)
         _sizeBytes = 0;
     }
     // charge l'image 
-    QImage img(QString::fromStdString(path));
+    QImage img(qPath);
 
     if (!img.isNull()) {
         _width = img.width();
@@ -155,6 +163,7 @@ ImageModel::ImageModel(const std::string& path)
     _mainColor = WHITE; 
     _keyWords = {};
 }
+
 
 
 
