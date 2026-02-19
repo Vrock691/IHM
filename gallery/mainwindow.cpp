@@ -31,11 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     // ------- Tab Container ------- //
-    std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
+    ImageModel temp = {":/images/lanternes-illuminent-nuit-lors-festival-plein-air-genere-par-ia.jpg"};
+    std::vector<ImageModel> tempPourQueCaCompile = {temp};  // J'ai déplacé la récupération des images dans GalleryView
     _tabContainer = new TabContainer(tempPourQueCaCompile, this);
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
-        setSelected(&img);  // Utilise la méthode existante
+        setSelected(&img);  // TODO: Corriger, devrait prendre un pointeur
     });
 
     QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
