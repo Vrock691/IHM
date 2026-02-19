@@ -6,7 +6,7 @@
 #include <QGridLayout>
 #include "ui_galleryview.h"
 #include "imagemodel.h"
-#include "tabmodel.cpp"
+#include "tabmodel.h"
 
 class GalleryView : public QWidget, private Ui::GalleryVue
 {
@@ -14,10 +14,12 @@ class GalleryView : public QWidget, private Ui::GalleryVue
 
 public:
     explicit GalleryView(std::vector<ImageModel> images,
-                         std::vector<TabModel> tabs,
+                         std::vector<TabModel>& tabs,
                          QWidget *parent = nullptr);
 
     void refreshModel();
+
+    std::vector<ImageModel> getImages();
 
 signals:
     void onRequestSelect(ImageModel imageModel);
@@ -28,8 +30,9 @@ private:
 
     // Stockage des données
     std::vector<ImageModel> _allImages;
-    std::vector<TabModel> _tabs;
-
+    std::vector<TabModel>& _tabs;
+    
+    //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
     void populate();
 

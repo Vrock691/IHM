@@ -1,28 +1,33 @@
-#include "imagemodel.cpp"
-#include "tabmodel.cpp"
+#include "imagemodel.h"
+#include "tabmodel.h"
 #include "QString"
 #include "QFile"
 #include "QStandardPaths"
 #include "QDir"
 #include "QCryptographicHash"
+#include <QJsonArray>
 
 #ifndef SERIALIZATIONSERVICE_H
 #define SERIALIZATIONSERVICE_H
 
-class serializationservice
+class SerializationService
 {
 public:
-    serializationservice();
+    SerializationService();
 
     void serializeImageModel(ImageModel imageModel);
 
-    void serializeTabModel(TabModel tabModel);
+    void serializeTabModel(const TabModel& tabModel);
 
-    ImageModel deserializeImageModels();
+    std::vector<ImageModel> deserializeImageModels();
 
-    TabModel deserializeTabModels();
+    std::vector<TabModel> deserializeTabModels();
 private:
-    QString getSha1FromString(const QString &value);
+    QString getSha1FromString(const QString value);
+    Color getColorFromString(const QString value);
+    QString colorToString(const Color color);
+    Feeling getFeelingFromString(const QString value);
+    QString feelingToString(const Feeling feeling);
 };
 
 #endif // SERIALIZATIONSERVICE_H

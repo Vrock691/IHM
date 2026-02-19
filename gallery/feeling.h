@@ -2,7 +2,8 @@
 #define FEELING_H
 
 enum Feeling {
-    HAPPY
+    HAPPY,
+    UNKNOWN_FEELING
 };
 
 #endif // FEELING_H

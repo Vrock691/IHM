@@ -1,9 +1,11 @@
 #include "galleryview.h"
 #include "imagecell.h"
+#include "indexationservice.h"
+#include "serializationservice.h"
 #include <QGridLayout>
 #include <QDebug>
 
-GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> tabs, QWidget *parent)
+GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel>& tabs, QWidget *parent)
     : QWidget(parent), _allImages(images), _tabs(tabs)
 {
     setupUi(this);
@@ -28,6 +30,35 @@ GalleryView::GalleryView(std::vector<ImageModel> images, std::vector<TabModel> t
     _gridLayout->setColumnStretch(3, 1);
 
     openTab(0);
+}
+
+std::vector<ImageModel> GalleryView::getImages()
+{
+    IndexationService indexService = IndexationService();
+    QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
+    // Pas idéal de le faire comme ça, il faudrait passer indexFiles() à un std::vector
+    std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
+
+    SerializationService serialisationService = {};
+    std::vector<ImageModel> deserializedImages = serialisationService.deserializeImageModels();
+
+    std::vector<ImageModel> unionImages(deserializedImages.begin(), deserializedImages.end());
+
+    foreach (auto image, fileImages) {
+        auto foundInDeserialized = find_if(
+            deserializedImages.begin(),
+            deserializedImages.end(),
+            [=] (const ImageModel& i) { return i.path() == image.path(); }
+        );
+
+        bool isInDeserialized = foundInDeserialized != deserializedImages.end();
+        if (isInDeserialized)
+            continue;
+
+        unionImages.push_back(image);
+    }
+
+    return unionImages;
 }
 
 void GalleryView::openTab(int tabId)

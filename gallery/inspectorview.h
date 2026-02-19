@@ -1,6 +1,7 @@
 #ifndef INSPECTORVIEW_H
 #define INSPECTORVIEW_H
 
+#include "tabmodel.h"
 #include "ui_inspectorview.h"
 #include "imagemodel.h"
 
@@ -24,6 +25,9 @@ public:
     void setSelected(ImageModel* imageModel);
     void refreshModel();
     void addTag(const QString& text);
+
+signals:
+    void onModelChanged();
 
 private:
     Ui::InspectorView *ui;
