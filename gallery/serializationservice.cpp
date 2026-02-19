@@ -38,26 +38,6 @@ QString SerializationService::colorToString(const Color color) {
     }
 }
 
-Feeling SerializationService::getFeelingFromString(const QString value) {
-    std::string lowerStr = value.toStdString();
-    std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
-
-    if (lowerStr == "happy") {
-        return HAPPY;
-    } else {
-        return UNKNOWN_FEELING;
-    }
-}
-
-QString SerializationService::feelingToString(const Feeling feeling) {
-    if (feeling == Feeling::HAPPY) {
-        return "HAPPY";
-    } else {
-        return "UNKNOWN_FEELING";
-    }
-}
-
 void SerializationService::serializeImageModel(ImageModel imageModel) {
 
     QString fileID = getSha1FromString(QString::fromStdString(imageModel.path()));

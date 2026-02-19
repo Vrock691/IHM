@@ -73,7 +73,7 @@ void ImageModel::setDescription(const std::string &newDescription)
     _description = newDescription;
 }
 
-std::vector<std::string> ImageModel::keyWords() const
+std::vector<std::string>& ImageModel::keyWords()
 {
     return _keyWords;
 }
@@ -126,12 +126,13 @@ QRect ImageModel::cropRect() const
 ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
+    std::filesystem::path p(path);
     QString qPath = QString::fromStdString(path);
     QFileInfo fileInfo(qPath);
 
-    // informations sur le fichier 
-    _fileName = fileInfo.fileName().toStdString();
-    _format = fileInfo.completeSuffix().toStdString();
+    // informations sur le fichier
+    _fileName = p.filename().string();
+    _format = p.extension().string();
     _sizeBytes = fileInfo.size();
     //récupère les dates de création et modification
     _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
@@ -156,4 +157,5 @@ ImageModel::ImageModel(const std::string& path)
     _score = 0;
     _feeling = UNKNOWN_FEELING; 
     _mainColor = UNKNOWN_COLOR; 
+    _keyWords = {};
 }
