@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <vector>
 #include <QGridLayout>
+#include "tabcontainer.h"
 #include "ui_galleryview.h"
 #include "imagemodel.h"
 #include "tabmodel.h"
@@ -21,17 +22,19 @@ public:
 
 signals:
     void onRequestSelect(ImageModel imageModel);
-    void imageClicked(ImageModel imageModel);  // NOUVEAU SIGNAL
+    void imageClicked(ImageModel imageModel);
 
 private:
     void openTab(int tabId);
 
     // Stockage des données
-    std::vector<ImageModel>* _allImages;
+    std::vector<ImageModel> _allImages;
     std::vector<TabModel>* _tabs;
     
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
+    QVBoxLayout* _tabLayout;
+    TabContainer* _tabContainer;
     void populate();
 
 };

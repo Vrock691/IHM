@@ -1,15 +1,18 @@
 #include "tabcontainer.h"
-#include "galleryview.h"
 #include "tabbuttonwidget.h"
+#include "tabmodel.h"
 #include <QInputDialog>
 #include <QVBoxLayout>
+#include "serializationservice.h"
 
-TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
+TabContainer::TabContainer(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::TabContainer),
-    _initialImages(images)
+    ui(new Ui::TabContainer)
 {
     ui->setupUi(this);
+
+    SerializationService service;
+    _tabs = service.deserializeTabModels();
 
     // Premier onglet "Accueil"
     addTab("Accueil");
@@ -52,32 +55,15 @@ TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
             background-color: #3a3a3a;
         }
     )");
-
-    // ------- Tab Container ------- //
-    /*std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
-    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
-
-    connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
-        setSelected(&img);  // Utilise la méthode existante
-    });*/
 }
 
 void TabContainer::addTab(const QString &name)
 {
-    /*TabButtonWidget* tabBtn = new TabButtonWidget(name);
+    TabButtonWidget* tabBtn = new TabButtonWidget(name);
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
-
-    std::vector<TabModel> _tabs;
-
-    GalleryView* gallery = new GalleryView(_initialImages, _tabs, ui->contentStack);
-    ui->contentStack->addWidget(gallery);
-
-    connect(gallery, &GalleryView::imageClicked, this, &TabContainer::imageClicked);
 
     // Connexion clic sur onglet
     connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
-        ui->contentStack->setCurrentWidget(gallery);
-
         // Désactive tous les onglets
         for (QObject* obj : ui->tabBarContainer->children()) {
             TabButtonWidget* t = qobject_cast<TabButtonWidget*>(obj);
@@ -89,10 +75,8 @@ void TabContainer::addTab(const QString &name)
 
     // Suppression onglet
     connect(tabBtn, &TabButtonWidget::closeRequested, this, [=]() {
-        if (ui->contentStack->count() <= 1) return;
+       if (ui->tabBarLayout->count() <= 1) return;
 
-        ui->contentStack->removeWidget(gallery);
-        gallery->deleteLater();
         tabBtn->deleteLater();
     });
 
@@ -107,13 +91,7 @@ void TabContainer::addTab(const QString &name)
     });
 
     // Active automatiquement le nouvel onglet
-    ui->contentStack->setCurrentWidget(gallery);
-    tabBtn->setActive(true);*/
-}
-
-GalleryView* TabContainer::currentGallery()
-{
-    return qobject_cast<GalleryView*>(ui->contentStack->currentWidget());
+    tabBtn->setActive(true);
 }
 
 TabContainer::~TabContainer()

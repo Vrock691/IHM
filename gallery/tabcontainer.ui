@@ -36,7 +36,7 @@
           <x>0</x>
           <y>0</y>
           <width>578</width>
-          <height>202</height>
+          <height>411</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -59,12 +59,6 @@
          </item>
         </layout>
        </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QStackedWidget" name="contentStack">
-       <widget class="QWidget" name="page"/>
-       <widget class="QWidget" name="page_2"/>
       </widget>
      </item>
     </layout>

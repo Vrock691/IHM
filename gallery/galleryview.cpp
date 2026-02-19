@@ -1,13 +1,22 @@
 #include "galleryview.h"
 #include "imagecell.h"
+#include "indexationservice.h"
 #include <QGridLayout>
 #include <QDebug>
+#include "serializationservice.h"
+#include "tabcontainer.h"
 
 GalleryView::GalleryView(QWidget *parent)
     : QWidget(parent)
 {
     setupUi(this);
 
+    // Setup Tab Container
+    _tabLayout = qobject_cast<QVBoxLayout*>(tabLayout);
+    _tabContainer = new TabContainer(this);
+    _tabLayout = new QVBoxLayout(_tabContainer);
+
+    // Setup Gallery Grid
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     galleryGrid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -27,7 +36,37 @@ GalleryView::GalleryView(QWidget *parent)
     _gridLayout->setColumnStretch(2, 1);
     _gridLayout->setColumnStretch(3, 1);
 
+    _allImages = getImages();
     openTab(0);
+}
+
+std::vector<ImageModel> GalleryView::getImages()
+{
+    IndexationService indexService = IndexationService();
+    QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
+    // Pas idéal de le faire comme ça, il faudrait passer indexFiles() à un std::vector
+    std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
+
+    SerializationService serialisationService = {};
+    std::vector<ImageModel> deserializedImages = serialisationService.deserializeImageModels();
+
+    std::vector<ImageModel> unionImages(deserializedImages.begin(), deserializedImages.end());
+
+    foreach (auto image, fileImages) {
+        auto foundInDeserialized = find_if(
+            deserializedImages.begin(),
+            deserializedImages.end(),
+            [=] (const ImageModel& i) { return i.path() == image.path(); }
+            );
+
+        bool isInDeserialized = foundInDeserialized != deserializedImages.end();
+        if (isInDeserialized)
+            continue;
+
+        unionImages.push_back(image);
+    }
+
+    return unionImages;
 }
 
 void GalleryView::openTab(int tabId)
@@ -44,8 +83,11 @@ void GalleryView::openTab(int tabId)
 
     int columnCount = 4;
 
-    for (size_t i = 0; i < _showedImages.size(); ++i) {
-        ImageCell* cell = new ImageCell(_showedImages[i]);
+    for (size_t i = 0; i < _allImages.size(); ++i) {
+
+        // Check if imageModel is accepted by the tab here
+
+        ImageCell* cell = new ImageCell(_allImages[i]);
         cell->setMinimumSize(120, 120);
         cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
