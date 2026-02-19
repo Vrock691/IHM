@@ -56,7 +56,7 @@ public:
 
     std::string description() const;
     void setDescription(const std::string &newDescription);
-    std::vector<std::string> keyWords() const;
+    std::vector<std::string>& keyWords();
     void setKeyWords(const std::vector<std::string> &newKeyWords);
     unsigned int score() const;
     void setScore(unsigned int newScore);

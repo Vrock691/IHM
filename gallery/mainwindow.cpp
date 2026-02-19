@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     _tabContainer = new TabContainer(tempPourQueCaCompile, this);
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
-        setSelected(&img);  // Utilise la méthode existante
+        setSelected(&img);  // TODO: Corriger, devrait prendre un pointeur
     });
 
     QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);

@@ -46,7 +46,7 @@ InspectorView::InspectorView(QWidget *parent)
 
     ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
 
-    refreshModel();
+    refreshUi();
 
     // ------- Gestion des Tags ------- //
 
@@ -128,6 +128,15 @@ InspectorView::InspectorView(QWidget *parent)
         _tagInput->clear();
         _tagInput->hide();
         _addTagBtn->hide();
+    });
+
+    connect(ui->descriptionEdit, &QTextEdit::textChanged, this, [=]() {
+        QString text = ui->descriptionEdit->toPlainText();
+        setDescription(text);
+    });
+
+    connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=]() {
+        setFeeling();
     });
 
     // ------- Titre (infos générales) ------- //
@@ -219,10 +228,10 @@ void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
 
-    refreshModel();
+    refreshUi();
 }
 
-void InspectorView::refreshModel()
+void InspectorView::refreshUi()
 {
     if (!_selected) {
         ui->labelFileName->setText("Aucune image sélectionnée");
@@ -255,9 +264,113 @@ void InspectorView::refreshModel()
     ui->labelSize->setText(
         QString::number(sizeKB, 'f', 2) + " Ko"
         );
+
+    showRatingUi(_selected->score());
+
+    showTagsUi(_selected->keyWords());
+
+    showDescriptionUi(QString::fromStdString(_selected->description()));
+
+    showFeelingUi(_selected->feeling());
+}
+
+void InspectorView::saveModel()
+{
+    qDebug() << "saved";
+
+    qDebug() << "Name: " << _selected->fileName();
+    qDebug() << "Score: " << _selected->score();
+    qDebug() << "Keywords: ";
+    foreach (auto tag, _selected->keyWords()) {
+        qDebug() << "    - " << tag;
+    }
+}
+
+
+void InspectorView::setRating(int rating)
+{
+    //_currentRating = rating;
+
+    if (!_selected)
+        return;
+
+    _selected->setScore(rating);
+    showRatingUi(rating);
+    saveModel();
 }
 
 void InspectorView::addTag(const QString &text)
+{
+    if (!_selected)
+        return;
+
+    _selected->keyWords().push_back(text.toStdString());
+
+    addTagUi(text);
+    saveModel();
+}
+
+void InspectorView::removeTag(const QString &text)
+{
+    if (!_selected)
+        return;
+
+    auto& keywords = _selected->keyWords();
+    keywords.erase(
+        std::remove_if(
+            keywords.begin(),
+            keywords.end(),
+            [&text](const std::string& s){ return s == text.toStdString(); }
+        ),
+        keywords.end()
+    );
+    
+    saveModel();
+}
+
+void InspectorView::setDescription(const QString& text)
+{
+    if (!_selected)
+        return;
+
+    _selected->setDescription(text.toStdString());
+    showDescriptionUi(text);
+    saveModel();
+}
+
+void InspectorView::setFeeling()
+{
+    QString feelingName = ui->feelingComboBox->currentText();
+    Feeling selectedFeeling = getFeelingFromString(feelingName);
+    _selected->setFeeling(selectedFeeling);
+
+    showFeelingUi(_selected->feeling());
+    saveModel();
+}
+
+void InspectorView::showRatingUi(int rating)
+{
+    for (int i = 0; i < _starButtons.size(); ++i) {
+        if (i < rating)
+            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
+        else
+            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+    }
+}
+
+void InspectorView::showTagsUi(std::vector<std::string> keyWords)
+{
+    foreach (auto item, _tagsLayout->children()) {
+        item->deleteLater();
+    }
+
+    // Ajouter les tags actuels
+    foreach (auto tag, keyWords) {
+        addTagUi(QString::fromStdString(tag));
+    }
+}
+
+void InspectorView::addTagUi(const QString& text)
 {
     QWidget* tag = new QWidget(ui->tagsContainer);
     QHBoxLayout* tagLayout = new QHBoxLayout(tag);
@@ -281,21 +394,38 @@ void InspectorView::addTag(const QString &text)
     _tagsLayout->addWidget(tag);
 
     connect(removeBtn, &QToolButton::clicked, this, [=]() {
+        removeTag(text);
         tag->deleteLater();
     });
 }
 
-void InspectorView::setRating(int rating)
+void InspectorView::showDescriptionUi(const QString& text)
 {
-    _currentRating = rating;
+    QSignalBlocker blocker(ui->descriptionEdit);
+    ui->descriptionEdit->setPlainText(text);
+}
 
-    for (int i = 0; i < _starButtons.size(); ++i) {
-        if (i < rating)
-            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
-        else
-            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+void InspectorView::showFeelingUi(const Feeling feeling)
+{
+    QSignalBlocker blocker(ui->feelingComboBox);
+    ui->feelingComboBox->clear();
+    ui->feelingComboBox->setPlaceholderText("Sélectionner...");
+
+    std::vector<Feeling> feelings = getFeelings();
+
+    foreach (auto feeling, feelings) {
+        ui->feelingComboBox->addItem(feelingToStringForUser(feeling));
     }
 
-    if (_selected)
-        _selected->setScore(rating);
+    int index = -1;
+    for (int i = 0; i < feelings.size(); i++) {
+        if (feelings[i] == feeling) {
+            index = i;
+        }
+    }
+
+    ui->feelingComboBox->setCurrentIndex(index);
+
+    if (feeling == Feeling::UNKNOWN_FEELING)
+        ui->feelingComboBox->setCurrentIndex(-1);
 }

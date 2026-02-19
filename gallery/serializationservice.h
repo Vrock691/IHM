@@ -26,8 +26,6 @@ private:
     QString getSha1FromString(const QString value);
     Color getColorFromString(const QString value);
     QString colorToString(const Color color);
-    Feeling getFeelingFromString(const QString value);
-    QString feelingToString(const Feeling feeling);
 };
 
 #endif // SERIALIZATIONSERVICE_H
