@@ -135,8 +135,8 @@ InspectorView::InspectorView(QWidget *parent)
         setDescription(text);
     });
 
-    connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=]() {
-        setFeeling();
+    connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=](int index) {
+        setFeeling(index);
     });
 
     // ------- Titre (infos générales) ------- //
@@ -338,11 +338,15 @@ void InspectorView::setDescription(const QString& text)
     saveModel();
 }
 
-void InspectorView::setFeeling()
+void InspectorView::setFeeling(int index)
 {
-    QString feelingName = ui->feelingComboBox->currentText();
-    Feeling selectedFeeling = getFeelingFromString(feelingName);
-    _selected->setFeeling(selectedFeeling);
+    if (!_selected || index < 0)
+        return;
+
+    QVariant data = ui->feelingComboBox->itemData(index);
+    Feeling feeling = static_cast<Feeling>(data.toInt());
+
+    _selected->setFeeling(feeling);
 
     showFeelingUi(_selected->feeling());
     saveModel();
@@ -412,9 +416,10 @@ void InspectorView::showFeelingUi(const Feeling feeling)
     ui->feelingComboBox->setPlaceholderText("Sélectionner...");
 
     std::vector<Feeling> feelings = getFeelings();
+    std::vector<QString> feelingNames = getFeelingNames();
 
-    foreach (auto feeling, feelings) {
-        ui->feelingComboBox->addItem(feelingToStringForUser(feeling));
+    for (int i = 0; i < feelings.size(); i++) {
+        ui->feelingComboBox->addItem(feelingNames[i], QVariant::fromValue((int)feelings[i]));
     }
 
     int index = -1;

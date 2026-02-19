@@ -34,7 +34,7 @@ protected slots:
     void addTag(const QString& text);
     void removeTag(const QString& text);
     void setDescription(const QString& text);
-    void setFeeling();
+    void setFeeling(int index);
 
 private:
     Ui::InspectorView *ui;
