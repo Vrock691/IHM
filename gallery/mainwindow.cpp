@@ -4,7 +4,6 @@
 #include "defaultfilter.cpp"
 #include "defaultorderer.cpp"
 #include "imagemodel.h"
-#include "tabcontainer.h"
 #include "galleryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -30,18 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setWidget(_sidebarStack);
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    // ------- Tab Container ------- //
-    std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
-    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
-
-    connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
-        setSelected(&img);  // Utilise la méthode existante
-    });
-
-    QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
+    // Création de GalleryView
+    _galleryView = new GalleryView(this);
+    QVBoxLayout* layout = new QVBoxLayout(ui->galleryViewContainer);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
-    layout->addWidget(_tabContainer);
+    layout->addWidget(_galleryView);
 }
 
 MainWindow::~MainWindow()

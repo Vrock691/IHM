@@ -13,9 +13,7 @@ class GalleryView : public QWidget, private Ui::GalleryVue
     Q_OBJECT
 
 public:
-    explicit GalleryView(std::vector<ImageModel> images,
-                         std::vector<TabModel>& tabs,
-                         QWidget *parent = nullptr);
+    explicit GalleryView(QWidget *parent = nullptr);
 
     void refreshModel();
 
@@ -29,8 +27,8 @@ private:
     void openTab(int tabId);
 
     // Stockage des données
-    std::vector<ImageModel> _allImages;
-    std::vector<TabModel>& _tabs;
+    std::vector<ImageModel>* _allImages;
+    std::vector<TabModel>* _tabs;
     
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;

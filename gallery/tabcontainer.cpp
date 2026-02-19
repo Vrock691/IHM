@@ -52,11 +52,19 @@ TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
             background-color: #3a3a3a;
         }
     )");
+
+    // ------- Tab Container ------- //
+    /*std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
+    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
+
+    connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
+        setSelected(&img);  // Utilise la méthode existante
+    });*/
 }
 
 void TabContainer::addTab(const QString &name)
 {
-    TabButtonWidget* tabBtn = new TabButtonWidget(name);
+    /*TabButtonWidget* tabBtn = new TabButtonWidget(name);
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
 
     std::vector<TabModel> _tabs;
@@ -100,7 +108,7 @@ void TabContainer::addTab(const QString &name)
 
     // Active automatiquement le nouvel onglet
     ui->contentStack->setCurrentWidget(gallery);
-    tabBtn->setActive(true);
+    tabBtn->setActive(true);*/
 }
 
 GalleryView* TabContainer::currentGallery()

@@ -35,7 +35,7 @@ QDockWidget::title {
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QWidget" name="tabManagerContainer" native="true">
+       <widget class="QWidget" name="galleryViewContainer" native="true">
         <property name="minimumSize">
          <size>
           <width>600</width>
@@ -85,7 +85,7 @@ QDockWidget::title {
      <x>0</x>
      <y>0</y>
      <width>929</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
