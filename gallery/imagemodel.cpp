@@ -1,5 +1,8 @@
 #include "imagemodel.h"
 #include <filesystem>
+#include <QImage>
+#include <QFileInfo>
+#include <QDateTime>
 
 ImageModel::ImageModel(
     const std::string &path,
@@ -123,23 +126,41 @@ QRect ImageModel::cropRect() const
 ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
-    std::filesystem::path p(path);
+    QString qPath = QString::fromStdString(path);
+    QFileInfo fileInfo(qPath);
 
-    _fileName = p.filename().string();
-    _format = p.extension().string();
+    // informations sur le fichier 
+    _fileName = fileInfo.fileName().toStdString();
+    _format = fileInfo.completeSuffix().toStdString();
+    _sizeBytes = fileInfo.size();
+    //récupère les dates de création et modification
+    _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
+    _lastModificationDate = fileInfo.lastModified().toString(Qt::ISODate).toStdString();
 
-    if (std::filesystem::exists(p)) {
-        _sizeBytes = std::filesystem::file_size(p);
+    // charge l'image 
+    QImage img(qPath);
+
+    if (!img.isNull()) {
+        _width = img.width();
+        _height = img.height();
+        
+        _cropRect = QRect(0, 0, _width, _height);
     } else {
-        _sizeBytes = 0;
+        //si l'image ne peut pas être vu
+        _width = 0;
+        _height = 0;
+        _cropRect = QRect(0, 0, 0, 0);
     }
 
-    _width = 0;
-    _height = 0;
-    _score =0;
-
-    // TODO: intialiser le rect de crop :
-    //QPoint topLeft = ...
-    //QPoint bottomRight = ...
-    //_cropRect = {topLeft, bottomRight}
+    //propriétés utilisateur
+    _score = 0;
+    _feeling = UNKNOWN_FEELING; 
+    _mainColor = UNKNOWN_COLOR; 
 }
+
+
+
+
+
+
+
