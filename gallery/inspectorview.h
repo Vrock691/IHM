@@ -33,6 +33,8 @@ protected slots:
     void setRating(int rating);
     void addTag(const QString& text);
     void removeTag(const QString& text);
+    void setDescription(const QString& text);
+    void setFeeling();
 
 private:
     Ui::InspectorView *ui;
@@ -44,8 +46,10 @@ private:
     //int _currentRating = 0;
 
     void showRatingUi(int rating);
+    void showTagsUi(std::vector<std::string> keyWords);
     void addTagUi(const QString& text);
-
+    void showDescriptionUi(const QString& text);
+    void showFeelingUi(const Feeling feeling);
 };
 
 #endif // INSPECTORVIEW_H

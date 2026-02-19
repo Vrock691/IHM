@@ -125,10 +125,11 @@ QRect ImageModel::cropRect() const
 ImageModel::ImageModel(const std::string& path)
     : _path(path)
 {
+    std::filesystem::path p(path);
     QString qPath = QString::fromStdString(path);
     QFileInfo fileInfo(qPath);
 
-    // informations sur le fichier 
+    // informations sur le fichier
     _fileName = p.filename().string();
     _format = p.extension().string();
     _sizeBytes = fileInfo.size();

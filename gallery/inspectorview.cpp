@@ -130,6 +130,15 @@ InspectorView::InspectorView(QWidget *parent)
         _addTagBtn->hide();
     });
 
+    connect(ui->descriptionEdit, &QTextEdit::textChanged, this, [=]() {
+        QString text = ui->descriptionEdit->toPlainText();
+        setDescription(text);
+    });
+
+    connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=]() {
+        setFeeling();
+    });
+
     // ------- Titre (infos générales) ------- //
 
     ui->genInfosTitle->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -258,22 +267,11 @@ void InspectorView::refreshUi()
 
     showRatingUi(_selected->score());
 
-    QLayoutItem* item;
-    while ((item = _tagsLayout->takeAt(0)) != nullptr) {
-        if (item->widget()) {
-            item->widget()->deleteLater();
-        }
-        delete item;
-    }
+    showTagsUi(_selected->keyWords());
 
-    foreach (auto item, _tagsLayout->children()) {
-        item->deleteLater();
-    }
+    showDescriptionUi(QString::fromStdString(_selected->description()));
 
-    // Ajouter les tags actuels
-    foreach (auto tag, _selected->keyWords()) {
-        addTagUi(QString::fromStdString(tag));
-    }
+    showFeelingUi(_selected->feeling());
 }
 
 void InspectorView::saveModel()
@@ -330,6 +328,26 @@ void InspectorView::removeTag(const QString &text)
     saveModel();
 }
 
+void InspectorView::setDescription(const QString& text)
+{
+    if (!_selected)
+        return;
+
+    _selected->setDescription(text.toStdString());
+    showDescriptionUi(text);
+    saveModel();
+}
+
+void InspectorView::setFeeling()
+{
+    QString feelingName = ui->feelingComboBox->currentText();
+    Feeling selectedFeeling = getFeelingFromString(feelingName);
+    _selected->setFeeling(selectedFeeling);
+
+    showFeelingUi(_selected->feeling());
+    saveModel();
+}
+
 void InspectorView::showRatingUi(int rating)
 {
     for (int i = 0; i < _starButtons.size(); ++i) {
@@ -337,6 +355,18 @@ void InspectorView::showRatingUi(int rating)
             _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
         else
             _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+    }
+}
+
+void InspectorView::showTagsUi(std::vector<std::string> keyWords)
+{
+    foreach (auto item, _tagsLayout->children()) {
+        item->deleteLater();
+    }
+
+    // Ajouter les tags actuels
+    foreach (auto tag, keyWords) {
+        addTagUi(QString::fromStdString(tag));
     }
 }
 
@@ -367,4 +397,35 @@ void InspectorView::addTagUi(const QString& text)
         removeTag(text);
         tag->deleteLater();
     });
+}
+
+void InspectorView::showDescriptionUi(const QString& text)
+{
+    QSignalBlocker blocker(ui->descriptionEdit);
+    ui->descriptionEdit->setPlainText(text);
+}
+
+void InspectorView::showFeelingUi(const Feeling feeling)
+{
+    QSignalBlocker blocker(ui->feelingComboBox);
+    ui->feelingComboBox->clear();
+    ui->feelingComboBox->setPlaceholderText("Sélectionner...");
+
+    std::vector<Feeling> feelings = getFeelings();
+
+    foreach (auto feeling, feelings) {
+        ui->feelingComboBox->addItem(feelingToStringForUser(feeling));
+    }
+
+    int index = -1;
+    for (int i = 0; i < feelings.size(); i++) {
+        if (feelings[i] == feeling) {
+            index = i;
+        }
+    }
+
+    ui->feelingComboBox->setCurrentIndex(index);
+
+    if (feeling == Feeling::UNKNOWN_FEELING)
+        ui->feelingComboBox->setCurrentIndex(-1);
 }

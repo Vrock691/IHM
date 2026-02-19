@@ -311,7 +311,7 @@ QTabBar::tab:hover {
               </widget>
              </item>
              <item row="7" column="1">
-              <widget class="QComboBox" name="comboBox"/>
+              <widget class="QComboBox" name="feelingComboBox"/>
              </item>
              <item row="1" column="1">
               <widget class="QLabel" name="labelFormat">
