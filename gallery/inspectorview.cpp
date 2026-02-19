@@ -46,7 +46,7 @@ InspectorView::InspectorView(QWidget *parent)
 
     ui->descriptionEdit->setPlaceholderText("Écrivez quelque chose...");
 
-    refreshModel();
+    refreshUi();
 
     // ------- Gestion des Tags ------- //
 
@@ -219,10 +219,10 @@ void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
 
-    refreshModel();
+    refreshUi();
 }
 
-void InspectorView::refreshModel()
+void InspectorView::refreshUi()
 {
     if (!_selected) {
         ui->labelFileName->setText("Aucune image sélectionnée");
@@ -255,9 +255,92 @@ void InspectorView::refreshModel()
     ui->labelSize->setText(
         QString::number(sizeKB, 'f', 2) + " Ko"
         );
+
+    showRatingUi(_selected->score());
+
+    QLayoutItem* item;
+    while ((item = _tagsLayout->takeAt(0)) != nullptr) {
+        if (item->widget()) {
+            item->widget()->deleteLater();
+        }
+        delete item;
+    }
+
+    foreach (auto item, _tagsLayout->children()) {
+        item->deleteLater();
+    }
+
+    // Ajouter les tags actuels
+    foreach (auto tag, _selected->keyWords()) {
+        addTagUi(QString::fromStdString(tag));
+    }
+}
+
+void InspectorView::saveModel()
+{
+    qDebug() << "saved";
+
+    qDebug() << "Name: " << _selected->fileName();
+    qDebug() << "Score: " << _selected->score();
+    qDebug() << "Keywords: ";
+    foreach (auto tag, _selected->keyWords()) {
+        qDebug() << "    - " << tag;
+    }
+}
+
+
+void InspectorView::setRating(int rating)
+{
+    //_currentRating = rating;
+
+    if (!_selected)
+        return;
+
+    _selected->setScore(rating);
+    showRatingUi(rating);
+    saveModel();
 }
 
 void InspectorView::addTag(const QString &text)
+{
+    if (!_selected)
+        return;
+
+    _selected->keyWords().push_back(text.toStdString());
+
+    addTagUi(text);
+    saveModel();
+}
+
+void InspectorView::removeTag(const QString &text)
+{
+    if (!_selected)
+        return;
+
+    auto& keywords = _selected->keyWords();
+    keywords.erase(
+        std::remove_if(
+            keywords.begin(),
+            keywords.end(),
+            [&text](const std::string& s){ return s == text.toStdString(); }
+        ),
+        keywords.end()
+    );
+    
+    saveModel();
+}
+
+void InspectorView::showRatingUi(int rating)
+{
+    for (int i = 0; i < _starButtons.size(); ++i) {
+        if (i < rating)
+            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
+        else
+            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
+    }
+}
+
+void InspectorView::addTagUi(const QString& text)
 {
     QWidget* tag = new QWidget(ui->tagsContainer);
     QHBoxLayout* tagLayout = new QHBoxLayout(tag);
@@ -281,21 +364,7 @@ void InspectorView::addTag(const QString &text)
     _tagsLayout->addWidget(tag);
 
     connect(removeBtn, &QToolButton::clicked, this, [=]() {
+        removeTag(text);
         tag->deleteLater();
     });
-}
-
-void InspectorView::setRating(int rating)
-{
-    _currentRating = rating;
-
-    for (int i = 0; i < _starButtons.size(); ++i) {
-        if (i < rating)
-            _starButtons[i]->setIcon(QIcon(":/icons/star-filled-icon.png"));
-        else
-            _starButtons[i]->setIcon(QIcon(":/icons/star-empty-icon.png"));
-    }
-
-    if (_selected)
-        _selected->setScore(rating);
 }

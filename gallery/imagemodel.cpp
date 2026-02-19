@@ -70,7 +70,7 @@ void ImageModel::setDescription(const std::string &newDescription)
     _description = newDescription;
 }
 
-std::vector<std::string> ImageModel::keyWords() const
+std::vector<std::string>& ImageModel::keyWords()
 {
     return _keyWords;
 }
@@ -142,4 +142,5 @@ ImageModel::ImageModel(const std::string& path)
     //QPoint topLeft = ...
     //QPoint bottomRight = ...
     //_cropRect = {topLeft, bottomRight}
+    _keyWords = {};
 }
