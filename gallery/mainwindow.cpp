@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     _imageStack = new QStackedWidget(this);
 
     _imageViewer = new ImageViewer(this);
+
     _imageViewer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _imageStack->addWidget(_imageViewer);
 
@@ -44,12 +45,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     // ------- Tab Container ------- //
-    std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
-    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
+    //std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
+    //_tabContainer = new TabContainer(tempPourQueCaCompile, this);
+
+    std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
+    _images = imagesVector;
+    _tabContainer = new TabContainer(imagesVector, this);
     _tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _imageStack->addWidget(_tabContainer);
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
+        for (int i = 0; i < _images.size(); ++i) {
+            if (_images[i].path() == img.path()) {
+                _currentIndex = i;
+                break;
+            }
+        }
+
         _selectedCopy = img;
         setSelected(&_selectedCopy);
         _imageViewer->setSelected(&_selectedCopy);
@@ -65,6 +77,44 @@ MainWindow::MainWindow(QWidget *parent)
 
     layout->addWidget(_imageStack);
     _imageStack->setCurrentWidget(_tabContainer);
+
+
+    connect(_imageViewer, &ImageViewer::requestForward,
+            this, [this]() {
+                qDebug() << "Forward demandé";
+            });
+
+    connect(_imageViewer, &ImageViewer::requestBackward,
+            this, [this]() {
+                qDebug() << "Backward demandé";
+            });
+
+    connect(_imageViewer, &ImageViewer::requestForward,
+            this, [this]() {
+
+                if (_currentIndex < 0) return;
+
+                if (_currentIndex < _images.size() - 1) {
+                    _currentIndex++;
+
+                    _selectedCopy = _images[_currentIndex];
+                    setSelected(&_selectedCopy);
+                    _imageViewer->setSelected(&_selectedCopy);
+                }
+            });
+
+    connect(_imageViewer, &ImageViewer::requestBackward,
+            this, [this]() {
+
+                if (_currentIndex > 0) {
+                    _currentIndex--;
+
+                    _selectedCopy = _images[_currentIndex];
+                    setSelected(&_selectedCopy);
+                    _imageViewer->setSelected(&_selectedCopy);
+                }
+            });
+
 
 }
 

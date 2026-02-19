@@ -32,7 +32,10 @@ private:
 
     const ImageModel* _selectedImage = nullptr;
     ImageModel _selectedCopy;
-    QStackedWidget* _imageStack = nullptr; // ← stacked widget pour galerie + ImageViewer
+    QStackedWidget* _imageStack = nullptr;
+    std::vector<ImageModel> _images;
+    int _currentIndex = -1;
+
 
 
 

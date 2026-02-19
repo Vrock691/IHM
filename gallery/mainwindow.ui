@@ -36,6 +36,12 @@ QDockWidget::title {
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QWidget" name="tabManagerContainer" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>600</width>
@@ -85,7 +91,7 @@ QDockWidget::title {
      <x>0</x>
      <y>0</y>
      <width>929</width>
-     <height>30</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

@@ -18,7 +18,10 @@ public:
     explicit ImageViewer(QWidget *parent = nullptr);
     ~ImageViewer();
 
+    void setImages(const std::vector<ImageModel>& images);
     void setSelected(const ImageModel* imageModel);
+    void setImages(const std::vector<ImageModel>& images, int currentIndex = 0);
+
 
 signals:
     void requestForward();
@@ -31,6 +34,7 @@ private slots:
 private:
     Ui::ImageViewer *ui;
     ImageRenderer* _renderer = nullptr;
+    std::vector<ImageModel> _images;
 };
 
 #endif // IMAGEVIEWER_H
