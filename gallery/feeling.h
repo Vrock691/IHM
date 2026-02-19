@@ -3,7 +3,11 @@
 
 enum Feeling {
     HAPPY,
-    UNKNOWN_FEELING
+    UNKNOWN_FEELING,
+    SAD,
+    INSPIRED,
+    CALM,
+    EXCITED
 };
 
 #endif // FEELING_H

@@ -206,6 +206,38 @@ InspectorView::InspectorView(QWidget *parent)
         colorsLayout->addWidget(rowWidget);
     }
 
+    // ------- Gestion des ressentis ------- //
+
+    ui->feelingComboBox->addItem("- Aucun ressenti -",
+                                 QVariant::fromValue((int)Feeling::UNKNOWN_FEELING));
+
+    ui->feelingComboBox->addItem("Heureux",
+                                 QVariant::fromValue((int)Feeling::HAPPY));
+
+    ui->feelingComboBox->addItem("Triste",
+                                 QVariant::fromValue((int)Feeling::SAD));
+
+    ui->feelingComboBox->addItem("Inspiré",
+                                 QVariant::fromValue((int)Feeling::INSPIRED));
+
+    ui->feelingComboBox->addItem("Calme",
+                                 QVariant::fromValue((int)Feeling::CALM));
+
+    ui->feelingComboBox->addItem("Excité",
+                                 QVariant::fromValue((int)Feeling::EXCITED));
+
+    connect(ui->feelingComboBox, &QComboBox::currentIndexChanged,
+        this, [=](int index){
+            if (!_selected || index < 0)
+                return;
+            QVariant data = ui->feelingComboBox->itemData(index);
+            Feeling feeling = static_cast<Feeling>(data.toInt());
+
+            _selected->setFeeling(feeling);
+    });
+
+
+
     // Affecte le layout vertical au container
     ui->dominantColorsContainer->setLayout(colorsLayout);
 }
@@ -255,6 +287,24 @@ void InspectorView::refreshModel()
     ui->labelSize->setText(
         QString::number(sizeKB, 'f', 2) + " Ko"
         );
+
+    // Ressentis
+    if (_selected) {
+        Feeling currentFeeling = _selected->feeling();
+
+        for (int i = 0; i < ui->feelingComboBox->count(); ++i) {
+            if (static_cast<Feeling>(
+                    ui->feelingComboBox->itemData(i).toInt()
+                    ) == currentFeeling)
+            {
+                ui->feelingComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
+    else {
+        ui->feelingComboBox->setCurrentIndex(-1);
+    }
 }
 
 void InspectorView::addTag(const QString &text)
