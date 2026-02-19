@@ -113,12 +113,6 @@ ImageModel::ImageModel(const std::string& path)
     _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
     _lastModificationDate = fileInfo.lastModified().toString(Qt::ISODate).toStdString();
 
-
-    if (std::filesystem::exists(p)) {
-        _sizeBytes = std::filesystem::file_size(p);
-    } else {
-        _sizeBytes = 0;
-    }
     // charge l'image 
     QImage img(qPath);
 
@@ -139,6 +133,7 @@ ImageModel::ImageModel(const std::string& path)
     _feeling = HAPPY; 
     _mainColor = WHITE; 
 }
+
 
 
 
