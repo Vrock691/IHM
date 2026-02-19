@@ -130,8 +130,8 @@ ImageModel::ImageModel(const std::string& path)
     QFileInfo fileInfo(qPath);
 
     // informations sur le fichier 
-    _fileName = p.filename().string();
-    _format = p.extension().string();
+    _fileName = fileInfo.fileName().toStdString();
+    _format = fileInfo.completeSuffix().toStdString();
     _sizeBytes = fileInfo.size();
     //récupère les dates de création et modification
     _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
@@ -157,6 +157,7 @@ ImageModel::ImageModel(const std::string& path)
     _feeling = UNKNOWN_FEELING; 
     _mainColor = UNKNOWN_COLOR; 
 }
+
 
 
 
