@@ -74,7 +74,7 @@ void MainWindow::onInspectorModelChanged()
 
 void MainWindow::onSidebarEmptyModelChanged()
 {
-    //_gallery_view.refreshModel();
+    _gallery_view.refreshModel();
 }
 
 void MainWindow::clearSelection()
