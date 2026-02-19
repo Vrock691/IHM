@@ -1,76 +1,84 @@
-#include "mainwindow.h"
-#include "inspectorview.h"
-#include "serializationservice.h"
-#include "defaultfilter.cpp"
-#include "defaultorderer.cpp"
-#include "imagemodel.h"
-#include "galleryview.h"
+    #include "mainwindow.h"
+    #include "inspectorview.h"
+    #include "serializationservice.h"
+    #include "defaultfilter.cpp"
+    #include "defaultorderer.cpp"
+    #include "imagemodel.h"
+    #include "galleryview.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
+    MainWindow::MainWindow(QWidget *parent)
+        : QMainWindow(parent),
+        ui(new Ui::MainWindow)
+    {
+        ui->setupUi(this);
 
-    _sidebarStack = new QStackedWidget(this);
+        _sidebarStack = new QStackedWidget(this);
 
-    // Empty state
-    _sideBarEmpty = new SideBarEmpty(this);
-    _sidebarStack->addWidget(_sideBarEmpty); // index 0
+        // Empty state
+        _sideBarEmpty = new SideBarEmpty(this);
+        _sidebarStack->addWidget(_sideBarEmpty); // index 0
 
-    // Inspecteur
-    _inspectorView = new InspectorView(this);
-    _sidebarStack->addWidget(_inspectorView); // index 1
+        // Inspecteur
+        _inspectorView = new InspectorView(this);
+        _sidebarStack->addWidget(_inspectorView); // index 1
 
-    // Affiche par défaut l'empty state
-    _sidebarStack->setCurrentWidget(_sideBarEmpty);
+        // Affiche par défaut l'empty state
+        _sidebarStack->setCurrentWidget(_sideBarEmpty);
 
-    // Mets le stacked widget dans le dock
-    ui->dockInspector->setWidget(_sidebarStack);
-    ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
+        // Mets le stacked widget dans le dock
+        ui->dockInspector->setWidget(_sidebarStack);
+        ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    // Création de GalleryView
-    _galleryView = new GalleryView(this);
-    QVBoxLayout* layout = new QVBoxLayout(ui->galleryViewContainer);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
-    layout->addWidget(_galleryView);
-}
+        // Création de GalleryView et TabContainer
+        _tabContainer = new TabContainer(this);
+        _galleryView = new GalleryView(_tabContainer, this);
+        QVBoxLayout* layout = new QVBoxLayout(ui->galleryViewContainer);
+        layout->setContentsMargins(0,0,0,0);
+        layout->setSpacing(0);
+        layout->addWidget(_galleryView);
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+        connect(_tabContainer, &TabContainer::tabChanged, this, &MainWindow::onTabChanged);
+        connect(_galleryView, &GalleryView::imageClicked, this, &MainWindow::setSelected);
+    }
 
-void MainWindow::setSelected(ImageModel* imageModel)
-{
-    _selected = imageModel;
+    MainWindow::~MainWindow()
+    {
+        delete ui;
+    }
 
-    if(_selected) {
-        _inspectorView->setSelected(_selected);
-        _sidebarStack->setCurrentWidget(_inspectorView);
-    } else {
+    void MainWindow::setSelected(ImageModel* imageModel)
+    {
+        _selected = imageModel;
+
+        if(_selected) {
+            _inspectorView->setSelected(_selected);
+            _sidebarStack->setCurrentWidget(_inspectorView);
+        } else {
+            _sidebarStack->setCurrentWidget(_sideBarEmpty);
+        }
+    }
+
+    void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
+    {
+        setSelected(&imageModel);
+    }
+
+    void MainWindow::onInspectorModelChanged()
+    {
+        //_gallery_view.refreshModel();
+    }
+
+    void MainWindow::onSidebarEmptyModelChanged()
+    {
+        //_gallery_view.refreshModel();
+    }
+
+    void MainWindow::clearSelection()
+    {
+        _selected = nullptr;
         _sidebarStack->setCurrentWidget(_sideBarEmpty);
     }
-}
 
-void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
-{
-    setSelected(&imageModel);
-}
-
-void MainWindow::onInspectorModelChanged()
-{
-    //_gallery_view.refreshModel();
-}
-
-void MainWindow::onSidebarEmptyModelChanged()
-{
-    //_gallery_view.refreshModel();
-}
-
-void MainWindow::clearSelection()
-{
-    _selected = nullptr;
-    _sidebarStack->setCurrentWidget(_sideBarEmpty);
-}
+    void MainWindow::onTabChanged(TabModel* model) {
+        currentTab = model;
+    }

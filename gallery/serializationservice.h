@@ -19,7 +19,7 @@ public:
 
     void serializeTabModel(const TabModel& tabModel);
 
-    std::vector<ImageModel> deserializeImageModels();
+    std::vector<ImageModel*> deserializeImageModels();
 
     std::vector<TabModel*> deserializeTabModels();
 private:

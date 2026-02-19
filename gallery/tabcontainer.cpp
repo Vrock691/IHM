@@ -77,14 +77,18 @@ void TabContainer::instanciateTab(TabModel* model, int index)
         }
 
         tabBtn->setActive(true);
+        emit tabChanged(model);
     });
 
     // Suppression onglet
     connect(tabBtn, &TabButtonWidget::closeRequested, this, [=]() {
-       if (ui->tabBarLayout->count() <= 2) return;
-       tabBtn->deleteLater();
-       auto it = std::find(_tabs.begin(), _tabs.end(), model);
-       if (it != _tabs.end()) _tabs.erase(it);
+        if (ui->tabBarLayout->count() <= 2) return;
+        tabBtn->deleteLater();
+        auto it = std::find(_tabs.begin(), _tabs.end(), model);
+        if (it != _tabs.end()) {
+            _tabs.erase(it);
+            emit tabChanged(nullptr);
+        }
 
         QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         QString configFilePath = QString("%1/configs/tabs/%2.json")
@@ -122,6 +126,12 @@ void TabContainer::newTab(const QString name) {
     service.serializeTabModel(*newModel);
     instanciateTab(newModel, _tabs.size());
     _tabs.push_back(newModel);
+}
+
+bool TabContainer::filterImageModelByCurrentTabFilters(ImageModel* model) {
+    Q_UNUSED(model);
+    // TODO: Implémenter la vérification par les filtres
+    return true;
 }
 
 TabContainer::~TabContainer()

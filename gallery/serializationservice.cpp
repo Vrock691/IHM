@@ -96,9 +96,9 @@ void SerializationService::serializeImageModel(ImageModel imageModel) {
 
 }
 
-std::vector<ImageModel> SerializationService::deserializeImageModels()
+std::vector<ImageModel*> SerializationService::deserializeImageModels()
 {
-    std::vector<ImageModel> models;
+    std::vector<ImageModel*> models;
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir configDir(configsPath + "/configs/images");
     QStringList jsonFiles = configDir.entryList(QStringList() << "*.json", QDir::Files);
@@ -120,7 +120,7 @@ std::vector<ImageModel> SerializationService::deserializeImageModels()
         }
 
         QJsonObject jobject = doc.object();
-        ImageModel model = ImageModel(
+        ImageModel* model = new ImageModel(
             jobject["path"].toString().toStdString(),
             jobject["width"].toInt(),
             jobject["height"].toInt(),
@@ -141,7 +141,7 @@ std::vector<ImageModel> SerializationService::deserializeImageModels()
         for (const QJsonValue& keywordValue : keywordsArray) {
             keywords.push_back(keywordValue.toString().toStdString());
         }
-        model.setKeyWords(keywords);
+        model->setKeyWords(keywords);
         models.push_back(model);
     }
 

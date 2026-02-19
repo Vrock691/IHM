@@ -21,7 +21,9 @@ public:
 private:
     Ui::MainWindow *ui;
     ImageModel* _selected;
+    TabModel* currentTab;
     GalleryView* _galleryView;
+    TabContainer* _tabContainer;
     QStackedWidget* _sidebarStack;
     InspectorView* _inspectorView;
     SideBarEmpty* _sideBarEmpty;
@@ -33,6 +35,7 @@ private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
     void onInspectorModelChanged();
     void onSidebarEmptyModelChanged();
+    void onTabChanged(TabModel*);
 
 };
 #endif // MAINWINDOW_H

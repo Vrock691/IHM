@@ -6,14 +6,14 @@
 #include "serializationservice.h"
 #include "tabcontainer.h"
 
-GalleryView::GalleryView(QWidget *parent)
+GalleryView::GalleryView(TabContainer* tabContainer, QWidget *parent)
     : QWidget(parent),
     ui(new Ui::GalleryVue)
 {
     ui->setupUi(this);
 
     // Setup Tab Container
-    _tabContainer = new TabContainer(this);
+    _tabContainer = tabContainer;
     ui->tabLayout = _tabContainer;
 
     // Setup Gallery Grid
@@ -37,42 +37,38 @@ GalleryView::GalleryView(QWidget *parent)
     _gridLayout->setColumnStretch(3, 1);
 
     _allImages = getImages();
-    openTab(0);
+    refreshModel();
 }
 
-std::vector<ImageModel> GalleryView::getImages()
+std::vector<ImageModel*> GalleryView::getImages()
 {
     IndexationService indexService = IndexationService();
     QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
-    // Pas idéal de le faire comme ça, il faudrait passer indexFiles() à un std::vector
     std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
 
     SerializationService serialisationService = {};
-    std::vector<ImageModel> deserializedImages = serialisationService.deserializeImageModels();
+    std::vector<ImageModel*> deserializedImages = serialisationService.deserializeImageModels();
+    std::vector<ImageModel*> unionImages(deserializedImages.begin(), deserializedImages.end());
 
-    std::vector<ImageModel> unionImages(deserializedImages.begin(), deserializedImages.end());
-
-    foreach (auto image, fileImages) {
-        auto foundInDeserialized = find_if(
+    foreach (ImageModel image, fileImages) {
+        auto foundInDeserialized = std::find_if(
             deserializedImages.begin(),
             deserializedImages.end(),
-            [=] (const ImageModel& i) { return i.path() == image.path(); }
+            [=](ImageModel* i) { return i->path() == image.path(); }  // pointeur : i* et ->
             );
 
         bool isInDeserialized = foundInDeserialized != deserializedImages.end();
         if (isInDeserialized)
             continue;
 
-        unionImages.push_back(image);
+        unionImages.push_back(new ImageModel(image));  // on crée un pointeur, pas une copie valeur
     }
 
     return unionImages;
 }
 
-void GalleryView::openTab(int tabId)
+void GalleryView::refreshModel()
 {
-    Q_UNUSED(tabId);
-
     // Supprime les anciennes cellules
     QLayoutItem* child;
     while ((child = _gridLayout->takeAt(0)) != nullptr) {
@@ -84,22 +80,21 @@ void GalleryView::openTab(int tabId)
     int columnCount = 4;
 
     for (size_t i = 0; i < _allImages.size(); ++i) {
+        bool accepted = _tabContainer->filterImageModelByCurrentTabFilters(_allImages[i]);
+        if (accepted) {
+            ImageCell* cell = new ImageCell(_allImages[i]);
+            cell->setMinimumSize(120, 120);
+            cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        // Check if imageModel is accepted by the tab here
+            connect(cell, &ImageCell::clicked, this, [this](ImageModel* image) {
+                emit imageClicked(image);
+            });
 
-        ImageCell* cell = new ImageCell(_allImages[i]);
-        cell->setMinimumSize(120, 120);
-        cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            int row = i / columnCount;
+            int col = i % columnCount;
 
-        connect(cell, &ImageCell::clicked, this, [this](ImageModel image) {
-            emit imageClicked(image);
-        });
-
-        int row = i / columnCount;
-        int col = i % columnCount;
-
-        _gridLayout->addWidget(cell, row, col);
-
-        _gridLayout->setRowStretch(row, 1);
+            _gridLayout->addWidget(cell, row, col);
+            _gridLayout->setRowStretch(row, 1);
+        }
     }
 }

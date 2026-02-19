@@ -13,11 +13,15 @@ public:
     explicit TabContainer(QWidget *parent = nullptr);
     ~TabContainer();
 
+    bool filterImageModelByCurrentTabFilters(ImageModel* image);
+    std::vector<ImageModel*> orderImageModelsByCurrentTabOrderer(std::vector<ImageModel*> images);
+
+signals:
+    void tabChanged(TabModel* model);
+
 private:
     void newTab(const QString name);
     void instanciateTab(TabModel* model, int index);
-    std::vector<ImageModel*> filterImageModelsByCurrentTabFilters(std::vector<ImageModel*> images);
-    std::vector<ImageModel*> orderImageModelsByCurrentTabOrderer(std::vector<ImageModel*> images);
 
     Ui::TabContainer *ui;
     std::vector<TabModel*> _tabs;
