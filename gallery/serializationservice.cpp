@@ -203,3 +203,7 @@ std::vector<TabModel> SerializationService::deserializeTabModels() {
     return tabs;
 
 }
+
+void SerializationService::updateTabModel(const TabModel& tabModel) {
+    serializeTabModel(tabModel);
+}
