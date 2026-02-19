@@ -17,6 +17,8 @@ public:
 
     void serializeImageModel(ImageModel imageModel);
 
+    void updateTabModel(const TabModel& tabModel);
+
     void serializeTabModel(const TabModel& tabModel);
 
     std::vector<ImageModel> deserializeImageModels();
