@@ -44,11 +44,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     // ------- Tab Container ------- //
-    std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
-    _tabContainer = new TabContainer(imagesVector, this);
+    std::vector<ImageModel> tempPourQueCaCompile = {};  // J'ai déplacé la récupération des images dans GalleryView
+    _tabContainer = new TabContainer(tempPourQueCaCompile, this);
     _tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _imageStack->addWidget(_tabContainer);
-
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
         _selectedCopy = img;
