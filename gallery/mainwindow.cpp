@@ -10,9 +10,18 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    _selected(nullptr),
+    _selectedCopy(":/images/default.png"),
+    _selectedImage(nullptr)
 {
     ui->setupUi(this);
+
+    _imageStack = new QStackedWidget(this);
+
+    _imageViewer = new ImageViewer(this);
+    _imageViewer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    _imageStack->addWidget(_imageViewer);
 
     IndexationService indexService = IndexationService();
     QVector<ImageModel> fileImages = indexService.indexFiles(":/images");
@@ -37,15 +46,27 @@ MainWindow::MainWindow(QWidget *parent)
     // ------- Tab Container ------- //
     std::vector<ImageModel> imagesVector(fileImages.begin(), fileImages.end());
     _tabContainer = new TabContainer(imagesVector, this);
+    _tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    _imageStack->addWidget(_tabContainer);
+
 
     connect(_tabContainer, &TabContainer::imageClicked, this, [this](ImageModel img) {
-        setSelected(&img);  // Utilise la méthode existante
+        _selectedCopy = img;
+        setSelected(&_selectedCopy);
+        _imageViewer->setSelected(&_selectedCopy);
+        _imageStack->setCurrentWidget(_imageViewer);
     });
 
-    QVBoxLayout* layout = new QVBoxLayout(ui->tabManagerContainer);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
-    layout->addWidget(_tabContainer);
+    QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->tabManagerContainer->layout());
+    if (!layout) {
+        layout=new QVBoxLayout(ui->tabManagerContainer);
+        layout->setContentsMargins(0,0,0,0);
+        layout->setSpacing(0);
+    }
+
+    layout->addWidget(_imageStack);
+    _imageStack->setCurrentWidget(_tabContainer);
+
 }
 
 MainWindow::~MainWindow()
@@ -57,9 +78,12 @@ void MainWindow::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
 
-    if(_selected) {
+    if (_selected) {
         _inspectorView->setSelected(_selected);
         _sidebarStack->setCurrentWidget(_inspectorView);
+
+        if (_imageViewer)
+            _imageViewer->setSelected(_selected);
     } else {
         _sidebarStack->setCurrentWidget(_sideBarEmpty);
     }

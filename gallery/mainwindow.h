@@ -24,11 +24,16 @@ private:
     // GalleryView _galleryView;
     InspectorView* _inspectorView;
 
-    void setSelected(ImageModel* imageModel);
     TabContainer* _tabContainer = nullptr;
     SideBarEmpty* _sideBarEmpty;
     QStackedWidget* _sidebarStack;
-    void clearSelection();
+
+    ImageViewer* _imageViewer = nullptr;
+
+    const ImageModel* _selectedImage = nullptr;
+    ImageModel _selectedCopy;
+    QStackedWidget* _imageStack = nullptr; // ← stacked widget pour galerie + ImageViewer
+
 
 
 
@@ -36,6 +41,8 @@ private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
     void onInspectorModelChanged();
     void onSidebarEmptyModelChanged();
+    void setSelected(ImageModel* imageModel);
+    void clearSelection();
 
 };
 #endif // MAINWINDOW_H

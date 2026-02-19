@@ -10,6 +10,8 @@ ImageViewer::ImageViewer(QWidget *parent)
 {
     ui->setupUi(this);
 
+    qDebug() << "ImageViewer créé";
+
     connect(ui->nextButton, &QPushButton::clicked,
             this, &ImageViewer::onNextClicked);
 
@@ -24,6 +26,9 @@ ImageViewer::~ImageViewer()
 
 void ImageViewer::setSelected(const ImageModel* imageModel)
 {
+    qDebug() << "ImageViewer::setSelected appelé avec"
+             << (imageModel ? QString::fromStdString(imageModel->path()) : "nullptr");
+
     if (!imageModel) return;
 
     if (_renderer != nullptr) {
