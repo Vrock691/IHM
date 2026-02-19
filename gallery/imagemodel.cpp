@@ -3,6 +3,7 @@
 #include <QImage>
 #include <QFileInfo>
 #include <QDateTime>
+
 ImageModel::ImageModel(
     const std::string &path,
     unsigned int width, unsigned int height,
