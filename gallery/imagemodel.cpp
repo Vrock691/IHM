@@ -4,6 +4,30 @@
 #include <QFileInfo>
 #include <QDateTime>
 
+ImageModel::ImageModel(
+    const std::string &path,
+    unsigned int width, unsigned int height,
+    const std::string &format, const std::string &fileName,
+    unsigned long sizeBytes, const std::string &creationDate,
+    const std::string &lastModificationDate, const Color &mainColor,
+    const std::string &description,
+    const std::vector<std::string> &keyWords,
+    unsigned int score,
+    Feeling feeling
+    ) :
+    _path(path),
+    _width(width), _height(height),
+    _format(format), _fileName(fileName),
+    _sizeBytes(sizeBytes),
+    _creationDate(creationDate),
+    _lastModificationDate(lastModificationDate),
+    _mainColor(mainColor),
+    _description(description),
+    _keyWords(keyWords),
+    _score(score),
+    _feeling(feeling)
+{}
+
 unsigned int ImageModel::height() const
 {
     return _height;
@@ -106,8 +130,8 @@ ImageModel::ImageModel(const std::string& path)
     QFileInfo fileInfo(qPath);
 
     // informations sur le fichier 
-    _fileName = p.filename().string();
-    _format = p.extension().string();
+    _fileName = fileInfo.fileName().toStdString();
+    _format = fileInfo.completeSuffix().toStdString();
     _sizeBytes = fileInfo.size();
     //récupère les dates de création et modification
     _creationDate = fileInfo.birthTime().toString(Qt::ISODate).toStdString();
@@ -133,9 +157,3 @@ ImageModel::ImageModel(const std::string& path)
     _feeling = UNKNOWN_FEELING; 
     _mainColor = UNKNOWN_COLOR; 
 }
-
-
-
-
-
-
