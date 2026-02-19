@@ -5,6 +5,8 @@
 #include "imagemodel.h"
 #include "imagerenderer.h"
 #include "ui_imageviewer.h"
+#include <QEvent>
+#include <QMouseEvent>
 
 namespace Ui {
 class ImageViewer;
@@ -21,11 +23,12 @@ public:
     void setImages(const std::vector<ImageModel>& images);
     void setSelected(const ImageModel* imageModel);
     void setImages(const std::vector<ImageModel>& images, int currentIndex = 0);
-
+    void enableOutsideClick();
 
 signals:
     void requestForward();
     void requestBackward();
+    void clickedOutsideImage();
 
 private slots:
     void onNextClicked();
@@ -35,6 +38,9 @@ private:
     Ui::ImageViewer *ui;
     ImageRenderer* _renderer = nullptr;
     std::vector<ImageModel> _images;
+
+protected :
+    bool eventFilter(QObject* obj, QEvent* event);
 };
 
 #endif // IMAGEVIEWER_H

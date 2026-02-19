@@ -6,14 +6,13 @@
 #include "defaultorderer.cpp"
 #include "imagemodel.h"
 #include "tabcontainer.h"
-#include "galleryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     ui(new Ui::MainWindow),
     _selected(nullptr),
-    _selectedCopy(":/images/default.png"),
-    _selectedImage(nullptr)
+    _selectedImage(nullptr),
+    _selectedCopy(":/images/default.png")
 {
     ui->setupUi(this);
 
@@ -78,14 +77,18 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(_imageStack);
     _imageStack->setCurrentWidget(_tabContainer);
 
+    _imageViewer->enableOutsideClick();
+    connect(_imageViewer, &ImageViewer::clickedOutsideImage, this, [this](){
+        _imageStack->setCurrentWidget(_tabContainer);
+    });
 
     connect(_imageViewer, &ImageViewer::requestForward,
-            this, [this]() {
+            this, []() {
                 qDebug() << "Forward demandé";
             });
 
     connect(_imageViewer, &ImageViewer::requestBackward,
-            this, [this]() {
+            this, []() {
                 qDebug() << "Backward demandé";
             });
 
@@ -114,8 +117,6 @@ MainWindow::MainWindow(QWidget *parent)
                     _imageViewer->setSelected(&_selectedCopy);
                 }
             });
-
-
 }
 
 MainWindow::~MainWindow()

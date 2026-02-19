@@ -51,3 +51,18 @@ void ImageViewer::onPrevClicked()
 {
     emit requestBackward();
 }
+
+bool ImageViewer::eventFilter(QObject* obj, QEvent* event) {
+    if (obj == this && event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        if (_renderer && !_renderer->geometry().contains(mouseEvent->pos())) {
+            emit clickedOutsideImage();
+            return true; // l'événement est consommé
+        }
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
+void ImageViewer::enableOutsideClick() {
+    this->installEventFilter(this);
+}
