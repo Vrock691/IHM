@@ -153,10 +153,11 @@ ImageModel::ImageModel(const std::string& path)
 
     //propriétés utilisateur
     _score = 0;
-    _feeling = HAPPY; 
-    _mainColor = WHITE; 
+    _feeling = UNKNOWN_FEELING; 
+    _mainColor = UNKNOWN_COLOR; 
     _keyWords = {};
 }
+
 
 
 
