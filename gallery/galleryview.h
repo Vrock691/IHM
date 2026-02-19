@@ -9,7 +9,7 @@
 #include "imagemodel.h"
 #include "tabmodel.h"
 
-class GalleryView : public QWidget, private Ui::GalleryVue
+class GalleryView : public QWidget
 {
     Q_OBJECT
 
@@ -25,11 +25,11 @@ signals:
     void imageClicked(ImageModel imageModel);
 
 private:
+    Ui::GalleryVue *ui;
     void openTab(int tabId);
 
     // Stockage des données
     std::vector<ImageModel> _allImages;
-    std::vector<TabModel>* _tabs;
     
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;

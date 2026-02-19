@@ -13,11 +13,12 @@ public:
     explicit TabContainer(QWidget *parent = nullptr);
     ~TabContainer();
 
-    void addTab(const QString &name);
-
 private:
+    void newTab(const QString name);
+    void instanciateTab(TabModel* model, int index);
+
     Ui::TabContainer *ui;
-    std::vector<TabModel> _tabs;
+    std::vector<TabModel*> _tabs;
 };
 
 #endif // TABMANAGER_H

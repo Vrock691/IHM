@@ -7,25 +7,25 @@
 #include "tabcontainer.h"
 
 GalleryView::GalleryView(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+    ui(new Ui::GalleryVue)
 {
-    setupUi(this);
+    ui->setupUi(this);
 
     // Setup Tab Container
-    _tabLayout = qobject_cast<QVBoxLayout*>(tabLayout);
     _tabContainer = new TabContainer(this);
-    _tabLayout = new QVBoxLayout(_tabContainer);
+    ui->tabLayout = _tabContainer;
 
     // Setup Gallery Grid
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    galleryGrid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->galleryGrid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    _gridLayout = qobject_cast<QGridLayout*>(galleryGrid->layout());
+    _gridLayout = qobject_cast<QGridLayout*>(ui->galleryGrid->layout());
     if (!_gridLayout) {
-        _gridLayout = new QGridLayout(galleryGrid);
+        _gridLayout = new QGridLayout(ui->galleryGrid);
         _gridLayout->setContentsMargins(0,0,0,0);
         _gridLayout->setSpacing(10);
-        galleryGrid->setLayout(_gridLayout);
+        ui->galleryGrid->setLayout(_gridLayout);
     } else {
         _gridLayout->setSpacing(10);
     }

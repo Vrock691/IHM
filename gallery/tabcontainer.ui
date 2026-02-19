@@ -7,12 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>433</height>
+    <height>108</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
+    <width>0</width>
     <height>0</height>
    </size>
   </property>
@@ -36,7 +42,7 @@
           <x>0</x>
           <y>0</y>
           <width>578</width>
-          <height>411</height>
+          <height>86</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">

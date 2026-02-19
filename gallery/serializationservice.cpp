@@ -172,8 +172,8 @@ void SerializationService::serializeTabModel(const TabModel& tabModel) {
     file.close();
 }
 
-std::vector<TabModel> SerializationService::deserializeTabModels() {
-    std::vector<TabModel> tabs;
+std::vector<TabModel*> SerializationService::deserializeTabModels() {
+    std::vector<TabModel*> tabs;
 
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir configDir(configsPath + "/configs/tabs");
@@ -196,7 +196,7 @@ std::vector<TabModel> SerializationService::deserializeTabModels() {
         }
 
         QJsonObject jobject = doc.object();
-        TabModel model = TabModel(
+        TabModel* model = new TabModel(
             jobject["index"].toInt(),
             jobject["name"].toString(),
             {},
@@ -211,11 +211,11 @@ std::vector<TabModel> SerializationService::deserializeTabModels() {
             std::unique_ptr<IFilter> filter = filterFactory.parse(filterValue.toObject());
             filters.push_back(std::move(filter));
         }
-        model.setFilters(std::move(filters));
+        model->setFilters(std::move(filters));
 
         OrdererFactory ordererFactory;
         std::unique_ptr<IOrderer> orderer = ordererFactory.parse(jobject["orderer"].toObject());
-        model.setOrderer(std::move(orderer));
+        model->setOrderer(std::move(orderer));
 
         tabs.push_back(std::move(model));
     }
