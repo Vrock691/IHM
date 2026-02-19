@@ -19,6 +19,8 @@ TabContainer::TabContainer(QWidget *parent)
         for (int i = 0; i < (int) _tabs.size(); i++) {
             instanciateTab(_tabs[i], i);
         }
+    } else {
+        newTab("Accueil");
     }
 
     // Bouton + pour ajouter un onglet
@@ -79,12 +81,17 @@ void TabContainer::instanciateTab(TabModel* model, int index)
 
     // Suppression onglet
     connect(tabBtn, &TabButtonWidget::closeRequested, this, [=]() {
-       if (ui->tabBarLayout->count() <= 1) return;
+       if (ui->tabBarLayout->count() <= 2) return;
+       tabBtn->deleteLater();
+       auto it = std::find(_tabs.begin(), _tabs.end(), model);
+       if (it != _tabs.end()) _tabs.erase(it);
 
-        tabBtn->deleteLater();
-        _tabs.erase(_tabs.begin() + index);
-
-        // TODO: Ajouter la suppression dans le dossier de l'application.
+        QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QString configFilePath = QString("%1/configs/tabs/%2.json")
+                                     .arg(configsPath)
+                                     .arg(model->getIndex());
+        QFile file(configFilePath);
+        file.remove();
 
         delete model;
     });
@@ -109,10 +116,12 @@ void TabContainer::instanciateTab(TabModel* model, int index)
 
 void TabContainer::newTab(const QString name) {
     std::unique_ptr<IOrderer> default_orderer = std::unique_ptr<IOrderer>(new DefaultOrderer());
-    TabModel* newModel = new TabModel(_tabs.size()+1, name, {}, std::move(default_orderer));
+    TabModel* newModel = new TabModel(_tabs.size(), name, {}, std::move(default_orderer));
 
+    SerializationService service;
+    service.serializeTabModel(*newModel);
+    instanciateTab(newModel, _tabs.size());
     _tabs.push_back(newModel);
-    instanciateTab(newModel, _tabs.size()+1);
 }
 
 TabContainer::~TabContainer()

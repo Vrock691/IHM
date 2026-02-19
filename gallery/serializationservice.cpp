@@ -167,6 +167,7 @@ void SerializationService::serializeTabModel(const TabModel& tabModel) {
                                  .arg(configsPath)
                                  .arg(tabModel.getIndex());
     QFile file(configFilePath);
+    file.remove();
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
     file.close();
