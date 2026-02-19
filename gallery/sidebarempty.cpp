@@ -27,7 +27,13 @@ void SideBarEmpty::setCurrentTab(TabModel* tab)
     _currentTab = tab;
 }
 
-void SideBarEmpty::refreshModel()
-{
-    // TODO: à implémenter
+void SideBarEmpty::refreshModel() {
+    if (_currentTab) {
+        // sauvegarder
+        SerializationService service;
+        service.serializeTabModel(*_currentTab);
+
+        // MainWindow rafraîchit la Gallery
+        emit onModelChanged();
+    }
 }
