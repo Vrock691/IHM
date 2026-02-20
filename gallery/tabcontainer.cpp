@@ -61,6 +61,8 @@ TabContainer::TabContainer(QWidget *parent)
             background-color: #3a3a3a;
         }
     )");
+
+    setFixedHeight(100);
 }
 
 void TabContainer::instanciateTab(TabModel* model, int index)

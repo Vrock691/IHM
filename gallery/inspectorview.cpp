@@ -120,6 +120,24 @@ InspectorView::InspectorView(QWidget *parent)
         _addTagBtn->hide();
     });
 
+    // 4 SpinBox pour rognage
+    connect(ui->spinX1, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &InspectorView::setCropModel);
+
+    connect(ui->spinY1, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &InspectorView::setCropModel);
+
+    connect(ui->spinX2, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &InspectorView::setCropModel);
+
+    connect(ui->spinY2, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &InspectorView::setCropModel);
+
+    ui->spinX1->setRange(0, 10000);
+    ui->spinX2->setRange(0, 10000);
+    ui->spinY1->setRange(0, 10000);
+    ui->spinY2->setRange(0, 10000);
+
     ui->descriptionEdit->installEventFilter(this);
 
     connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=](int index) {
@@ -272,6 +290,8 @@ void InspectorView::refreshUi()
     showDescriptionUi(QString::fromStdString(_selected->description()));
 
     showFeelingUi(_selected->feeling());
+
+    showCropUi(_selected->cropRect());
 }
 
 void InspectorView::saveModel()
@@ -366,6 +386,26 @@ void InspectorView::setDescriptionModel(const QString& text)
     saveModel();
 }
 
+void InspectorView::setCropModel(){
+    if(!_selected){
+        return;
+    }
+    // QPoint --> QRect
+    QPoint topLeft(ui->spinX1->value(), ui->spinY1->value());
+
+    QPoint bottomRight(ui->spinX2->value(), ui->spinY2->value());
+
+    QRect rect(topLeft, bottomRight);
+
+
+    _selected->cropRect(rect);
+
+    QRect r = _selected->cropRect();
+    qDebug() << "CropRect:" << r.left() << r.top() << r.right() << r.bottom();
+
+    saveModel();
+}
+
 void InspectorView::showRatingUi(int rating)
 {
     for (int i = 0; i < _starButtons.size(); ++i) {
@@ -451,4 +491,24 @@ void InspectorView::showFeelingUi(const Feeling feeling)
 
     if (feeling == Feeling::UNKNOWN_FEELING)
         ui->feelingComboBox->setCurrentIndex(-1);
+}
+
+void InspectorView::showCropUi(QRect rect){
+    // Récup les points top left et bottom right et va les lier aux input (met à jour)
+    if (!_selected){
+        return;
+    }
+
+    QSignalBlocker b1(ui->spinX1);
+    QSignalBlocker b2(ui->spinY1);
+    QSignalBlocker b3(ui->spinX2);
+    QSignalBlocker b4(ui->spinY2);
+
+    // Top-left
+    ui->spinX1->setValue(rect.left());
+    ui->spinY1->setValue(rect.top());
+
+    // Bottom-right
+    ui->spinX2->setValue(rect.right());
+    ui->spinY2->setValue(rect.bottom());
 }
