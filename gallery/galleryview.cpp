@@ -20,7 +20,12 @@ GalleryView::GalleryView(QWidget *parent)
     // Setup Gallery Grid
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    _gridLayout = ui->gridLayout;
+
+    ui->scrollArea->setWidgetResizable(true);
+
+    QWidget* container = ui->scrollArea->widget();
+    _gridLayout = new QGridLayout(container);
+
     _gridLayout->setContentsMargins(0,0,0,0);
     _gridLayout->setSpacing(10);
 
@@ -30,6 +35,8 @@ GalleryView::GalleryView(QWidget *parent)
     _gridLayout->setColumnStretch(2, 1);
     _gridLayout->setColumnStretch(3, 1);
 
+    ui->scrollArea->setStyleSheet("background: transparent;");
+
     _allImages = getImages();
     refreshModel();
 }
@@ -37,6 +44,11 @@ GalleryView::GalleryView(QWidget *parent)
 TabContainer* GalleryView::getTabContainer()
 {
     return _tabContainer;
+}
+
+std::vector<ImageModel*> GalleryView::getCurrentImages()
+{
+    return _currentImages;
 }
 
 std::vector<ImageModel*> GalleryView::getImages()
@@ -81,23 +93,30 @@ void GalleryView::refreshModel()
     std::sort(_allImages.begin(), _allImages.end(), [this](ImageModel* a, ImageModel* b) {
         return _tabContainer->getCurrentTabOrderer()->orderer(a, b);
     });
+    _currentImages.clear();
 
     for (size_t i = 0; i < _allImages.size(); ++i) {
         bool accepted = _tabContainer->filterImageModelByCurrentTabFilters(_allImages[i]);
         if (accepted) {
-            ImageCell* cell = new ImageCell(_allImages[i]);
-            cell->setMinimumSize(120, 120);
-            cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-            connect(cell, &ImageCell::clicked, this, [this](ImageModel* image) {
-                emit imageClicked(image);
-            });
-
-            int row = i / columnCount;
-            int col = i % columnCount;
-
-            _gridLayout->addWidget(cell, row, col);
-            _gridLayout->setRowStretch(row, 1);
+            // Nécessaire pour que GalleryView puisse avoir accès aux images actuelles
+            _currentImages.push_back(_allImages[i]);
         }
+    }
+
+    for (size_t i = 0; i < _currentImages.size(); ++i) {
+        ImageCell* cell = new ImageCell(_currentImages[i]);
+        cell->setMinimumSize(120, 120);
+        cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        connect(cell, &ImageCell::clicked, this, [this](ImageModel* image) {
+            emit imageClicked(image);
+        });
+
+        int row = i / columnCount;
+        int col = i % columnCount;
+
+        _gridLayout->addWidget(cell, row, col);
+        _gridLayout->setRowStretch(row, 1);
+
     }
 }

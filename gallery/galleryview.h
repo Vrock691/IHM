@@ -17,8 +17,8 @@ public:
 
     void refreshModel();
 
-    std::vector<ImageModel*> getImages();
     TabContainer* getTabContainer();
+    std::vector<ImageModel*> getCurrentImages();
 
 signals:
     void onRequestSelect(ImageModel* imageModel);
@@ -30,11 +30,13 @@ private:
 
     // Stockage des données
     std::vector<ImageModel*> _allImages;
-
+    std::vector<ImageModel*> _currentImages;
+    
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
     QVBoxLayout* _tabLayout;
     void populate();
+    std::vector<ImageModel*> getImages();
 
 };
 
