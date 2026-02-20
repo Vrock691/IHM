@@ -48,7 +48,10 @@ TabContainer* GalleryView::getTabContainer()
 std::vector<ImageModel*> GalleryView::getImages()
 {
     IndexationService indexService = IndexationService();
+    qDebug() << "Début de l'indexation";
     QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
+    //QVector<ImageModel> qFileImages = indexService.indexFiles("/home");
+    qDebug() << "Fin de l'indexation";
     std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
 
     SerializationService serialisationService = {};
