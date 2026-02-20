@@ -19,7 +19,12 @@ GalleryView::GalleryView(QWidget *parent)
     // Setup Gallery Grid
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    _gridLayout = ui->gridLayout;
+
+    ui->scrollArea->setWidgetResizable(true);
+
+    QWidget* container = ui->scrollArea->widget();
+    _gridLayout = new QGridLayout(container);
+
     _gridLayout->setContentsMargins(0,0,0,0);
     _gridLayout->setSpacing(10);
 
@@ -28,6 +33,8 @@ GalleryView::GalleryView(QWidget *parent)
     _gridLayout->setColumnStretch(1, 1);
     _gridLayout->setColumnStretch(2, 1);
     _gridLayout->setColumnStretch(3, 1);
+
+    ui->scrollArea->setStyleSheet("background: transparent;");
 
     _allImages = getImages();
     refreshModel();
