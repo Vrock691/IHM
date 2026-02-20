@@ -65,12 +65,12 @@
 
     void MainWindow::onInspectorModelChanged()
     {
-        //_gallery_view.refreshModel();
+        _galleryView->refreshModel();
     }
 
     void MainWindow::onSidebarEmptyModelChanged()
     {
-        //_gallery_view.refreshModel();
+        _galleryView->refreshModel();
     }
 
     void MainWindow::clearSelection()
