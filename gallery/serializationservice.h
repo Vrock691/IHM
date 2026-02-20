@@ -19,9 +19,9 @@ public:
 
     void serializeTabModel(const TabModel& tabModel);
 
-    std::vector<ImageModel> deserializeImageModels();
+    std::vector<ImageModel*> deserializeImageModels();
 
-    std::vector<TabModel> deserializeTabModels();
+    std::vector<TabModel*> deserializeTabModels();
 private:
     QString getSha1FromString(const QString value);
     Color getColorFromString(const QString value);

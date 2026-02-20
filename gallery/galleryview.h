@@ -4,36 +4,36 @@
 #include <QWidget>
 #include <vector>
 #include <QGridLayout>
+#include "tabcontainer.h"
 #include "ui_galleryview.h"
 #include "imagemodel.h"
-#include "tabmodel.h"
 
-class GalleryView : public QWidget, private Ui::GalleryVue
+class GalleryView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GalleryView(std::vector<ImageModel> images,
-                         std::vector<TabModel>& tabs,
-                         QWidget *parent = nullptr);
+    explicit GalleryView(QWidget *parent = nullptr);
 
     void refreshModel();
 
-    std::vector<ImageModel> getImages();
+    std::vector<ImageModel*> getImages();
+    TabContainer* getTabContainer();
 
 signals:
-    void onRequestSelect(ImageModel imageModel);
-    void imageClicked(ImageModel imageModel);  // NOUVEAU SIGNAL
+    void onRequestSelect(ImageModel* imageModel);
+    void imageClicked(ImageModel* imageModel);
 
 private:
-    void openTab(int tabId);
+    Ui::GalleryVue *ui;
+    TabContainer* _tabContainer;
 
     // Stockage des données
-    std::vector<ImageModel> _allImages;
-    std::vector<TabModel>& _tabs;
+    std::vector<ImageModel*> _allImages;
     
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
+    QVBoxLayout* _tabLayout;
     void populate();
 
 };

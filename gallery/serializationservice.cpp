@@ -76,9 +76,9 @@ void SerializationService::serializeImageModel(ImageModel imageModel) {
 
 }
 
-std::vector<ImageModel> SerializationService::deserializeImageModels()
+std::vector<ImageModel*> SerializationService::deserializeImageModels()
 {
-    std::vector<ImageModel> models;
+    std::vector<ImageModel*> models;
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir configDir(configsPath + "/configs/images");
     QStringList jsonFiles = configDir.entryList(QStringList() << "*.json", QDir::Files);
@@ -100,7 +100,7 @@ std::vector<ImageModel> SerializationService::deserializeImageModels()
         }
 
         QJsonObject jobject = doc.object();
-        ImageModel model = ImageModel(
+        ImageModel* model = new ImageModel(
             jobject["path"].toString().toStdString(),
             jobject["width"].toInt(),
             jobject["height"].toInt(),
@@ -121,7 +121,7 @@ std::vector<ImageModel> SerializationService::deserializeImageModels()
         for (const QJsonValue& keywordValue : keywordsArray) {
             keywords.push_back(keywordValue.toString().toStdString());
         }
-        model.setKeyWords(keywords);
+        model->setKeyWords(keywords);
         models.push_back(model);
     }
 
@@ -147,13 +147,14 @@ void SerializationService::serializeTabModel(const TabModel& tabModel) {
                                  .arg(configsPath)
                                  .arg(tabModel.getIndex());
     QFile file(configFilePath);
+    file.remove();
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     file.write(doc.toJson());
     file.close();
 }
 
-std::vector<TabModel> SerializationService::deserializeTabModels() {
-    std::vector<TabModel> tabs;
+std::vector<TabModel*> SerializationService::deserializeTabModels() {
+    std::vector<TabModel*> tabs;
 
     QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir configDir(configsPath + "/configs/tabs");
@@ -176,7 +177,7 @@ std::vector<TabModel> SerializationService::deserializeTabModels() {
         }
 
         QJsonObject jobject = doc.object();
-        TabModel model = TabModel(
+        TabModel* model = new TabModel(
             jobject["index"].toInt(),
             jobject["name"].toString(),
             {},
@@ -191,11 +192,11 @@ std::vector<TabModel> SerializationService::deserializeTabModels() {
             std::unique_ptr<IFilter> filter = filterFactory.parse(filterValue.toObject());
             filters.push_back(std::move(filter));
         }
-        model.setFilters(std::move(filters));
+        model->setFilters(std::move(filters));
 
         OrdererFactory ordererFactory;
         std::unique_ptr<IOrderer> orderer = ordererFactory.parse(jobject["orderer"].toObject());
-        model.setOrderer(std::move(orderer));
+        model->setOrderer(std::move(orderer));
 
         tabs.push_back(std::move(model));
     }
