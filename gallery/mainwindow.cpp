@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         _imageStack->setCurrentWidget(_galleryView);
 
+        connect(_inspectorView, &InspectorView::onModelChanged, this, &MainWindow::onInspectorModelChanged);
         connect(_tabContainer, &TabContainer::tabChanged, this, &MainWindow::onTabChanged);
         connect(_galleryView, &GalleryView::imageClicked, this, &MainWindow::onImageClicked);
         connect(_imageViewer, &ImageViewer::clickedOutsideImage, this, [this](){

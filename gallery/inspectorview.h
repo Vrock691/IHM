@@ -4,6 +4,7 @@
 #include "tabmodel.h"
 #include "ui_inspectorview.h"
 #include "imagemodel.h"
+#include "serializationservice.h"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -45,11 +46,14 @@ private:
     QList<QToolButton*> _starButtons;
     //int _currentRating = 0;
 
+    void setDescriptionModel(const QString& text);
+
     void showRatingUi(int rating);
     void showTagsUi(std::vector<std::string> keyWords);
     void addTagUi(const QString& text);
     void showDescriptionUi(const QString& text);
     void showFeelingUi(const Feeling feeling);
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // INSPECTORVIEW_H

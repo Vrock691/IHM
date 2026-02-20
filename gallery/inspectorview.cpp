@@ -11,16 +11,6 @@ InspectorView::InspectorView(QWidget *parent)
             .scaled(45, 45, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
 
-    ui->iconEdit->setIcon(
-        QIcon(":/icons/edit-icon.png")
-        );
-    ui->iconEdit->setIconSize(QSize(18, 18));
-
-    ui->iconHeart->setIcon(
-        QIcon(":/icons/heart-icon.png")
-        );
-    ui->iconHeart->setIconSize(QSize(18, 18));
-
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
 
@@ -130,10 +120,7 @@ InspectorView::InspectorView(QWidget *parent)
         _addTagBtn->hide();
     });
 
-    connect(ui->descriptionEdit, &QTextEdit::textChanged, this, [=]() {
-        QString text = ui->descriptionEdit->toPlainText();
-        setDescription(text);
-    });
+    ui->descriptionEdit->installEventFilter(this);
 
     connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=](int index) {
         setFeeling(index);
@@ -224,6 +211,14 @@ InspectorView::~InspectorView()
     delete ui;
 }
 
+bool InspectorView::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == ui->descriptionEdit && event->type() == QEvent::FocusOut) {
+        setDescriptionModel(ui->descriptionEdit->toPlainText());
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
 void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
@@ -239,8 +234,13 @@ void InspectorView::refreshUi()
         ui->labelFormat->clear();
         ui->labelSize->clear();
         ui->labelDimensions->clear();
+        ui->labelDate->clear();
         return;
     }
+
+    ui->labelDate->setText(
+        QString::fromStdString(_selected->lastModificationDate())
+        );
 
     ui->labelFileName->setText(
         QString::fromStdString(_selected->fileName())
@@ -276,14 +276,23 @@ void InspectorView::refreshUi()
 
 void InspectorView::saveModel()
 {
+    if (!_selected)
+        return;
+
     qDebug() << "saved";
 
     qDebug() << "Name: " << _selected->fileName();
+    qDebug() << "Description: " << _selected->description();
     qDebug() << "Score: " << _selected->score();
     qDebug() << "Keywords: ";
     foreach (auto tag, _selected->keyWords()) {
         qDebug() << "    - " << tag;
     }
+
+    SerializationService service;
+    service.serializeImageModel(*_selected);
+
+    emit onModelChanged();
 }
 
 
@@ -330,12 +339,8 @@ void InspectorView::removeTag(const QString &text)
 
 void InspectorView::setDescription(const QString& text)
 {
-    if (!_selected)
-        return;
-
-    _selected->setDescription(text.toStdString());
+    setDescriptionModel(text);
     showDescriptionUi(text);
-    saveModel();
 }
 
 void InspectorView::setFeeling(int index)
@@ -352,6 +357,15 @@ void InspectorView::setFeeling(int index)
     saveModel();
 }
 
+void InspectorView::setDescriptionModel(const QString& text)
+{
+    if (!_selected)
+        return;
+
+    _selected->setDescription(text.toStdString());
+    saveModel();
+}
+
 void InspectorView::showRatingUi(int rating)
 {
     for (int i = 0; i < _starButtons.size(); ++i) {
@@ -364,8 +378,12 @@ void InspectorView::showRatingUi(int rating)
 
 void InspectorView::showTagsUi(std::vector<std::string> keyWords)
 {
-    foreach (auto item, _tagsLayout->children()) {
-        item->deleteLater();
+    QLayoutItem *wItem;
+    while ((wItem = _tagsLayout->takeAt(0)) != 0)
+    {
+        if (wItem->widget())
+            wItem->widget()->setParent(NULL);
+        delete wItem;
     }
 
     // Ajouter les tags actuels
