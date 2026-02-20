@@ -85,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent)
             });
 
         connect(_sideBarEmpty, &SideBarEmpty::onModelChanged, this, &MainWindow::onSidebarEmptyModelChanged);
+
+        // Init
+        _tabContainer->init();
     }
 
     MainWindow::~MainWindow()

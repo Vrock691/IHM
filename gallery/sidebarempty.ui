@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>300</height>
+    <height>354</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,77 +39,77 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Filter les photos de l'onglet: </string>
+        <string>Filtrer les photos de l'onglet: </string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="onestar">
        <property name="text">
-        <string>1 Étoile</string>
+        <string>Note : 1 ou plus</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="twoStars">
        <property name="text">
-        <string>2 Étoiles</string>
+        <string>Note : 2 ou plus</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="threestars">
        <property name="text">
-        <string>3 Étoiles</string>
+        <string>Note : 3 ou plus</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="fourstars">
        <property name="text">
-        <string>4 Étoiles</string>
+        <string>Note : 4 ou plus</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="fivestars">
        <property name="text">
-        <string>5 Étoiles</string>
+        <string>Note : 5 ou plus</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="heureux">
        <property name="text">
-        <string>Heureux</string>
+        <string>Ressenti : Heureux</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="sad">
        <property name="text">
-        <string>Triste</string>
+        <string>Ressenti : Triste</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="inspired">
        <property name="text">
-        <string>Inspiré</string>
+        <string>Ressenti : Inspiré</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="calm">
        <property name="text">
-        <string>Calme</string>
+        <string>Ressenti : Calme</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="excite">
        <property name="text">
-        <string>Excité</string>
+        <string>Ressenti : Excité</string>
        </property>
       </widget>
      </item>

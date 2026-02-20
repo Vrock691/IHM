@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     defaultfilter.cpp \
     defaultorderer.cpp \
+    feelingfilter.cpp \
     filterfactory.cpp \
     galleryview.cpp \
     imagecell.cpp \

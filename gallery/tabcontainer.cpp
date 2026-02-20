@@ -26,7 +26,7 @@ TabContainer::TabContainer(QWidget *parent)
         if (!_tabs.empty()) _currentTab = _tabs[0];
     }
 
-    emit tabChanged(_currentTab);
+    //emit tabChanged(_currentTab);   // Ne sert à rien, personne aucun connect possible avant le constructeur
 
     // Bouton + pour ajouter un onglet
     connect(ui->addTabButton, &QPushButton::clicked, this, [=]() {
@@ -66,6 +66,11 @@ TabContainer::TabContainer(QWidget *parent)
             background-color: #3a3a3a;
         }
     )");
+}
+
+void TabContainer::init()
+{
+    emit tabChanged(_currentTab);
 }
 
 void TabContainer::instanciateTab(TabModel* model, int index)

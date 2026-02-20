@@ -9,7 +9,7 @@ public:
     }
 
     bool isAcceptable(ImageModel* model) override {
-        if ((int) model->score() == value) {
+        if ((int) model->score() >= value) {
             return true;
         }
         return false;

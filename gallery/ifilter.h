@@ -7,7 +7,8 @@
 
 enum AvailableFilters {
     DEFAULT_FILTER,
-    STARS_FILTER
+    STARS_FILTER,
+    FEELING_FILTER
 };
 
 class IFilter {

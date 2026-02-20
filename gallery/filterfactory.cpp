@@ -1,6 +1,7 @@
 #include "filterfactory.h"
 #include "defaultfilter.cpp"
 #include "starsfilter.cpp"
+#include "feelingfilter.cpp"
 
 FilterFactory::FilterFactory() {}
 
@@ -9,10 +10,16 @@ std::shared_ptr<IFilter> FilterFactory::parse(QJsonObject json) {
 
     if (filterID == "DEFAULT_FILTER") {
         return std::shared_ptr<IFilter>(new DefaultFilter());
-    } else if (filterID == "STARS_FILTER") {
+    }
+    else if (filterID == "STARS_FILTER") {
         int value = json["value"].toInt();
         return std::shared_ptr<IFilter>(new StarsFilter(value));
-    } else {
+    }
+    else if (filterID == "FEELING_FILTER") {
+        Feeling feeling = static_cast<Feeling>(json["feeling"].toInt());
+        return std::shared_ptr<IFilter>(new FeelingFilter(feeling));
+    }
+    else {
         throw "Filter id not recognized";
     }
 }

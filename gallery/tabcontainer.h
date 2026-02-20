@@ -16,6 +16,7 @@ public:
     bool filterImageModelByCurrentTabFilters(ImageModel* image);
     std::shared_ptr<IOrderer> getCurrentTabOrderer();
     void setCurrentTab(TabModel* model);
+    void init();
 
 signals:
     void tabChanged(TabModel* model);

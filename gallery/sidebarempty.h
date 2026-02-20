@@ -20,7 +20,12 @@ signals:
 private:
     Ui::SideBarEmpty *ui;
     TabModel* _currentTab = nullptr;
+
     void saveAndPushChanges();
+    void setStarFilter(bool isEnabled, int starAmount);
+    void setFeelingFilter(bool isEnabled, Feeling feeling);
+    void updateStarsCheckboxes();
+    void updateFeelingsCheckboxes();
 };
 
 #endif // SIDEBAREMPTY_H
