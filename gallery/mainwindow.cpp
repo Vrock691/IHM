@@ -64,6 +64,12 @@ MainWindow::MainWindow(QWidget *parent)
         _selectedCopy = img;
         setSelected(&_selectedCopy);
         _imageViewer->setSelected(&_selectedCopy);
+
+        _imageViewer->updateNavigation(
+            _currentIndex > 0,
+            _currentIndex < _images.size() - 1
+            );
+
         _imageStack->setCurrentWidget(_imageViewer);
     });
 
@@ -103,6 +109,11 @@ MainWindow::MainWindow(QWidget *parent)
                     _selectedCopy = _images[_currentIndex];
                     setSelected(&_selectedCopy);
                     _imageViewer->setSelected(&_selectedCopy);
+
+                    _imageViewer->updateNavigation(
+                        _currentIndex > 0,
+                        _currentIndex < _images.size() - 1
+                        );
                 }
             });
 
@@ -116,6 +127,11 @@ MainWindow::MainWindow(QWidget *parent)
                     setSelected(&_selectedCopy);
                     _imageViewer->setSelected(&_selectedCopy);
                 }
+
+                _imageViewer->updateNavigation(
+                    _currentIndex > 0,
+                    _currentIndex < _images.size() - 1
+                    );
             });
 }
 

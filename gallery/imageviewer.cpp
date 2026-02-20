@@ -57,7 +57,7 @@ bool ImageViewer::eventFilter(QObject* obj, QEvent* event) {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         if (_renderer && !_renderer->geometry().contains(mouseEvent->pos())) {
             emit clickedOutsideImage();
-            return true; // l'événement est consommé
+            return true;
         }
     }
     return QWidget::eventFilter(obj, event);
@@ -65,4 +65,11 @@ bool ImageViewer::eventFilter(QObject* obj, QEvent* event) {
 
 void ImageViewer::enableOutsideClick() {
     this->installEventFilter(this);
+}
+
+void ImageViewer::updateNavigation(bool hasPrevious, bool hasNext)
+{
+    ui->prevButton->setEnabled(hasPrevious);
+    ui->nextButton->setEnabled(hasNext);
+
 }
