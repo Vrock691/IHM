@@ -21,7 +21,7 @@ public:
     ~ImageViewer();
 
     void setImages(const std::vector<ImageModel>& images);
-    void setSelected(const ImageModel* imageModel);
+    void setSelected(ImageModel* imageModel);
     void setImages(const std::vector<ImageModel>& images, int currentIndex = 0);
     void enableOutsideClick();
     void updateNavigation(bool hasPrevious, bool hasNext);

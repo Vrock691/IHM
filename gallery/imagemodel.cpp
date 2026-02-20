@@ -159,9 +159,3 @@ ImageModel::ImageModel(const std::string& path)
     _mainColor = UNKNOWN_COLOR; 
     _keyWords = {};
 }
-
-
-
-
-
-

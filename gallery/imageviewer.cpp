@@ -24,7 +24,7 @@ ImageViewer::~ImageViewer()
     delete ui;
 }
 
-void ImageViewer::setSelected(const ImageModel* imageModel)
+void ImageViewer::setSelected(ImageModel* imageModel)
 {
     qDebug() << "ImageViewer::setSelected appelé avec"
              << (imageModel ? QString::fromStdString(imageModel->path()) : "nullptr");
@@ -36,7 +36,7 @@ void ImageViewer::setSelected(const ImageModel* imageModel)
         delete _renderer;
         _renderer = nullptr;
     }
-    _renderer = new ImageRenderer(*imageModel, this);
+    _renderer = new ImageRenderer(imageModel, this);
     _renderer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     ui->imageContainerLayout->addWidget(_renderer);

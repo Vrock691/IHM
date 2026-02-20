@@ -2,7 +2,7 @@
 #include "imagemodel.h"
 #include "ui_imagerenderer.h"
 
-ImageRenderer::ImageRenderer(ImageModel imageModel, QWidget *parent)
+ImageRenderer::ImageRenderer(ImageModel* imageModel, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ImageRenderer)
     , _imageModel(imageModel)
@@ -10,7 +10,7 @@ ImageRenderer::ImageRenderer(ImageModel imageModel, QWidget *parent)
     ui->setupUi(this);
 
     QImage image;
-    image.load(QString::fromStdString(_imageModel.path()));
+    image.load(QString::fromStdString(_imageModel->path()));
 
     _pixmap = QPixmap::fromImage(image);
     _pixmap.scaled(_pixmap.size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
@@ -28,6 +28,6 @@ void ImageRenderer::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     QPixmap transformedPixmap = _pixmap.scaled(ui->_label->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-    transformedPixmap = transformedPixmap.copy(_imageModel.cropRect());
+    transformedPixmap = transformedPixmap.copy(_imageModel->cropRect());
     ui->_label->setPixmap(transformedPixmap);
 }

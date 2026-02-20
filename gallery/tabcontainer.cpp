@@ -1,22 +1,31 @@
 #include "tabcontainer.h"
-#include "galleryview.h"
 #include "tabbuttonwidget.h"
+#include "tabmodel.h"
 #include <QInputDialog>
 #include <QVBoxLayout>
+#include "serializationservice.h"
+#include "defaultorderer.cpp"
 
-TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
+TabContainer::TabContainer(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::TabContainer),
-    _initialImages(images)
+    ui(new Ui::TabContainer)
 {
     ui->setupUi(this);
 
-    // Premier onglet "Accueil"
-    addTab("Accueil");
+    // Déserialisation des onglets
+    SerializationService service;
+    _tabs = service.deserializeTabModels();
+    if (_tabs.size() > 0) {
+        for (int i = 0; i < (int) _tabs.size(); i++) {
+            instanciateTab(_tabs[i], i);
+        }
+    } else {
+        newTab("Accueil");
+    }
 
     // Bouton + pour ajouter un onglet
     connect(ui->addTabButton, &QPushButton::clicked, this, [=]() {
-        addTab("Nouvel onglet");
+        newTab("Nouvel onglet");
     });
 
     // Style général
@@ -54,22 +63,13 @@ TabContainer::TabContainer(std::vector<ImageModel> images, QWidget *parent)
     )");
 }
 
-void TabContainer::addTab(const QString &name)
+void TabContainer::instanciateTab(TabModel* model, int index)
 {
-    TabButtonWidget* tabBtn = new TabButtonWidget(name);
+    TabButtonWidget* tabBtn = new TabButtonWidget(model->getName());
     ui->tabBarLayout->insertWidget(ui->tabBarLayout->count() - 1, tabBtn);
-
-    std::vector<TabModel> _tabs;
-
-    GalleryView* gallery = new GalleryView(_initialImages, _tabs, ui->contentStack);
-    ui->contentStack->addWidget(gallery);
-
-    connect(gallery, &GalleryView::imageClicked, this, &TabContainer::imageClicked);
 
     // Connexion clic sur onglet
     connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
-        ui->contentStack->setCurrentWidget(gallery);
-
         // Désactive tous les onglets
         for (QObject* obj : ui->tabBarContainer->children()) {
             TabButtonWidget* t = qobject_cast<TabButtonWidget*>(obj);
@@ -77,15 +77,27 @@ void TabContainer::addTab(const QString &name)
         }
 
         tabBtn->setActive(true);
+        emit tabChanged(model);
     });
 
     // Suppression onglet
     connect(tabBtn, &TabButtonWidget::closeRequested, this, [=]() {
-        if (ui->contentStack->count() <= 1) return;
-
-        ui->contentStack->removeWidget(gallery);
-        gallery->deleteLater();
+        if (ui->tabBarLayout->count() <= 2) return;
         tabBtn->deleteLater();
+        auto it = std::find(_tabs.begin(), _tabs.end(), model);
+        if (it != _tabs.end()) {
+            _tabs.erase(it);
+            emit tabChanged(nullptr);
+        }
+
+        QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QString configFilePath = QString("%1/configs/tabs/%2.json")
+                                     .arg(configsPath)
+                                     .arg(model->getIndex());
+        QFile file(configFilePath);
+        file.remove();
+
+        delete model;
     });
 
     // Renommage onglet
@@ -94,21 +106,38 @@ void TabContainer::addTab(const QString &name)
         QString newName = QInputDialog::getText(this, "Renommer l'onglet",
                                                 "Nouveau nom :", QLineEdit::Normal,
                                                 tabBtn->title(), &ok);
-        if (ok && !newName.isEmpty())
+        if (ok && !newName.isEmpty()) {
             tabBtn->setTitle(newName);
+            model->setName(newName);
+            SerializationService service;
+            service.serializeTabModel(*model);
+        }
     });
 
     // Active automatiquement le nouvel onglet
-    ui->contentStack->setCurrentWidget(gallery);
     tabBtn->setActive(true);
 }
 
-GalleryView* TabContainer::currentGallery()
-{
-    return qobject_cast<GalleryView*>(ui->contentStack->currentWidget());
+void TabContainer::newTab(const QString name) {
+    std::unique_ptr<IOrderer> default_orderer = std::unique_ptr<IOrderer>(new DefaultOrderer());
+    TabModel* newModel = new TabModel(_tabs.size(), name, {}, std::move(default_orderer));
+
+    SerializationService service;
+    service.serializeTabModel(*newModel);
+    instanciateTab(newModel, _tabs.size());
+    _tabs.push_back(newModel);
+}
+
+bool TabContainer::filterImageModelByCurrentTabFilters(ImageModel* model) {
+    Q_UNUSED(model);
+    // TODO: Implémenter la vérification par les filtres
+    return true;
 }
 
 TabContainer::~TabContainer()
 {
     delete ui;
+    for (int i = 0; i < (int) _tabs.size(); ++i) {
+        delete _tabs[i];
+    }
 }

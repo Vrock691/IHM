@@ -14,7 +14,7 @@ class ImageCell : public QWidget
     Q_OBJECT
 
 public:
-    explicit ImageCell(ImageModel imageModel, QWidget *parent = nullptr);
+    explicit ImageCell(ImageModel* imageModel, QWidget *parent = nullptr);
     ~ImageCell();
 
 private:
@@ -25,7 +25,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-    void clicked(ImageModel image);
+    void clicked(ImageModel* image);
 };
 
 #endif // IMAGECELL_H

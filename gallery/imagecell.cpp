@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QMouseEvent>
 
-ImageCell::ImageCell(ImageModel imageModel, QWidget *parent)
+ImageCell::ImageCell(ImageModel* imageModel, QWidget *parent)
     : QWidget(parent), ui(new Ui::ImageCell)
 {
     ui->setupUi(this);

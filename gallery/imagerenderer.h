@@ -13,14 +13,14 @@ class ImageRenderer : public QWidget
     Q_OBJECT
 
 public:
-    explicit ImageRenderer(ImageModel imageModel, QWidget *parent = nullptr);
+    explicit ImageRenderer(ImageModel* imageModel, QWidget *parent = nullptr);
     ~ImageRenderer();
 
-    ImageModel imageModel() { return _imageModel; }
+    ImageModel* imageModel() { return _imageModel; }
 
 private:
     Ui::ImageRenderer *ui;
-    ImageModel _imageModel;
+    ImageModel* _imageModel;
     QPixmap _pixmap;
 
 protected:
