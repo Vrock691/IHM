@@ -11,16 +11,6 @@ InspectorView::InspectorView(QWidget *parent)
             .scaled(45, 45, Qt::KeepAspectRatio, Qt::SmoothTransformation)
         );
 
-    ui->iconEdit->setIcon(
-        QIcon(":/icons/edit-icon.png")
-        );
-    ui->iconEdit->setIconSize(QSize(18, 18));
-
-    ui->iconHeart->setIcon(
-        QIcon(":/icons/heart-icon.png")
-        );
-    ui->iconHeart->setIconSize(QSize(18, 18));
-
     ui->tabWidget->setTabText(0, "");
     ui->tabWidget->setTabText(1, "");
 
@@ -369,8 +359,12 @@ void InspectorView::showRatingUi(int rating)
 
 void InspectorView::showTagsUi(std::vector<std::string> keyWords)
 {
-    foreach (auto item, _tagsLayout->children()) {
-        item->deleteLater();
+    QLayoutItem *wItem;
+    while ((wItem = _tagsLayout->takeAt(0)) != 0)
+    {
+        if (wItem->widget())
+            wItem->widget()->setParent(NULL);
+        delete wItem;
     }
 
     // Ajouter les tags actuels

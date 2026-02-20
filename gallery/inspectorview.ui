@@ -49,20 +49,6 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QToolButton" name="iconEdit">
-           <property name="styleSheet">
-            <string notr="true">QToolButton {
-    border: none;
-    background: transparent;
-    padding: 0px;
-}</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -92,20 +78,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QToolButton" name="iconHeart">
-       <property name="styleSheet">
-        <string notr="true">QToolButton {
-    border: none;
-    background: transparent;
-    padding: 0px;
-}</string>
-       </property>
-       <property name="text">
-        <string>...</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
