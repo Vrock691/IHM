@@ -16,6 +16,7 @@ SOURCES += \
     imagecell.cpp \
     imagemodel.cpp \
     imagerenderer.cpp \
+    imageviewer.cpp \
     inspectorview.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     galleryview.h \
     ifilter.h \
     imagerenderer.h \
+    imageviewer.h \
     inspectorview.h \
     imagemodel.h \
     iorderer.h \
@@ -52,6 +54,7 @@ FORMS += \
     galleryview.ui \
     imagecell.ui \
     imagerenderer.ui \
+    imageviewer.ui \
     inspectorview.ui \
     mainwindow.ui \
     sidebarempty.ui \

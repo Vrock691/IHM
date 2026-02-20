@@ -45,6 +45,11 @@ TabContainer* GalleryView::getTabContainer()
     return _tabContainer;
 }
 
+std::vector<ImageModel*> GalleryView::getCurrentImages()
+{
+    return _currentImages;
+}
+
 std::vector<ImageModel*> GalleryView::getImages()
 {
     IndexationService indexService = IndexationService();
@@ -87,22 +92,30 @@ void GalleryView::refreshModel()
 
     int columnCount = 4;
 
+    _currentImages.clear();
+
     for (size_t i = 0; i < _allImages.size(); ++i) {
         bool accepted = _tabContainer->filterImageModelByCurrentTabFilters(_allImages[i]);
         if (accepted) {
-            ImageCell* cell = new ImageCell(_allImages[i]);
-            cell->setMinimumSize(120, 120);
-            cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-            connect(cell, &ImageCell::clicked, this, [this](ImageModel* image) {
-                emit imageClicked(image);
-            });
-
-            int row = i / columnCount;
-            int col = i % columnCount;
-
-            _gridLayout->addWidget(cell, row, col);
-            _gridLayout->setRowStretch(row, 1);
+            // Nécessaire pour que GalleryView puisse avoir accès aux images actuelles
+            _currentImages.push_back(_allImages[i]);
         }
+    }
+
+    for (size_t i = 0; i < _currentImages.size(); ++i) {
+        ImageCell* cell = new ImageCell(_currentImages[i]);
+        cell->setMinimumSize(120, 120);
+        cell->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        connect(cell, &ImageCell::clicked, this, [this](ImageModel* image) {
+            emit imageClicked(image);
+        });
+
+        int row = i / columnCount;
+        int col = i % columnCount;
+
+        _gridLayout->addWidget(cell, row, col);
+        _gridLayout->setRowStretch(row, 1);
+
     }
 }
