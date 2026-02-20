@@ -81,4 +81,5 @@
 
     void MainWindow::onTabChanged(TabModel* model) {
         currentTab = model;
+        clearSelection();
     }
