@@ -29,9 +29,9 @@
         ui->dockInspector->setWidget(_sidebarStack);
         ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-        // Création de GalleryView et TabContainer
-        _tabContainer = new TabContainer(this);
-        _galleryView = new GalleryView(_tabContainer, this);
+        // Création de GalleryView
+        _galleryView = new GalleryView(this);
+        _tabContainer = _galleryView->getTabContainer();
         QVBoxLayout* layout = new QVBoxLayout(ui->galleryViewContainer);
         layout->setContentsMargins(0,0,0,0);
         layout->setSpacing(0);

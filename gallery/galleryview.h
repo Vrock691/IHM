@@ -13,11 +13,12 @@ class GalleryView : public QWidget
     Q_OBJECT
 
 public:
-    explicit GalleryView(TabContainer* tabContainer, QWidget *parent = nullptr);
+    explicit GalleryView(QWidget *parent = nullptr);
 
     void refreshModel();
 
     std::vector<ImageModel*> getImages();
+    TabContainer* getTabContainer();
 
 signals:
     void onRequestSelect(ImageModel* imageModel);

@@ -4,31 +4,24 @@
 #include <QGridLayout>
 #include <QDebug>
 #include "serializationservice.h"
-#include "tabcontainer.h"
 
-GalleryView::GalleryView(TabContainer* tabContainer, QWidget *parent)
+GalleryView::GalleryView(QWidget *parent)
     : QWidget(parent),
     ui(new Ui::GalleryVue)
 {
     ui->setupUi(this);
 
     // Setup Tab Container
-    _tabContainer = tabContainer;
-    ui->tabLayout = _tabContainer;
+    _tabContainer = new TabContainer(this);
+    ui->tabLayout->addWidget(_tabContainer);
+    _tabContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
     // Setup Gallery Grid
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    ui->galleryGrid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    _gridLayout = qobject_cast<QGridLayout*>(ui->galleryGrid->layout());
-    if (!_gridLayout) {
-        _gridLayout = new QGridLayout(ui->galleryGrid);
-        _gridLayout->setContentsMargins(0,0,0,0);
-        _gridLayout->setSpacing(10);
-        ui->galleryGrid->setLayout(_gridLayout);
-    } else {
-        _gridLayout->setSpacing(10);
-    }
+    _gridLayout = ui->gridLayout;
+    _gridLayout->setContentsMargins(0,0,0,0);
+    _gridLayout->setSpacing(10);
 
     _gridLayout->setRowStretch(0, 1);
     _gridLayout->setColumnStretch(0, 1);
@@ -38,6 +31,11 @@ GalleryView::GalleryView(TabContainer* tabContainer, QWidget *parent)
 
     _allImages = getImages();
     refreshModel();
+}
+
+TabContainer* GalleryView::getTabContainer()
+{
+    return _tabContainer;
 }
 
 std::vector<ImageModel*> GalleryView::getImages()
