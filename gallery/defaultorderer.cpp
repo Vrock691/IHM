@@ -2,8 +2,10 @@
 
 class DefaultOrderer : public IOrderer {
 public:
-    std::vector<ImageModel> order(std::vector<ImageModel> images) override {
-        return images;
+    bool orderer(ImageModel* a, ImageModel* b) override {
+        Q_UNUSED(a);
+        Q_UNUSED(b);
+        return true;
     }
 
     AvailableOrderers id() override {

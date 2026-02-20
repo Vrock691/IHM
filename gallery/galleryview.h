@@ -30,7 +30,7 @@ private:
 
     // Stockage des données
     std::vector<ImageModel*> _allImages;
-    
+
     //organise les ImageCell dans le widget galleryGrid
     QGridLayout* _gridLayout;
     QVBoxLayout* _tabLayout;

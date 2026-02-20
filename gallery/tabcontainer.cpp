@@ -129,9 +129,21 @@ void TabContainer::newTab(const QString name) {
 }
 
 bool TabContainer::filterImageModelByCurrentTabFilters(ImageModel* model) {
-    Q_UNUSED(model);
-    // TODO: Implémenter la vérification par les filtres
+    const auto& filters = _currentTab->getFilters();
+    for (const auto& filter : filters) {
+        if (!filter->isAcceptable(model)) {
+            return false;
+        }
+    }
     return true;
+}
+
+void TabContainer::setCurrentTab(TabModel* model) {
+    _currentTab = model;
+}
+
+IOrderer* TabContainer::getCurrentTabOrderer() {
+    return _currentTab->getOrderer();
 }
 
 TabContainer::~TabContainer()

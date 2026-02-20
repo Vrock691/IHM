@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include <QDebug>
 #include "serializationservice.h"
+#include <algorithm>
 
 GalleryView::GalleryView(QWidget *parent)
     : QWidget(parent),
@@ -76,6 +77,10 @@ void GalleryView::refreshModel()
     }
 
     int columnCount = 4;
+
+    std::sort(_allImages.begin(), _allImages.end(), [this](ImageModel* a, ImageModel* b) {
+        return _tabContainer->getCurrentTabOrderer()->orderer(a, b);
+    });
 
     for (size_t i = 0; i < _allImages.size(); ++i) {
         bool accepted = _tabContainer->filterImageModelByCurrentTabFilters(_allImages[i]);
