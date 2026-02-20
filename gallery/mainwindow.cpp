@@ -83,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent)
                     _currentIndex < _galleryView->getCurrentImages().size() - 1
                     );
             });
+
+        connect(_sideBarEmpty, &SideBarEmpty::onModelChanged, this, &MainWindow::onSidebarEmptyModelChanged);
     }
 
     MainWindow::~MainWindow()
@@ -153,5 +155,6 @@ MainWindow::MainWindow(QWidget *parent)
     void MainWindow::onTabChanged(TabModel* model) {
         currentTab = model;
         _tabContainer->setCurrentTab(currentTab);
+        _sideBarEmpty->setCurrentTab(currentTab);
         clearSelection();
     }

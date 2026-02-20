@@ -6,7 +6,8 @@
 #include <QString>
 
 enum AvailableFilters {
-    DEFAULT_FILTER
+    DEFAULT_FILTER,
+    STARS_FILTER
 };
 
 class IFilter {

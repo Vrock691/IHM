@@ -20,8 +20,7 @@ signals:
 private:
     Ui::SideBarEmpty *ui;
     TabModel* _currentTab = nullptr;
-
-
+    void saveAndPushChanges();
 };
 
 #endif // SIDEBAREMPTY_H

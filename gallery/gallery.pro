@@ -22,12 +22,15 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
+    olderfirstorderer.cpp \
     ordererfactory.cpp \
+    starsfilter.cpp \
     tabmodel.cpp \
     serializationservice.cpp \
     sidebarempty.cpp \
     tabbuttonwidget.cpp \
-    tabcontainer.cpp
+    tabcontainer.cpp \
+    lastmodifiedorderer.cpp
 
 HEADERS += \
     color.h \
