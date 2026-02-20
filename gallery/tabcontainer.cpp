@@ -8,7 +8,8 @@
 
 TabContainer::TabContainer(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::TabContainer)
+    ui(new Ui::TabContainer),
+    _currentTab(nullptr)
 {
     ui->setupUi(this);
 
@@ -19,9 +20,13 @@ TabContainer::TabContainer(QWidget *parent)
         for (int i = 0; i < (int) _tabs.size(); i++) {
             instanciateTab(_tabs[i], i);
         }
+        _currentTab = _tabs[0];
     } else {
         newTab("Accueil");
+        if (!_tabs.empty()) _currentTab = _tabs[0];
     }
+
+    emit tabChanged(_currentTab);
 
     // Bouton + pour ajouter un onglet
     connect(ui->addTabButton, &QPushButton::clicked, this, [=]() {
@@ -87,7 +92,7 @@ void TabContainer::instanciateTab(TabModel* model, int index)
         auto it = std::find(_tabs.begin(), _tabs.end(), model);
         if (it != _tabs.end()) {
             _tabs.erase(it);
-            emit tabChanged(nullptr);
+            emit tabChanged(_tabs[0]);
         }
 
         QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -119,8 +124,8 @@ void TabContainer::instanciateTab(TabModel* model, int index)
 }
 
 void TabContainer::newTab(const QString name) {
-    std::unique_ptr<IOrderer> default_orderer = std::unique_ptr<IOrderer>(new DefaultOrderer());
-    TabModel* newModel = new TabModel(_tabs.size(), name, {}, std::move(default_orderer));
+    std::shared_ptr<IOrderer> default_orderer = std::shared_ptr<IOrderer>(new DefaultOrderer());
+    TabModel* newModel = new TabModel(_tabs.size(), name, {}, default_orderer);
 
     SerializationService service;
     service.serializeTabModel(*newModel);
@@ -142,7 +147,7 @@ void TabContainer::setCurrentTab(TabModel* model) {
     _currentTab = model;
 }
 
-IOrderer* TabContainer::getCurrentTabOrderer() {
+std::shared_ptr<IOrderer> TabContainer::getCurrentTabOrderer() {
     return _currentTab->getOrderer();
 }
 
