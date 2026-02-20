@@ -36,7 +36,7 @@ void ImageViewer::setSelected(ImageModel* imageModel)
         delete _renderer;
         _renderer = nullptr;
     }
-    _renderer = new ImageRenderer(imageModel, this);
+    _renderer = new ImageRenderer(imageModel, false, this);
     _renderer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     ui->imageContainerLayout->addWidget(_renderer);
