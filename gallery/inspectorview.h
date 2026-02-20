@@ -4,6 +4,7 @@
 #include "tabmodel.h"
 #include "ui_inspectorview.h"
 #include "imagemodel.h"
+#include "serializationservice.h"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -52,6 +53,7 @@ private:
     void addTagUi(const QString& text);
     void showDescriptionUi(const QString& text);
     void showFeelingUi(const Feeling feeling);
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // INSPECTORVIEW_H

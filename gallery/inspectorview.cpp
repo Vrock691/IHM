@@ -120,10 +120,7 @@ InspectorView::InspectorView(QWidget *parent)
         _addTagBtn->hide();
     });
 
-    connect(ui->descriptionEdit, &QTextEdit::textChanged, this, [=]() {
-        QString text = ui->descriptionEdit->toPlainText();
-        setDescriptionModel(text);
-    });
+    ui->descriptionEdit->installEventFilter(this);
 
     connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=](int index) {
         setFeeling(index);
@@ -214,6 +211,14 @@ InspectorView::~InspectorView()
     delete ui;
 }
 
+bool InspectorView::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == ui->descriptionEdit && event->type() == QEvent::FocusOut) {
+        setDescriptionModel(ui->descriptionEdit->toPlainText());
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
 void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
@@ -266,14 +271,23 @@ void InspectorView::refreshUi()
 
 void InspectorView::saveModel()
 {
+    if (!_selected)
+        return;
+
     qDebug() << "saved";
 
     qDebug() << "Name: " << _selected->fileName();
+    qDebug() << "Description: " << _selected->description();
     qDebug() << "Score: " << _selected->score();
     qDebug() << "Keywords: ";
     foreach (auto tag, _selected->keyWords()) {
         qDebug() << "    - " << tag;
     }
+
+    SerializationService service;
+    service.serializeImageModel(*_selected);
+
+    emit onModelChanged();
 }
 
 
