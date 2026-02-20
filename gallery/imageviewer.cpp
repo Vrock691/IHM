@@ -1,0 +1,75 @@
+#include "imageviewer.h"
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+
+ImageViewer::ImageViewer(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::ImageViewer)
+{
+    ui->setupUi(this);
+
+    qDebug() << "ImageViewer créé";
+
+    connect(ui->nextButton, &QPushButton::clicked,
+            this, &ImageViewer::onNextClicked);
+
+    connect(ui->prevButton, &QPushButton::clicked,
+            this, &ImageViewer::onPrevClicked);
+}
+
+ImageViewer::~ImageViewer()
+{
+    delete ui;
+}
+
+void ImageViewer::setSelected(ImageModel* imageModel)
+{
+    qDebug() << "ImageViewer::setSelected appelé avec"
+             << (imageModel ? QString::fromStdString(imageModel->path()) : "nullptr");
+
+    if (!imageModel) return;
+
+    if (_renderer != nullptr) {
+        ui->imageContainerLayout->removeWidget(_renderer);
+        delete _renderer;
+        _renderer = nullptr;
+    }
+    _renderer = new ImageRenderer(imageModel, this);
+    _renderer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    ui->imageContainerLayout->addWidget(_renderer);
+}
+
+void ImageViewer::onNextClicked()
+{
+    emit requestForward();
+}
+
+void ImageViewer::onPrevClicked()
+{
+    emit requestBackward();
+}
+
+bool ImageViewer::eventFilter(QObject* obj, QEvent* event) {
+    if (obj == this && event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        if (_renderer && !_renderer->geometry().contains(mouseEvent->pos())) {
+            emit clickedOutsideImage();
+            return true;
+        }
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
+void ImageViewer::enableOutsideClick() {
+    this->installEventFilter(this);
+}
+
+void ImageViewer::updateNavigation(bool hasPrevious, bool hasNext)
+{
+    ui->prevButton->setEnabled(hasPrevious);
+    ui->nextButton->setEnabled(hasNext);
+
+}
