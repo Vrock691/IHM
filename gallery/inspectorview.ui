@@ -52,7 +52,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="labelDate">
          <property name="styleSheet">
           <string notr="true">QLabel {
     color: #C1C1C1;

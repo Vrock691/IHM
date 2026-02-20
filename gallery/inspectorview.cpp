@@ -234,8 +234,13 @@ void InspectorView::refreshUi()
         ui->labelFormat->clear();
         ui->labelSize->clear();
         ui->labelDimensions->clear();
+        ui->labelDate->clear();
         return;
     }
+
+    ui->labelDate->setText(
+        QString::fromStdString(_selected->lastModificationDate())
+        );
 
     ui->labelFileName->setText(
         QString::fromStdString(_selected->fileName())
