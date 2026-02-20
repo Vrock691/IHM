@@ -45,6 +45,8 @@ private:
     QList<QToolButton*> _starButtons;
     //int _currentRating = 0;
 
+    void setDescriptionModel(const QString& text);
+
     void showRatingUi(int rating);
     void showTagsUi(std::vector<std::string> keyWords);
     void addTagUi(const QString& text);

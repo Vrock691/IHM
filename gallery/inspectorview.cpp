@@ -132,7 +132,7 @@ InspectorView::InspectorView(QWidget *parent)
 
     connect(ui->descriptionEdit, &QTextEdit::textChanged, this, [=]() {
         QString text = ui->descriptionEdit->toPlainText();
-        setDescription(text);
+        setDescriptionModel(text);
     });
 
     connect(ui->feelingComboBox, &QComboBox::currentIndexChanged, this, [=](int index) {
@@ -330,12 +330,8 @@ void InspectorView::removeTag(const QString &text)
 
 void InspectorView::setDescription(const QString& text)
 {
-    if (!_selected)
-        return;
-
-    _selected->setDescription(text.toStdString());
+    setDescriptionModel(text);
     showDescriptionUi(text);
-    saveModel();
 }
 
 void InspectorView::setFeeling(int index)
@@ -349,6 +345,15 @@ void InspectorView::setFeeling(int index)
     _selected->setFeeling(feeling);
 
     showFeelingUi(_selected->feeling());
+    saveModel();
+}
+
+void InspectorView::setDescriptionModel(const QString& text)
+{
+    if (!_selected)
+        return;
+
+    _selected->setDescription(text.toStdString());
     saveModel();
 }
 
