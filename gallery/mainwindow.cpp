@@ -6,9 +6,10 @@
     #include "imagemodel.h"
     #include "galleryview.h"
 
-    MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent),
-        ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    _selected(nullptr)
     {
         ui->setupUi(this);
 
@@ -29,16 +30,59 @@
         ui->dockInspector->setWidget(_sidebarStack);
         ui->dockInspector->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-        // Création de GalleryView
+        // Création de ImageStack
+        _imageStack = new QStackedWidget(this);
+
         _galleryView = new GalleryView(this);
         _tabContainer = _galleryView->getTabContainer();
         QVBoxLayout* layout = new QVBoxLayout(ui->galleryViewContainer);
         layout->setContentsMargins(0,0,0,0);
         layout->setSpacing(0);
-        layout->addWidget(_galleryView);
+        layout->addWidget(_imageStack);
+
+        _imageViewer = new ImageViewer(this);
+        _imageViewer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        _imageViewer->enableOutsideClick();
+
+        _imageStack->addWidget(_galleryView);
+        _imageStack->addWidget(_imageViewer);
+
+        _imageStack->setCurrentWidget(_galleryView);
 
         connect(_tabContainer, &TabContainer::tabChanged, this, &MainWindow::onTabChanged);
-        connect(_galleryView, &GalleryView::imageClicked, this, &MainWindow::setSelected);
+        connect(_galleryView, &GalleryView::imageClicked, this, &MainWindow::onImageClicked);
+        connect(_imageViewer, &ImageViewer::clickedOutsideImage, this, [this](){
+            _imageStack->setCurrentWidget(_galleryView);
+        });
+        connect(_imageViewer, &ImageViewer::requestForward, this, [this]() {
+
+            if (_currentIndex < 0) return;
+
+            if (_currentIndex < _galleryView->getCurrentImages().size() - 1) {
+                _currentIndex++;
+
+                setSelected(_galleryView->getCurrentImages()[_currentIndex]);
+
+                _imageViewer->updateNavigation(
+                    _currentIndex > 0,
+                    _currentIndex < _galleryView->getCurrentImages().size() - 1
+                    );
+            }
+        });
+
+        connect(_imageViewer, &ImageViewer::requestBackward, this, [this]() {
+
+                if (_currentIndex > 0) {
+                    _currentIndex--;
+
+                    setSelected(_galleryView->getCurrentImages()[_currentIndex]);
+                }
+
+                _imageViewer->updateNavigation(
+                    _currentIndex > 0,
+                    _currentIndex < _galleryView->getCurrentImages().size() - 1
+                    );
+            });
     }
 
     MainWindow::~MainWindow()
@@ -46,13 +90,40 @@
         delete ui;
     }
 
+    void MainWindow::onImageClicked(ImageModel* imageModel)
+    {
+        if (_selected == imageModel)
+            openViewer();
+        else
+            setSelected(imageModel);
+    }
+
+    void MainWindow::openViewer()
+    {
+        _imageStack->setCurrentWidget(_imageViewer);
+    }
+
     void MainWindow::setSelected(ImageModel* imageModel)
     {
         _selected = imageModel;
 
-        if(_selected) {
+        for (int i = 0; i < _galleryView->getCurrentImages().size(); ++i) {
+            if (_galleryView->getCurrentImages()[i]->path() == _selected->path()) {
+                _currentIndex = i;
+                break;
+            }
+        }
+
+        if (_selected) {
             _inspectorView->setSelected(_selected);
             _sidebarStack->setCurrentWidget(_inspectorView);
+
+            _imageViewer->setSelected(_selected);
+
+            _imageViewer->updateNavigation(
+                _currentIndex > 0,
+                _currentIndex < _galleryView->getCurrentImages().size() - 1
+            );
         } else {
             _sidebarStack->setCurrentWidget(_sideBarEmpty);
         }

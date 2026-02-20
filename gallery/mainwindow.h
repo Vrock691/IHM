@@ -7,6 +7,7 @@
 #include "qstackedwidget.h"
 #include "ui_mainwindow.h"
 #include "sidebarempty.h"
+#include "imageviewer.h"
 
 #include <QMainWindow>
 
@@ -23,19 +24,29 @@ private:
     ImageModel* _selected;
     TabModel* currentTab;
     GalleryView* _galleryView;
-    TabContainer* _tabContainer;
+    TabContainer* _tabContainer = nullptr;
     QStackedWidget* _sidebarStack;
     InspectorView* _inspectorView;
     SideBarEmpty* _sideBarEmpty;
 
-    void setSelected(ImageModel* imageModel);
-    void clearSelection();
+    ImageViewer* _imageViewer = nullptr;
+
+    QStackedWidget* _imageStack = nullptr;
+    int _currentIndex = -1;
+
+
+
+
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
     void onInspectorModelChanged();
     void onSidebarEmptyModelChanged();
     void onTabChanged(TabModel*);
+    void onImageClicked(ImageModel* imageModel);
+    void setSelected(ImageModel* imageModel);
+    void openViewer();
+    void clearSelection();
 
 };
 #endif // MAINWINDOW_H
