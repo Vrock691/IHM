@@ -28,6 +28,7 @@ public:
 
 signals:
     void onModelChanged();
+    void requestClose();
 
 protected slots:
     void saveModel();
