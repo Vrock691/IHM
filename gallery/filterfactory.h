@@ -9,7 +9,7 @@ class FilterFactory
 {
 public:
     FilterFactory();
-    std::unique_ptr<IFilter> parse(QJsonObject jsonValues);
+    std::shared_ptr<IFilter> parse(QJsonObject jsonValues);
 };
 
 #endif // FILTERFACTORY_H

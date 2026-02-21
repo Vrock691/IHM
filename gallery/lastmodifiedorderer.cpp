@@ -1,7 +1,7 @@
 #include "iorderer.h"
 #include "QDateTime"
 
-class DefaultOrderer : public IOrderer {
+class LastModificationOrderer : public IOrderer {
 public:
     bool orderer(ImageModel* a, ImageModel* b) override {
         if (a == b) return false;
@@ -14,8 +14,8 @@ public:
             return QDateTime::fromString(qs, Qt::ISODate);
         };
 
-        QDateTime da = parseDate(a->creationDate());
-        QDateTime db = parseDate(b->creationDate());
+        QDateTime da = parseDate(a->lastModificationDate());
+        QDateTime db = parseDate(b->lastModificationDate());
 
         if (da.isValid() && db.isValid()) return da > db;
         if (da.isValid()) return true;
@@ -24,12 +24,12 @@ public:
     }
 
     AvailableOrderers id() override {
-        return DEFAULT_ORDERER;
+        return LAST_MODIFICATION_FIRST;
     }
 
     QJsonObject serialize() override {
         QJsonObject json;
-        json["id"] = "DEFAULT_ORDERER";
+        json["id"] = "LAST_MODIFICATION_FIRST";
         return json;
     }
 };

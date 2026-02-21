@@ -185,18 +185,18 @@ std::vector<TabModel*> SerializationService::deserializeTabModels() {
         );
 
         QJsonArray filtersArray = jobject["filters"].toArray();
-        std::vector<std::unique_ptr<IFilter>> filters;
+        std::vector<std::shared_ptr<IFilter>> filters;
         FilterFactory filterFactory;
         for (const QJsonValue& filterValue : filtersArray) {
             qDebug() << filterValue.toObject();
-            std::unique_ptr<IFilter> filter = filterFactory.parse(filterValue.toObject());
-            filters.push_back(std::move(filter));
+            std::shared_ptr<IFilter> filter = filterFactory.parse(filterValue.toObject());
+            filters.push_back(filter);
         }
-        model->setFilters(std::move(filters));
+        model->setFilters(filters);
 
         OrdererFactory ordererFactory;
-        std::unique_ptr<IOrderer> orderer = ordererFactory.parse(jobject["orderer"].toObject());
-        model->setOrderer(std::move(orderer));
+        std::shared_ptr<IOrderer> orderer = ordererFactory.parse(jobject["orderer"].toObject());
+        model->setOrderer(orderer);
 
         tabs.push_back(std::move(model));
     }
