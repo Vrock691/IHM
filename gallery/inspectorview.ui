@@ -114,7 +114,7 @@ QTabBar::tab:hover {
 }</string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -198,7 +198,7 @@ QTabBar::tab:hover {
 }</string>
                  </property>
                  <property name="text">
-                  <string>Couleurs</string>
+                  <string>Couleur</string>
                  </property>
                 </widget>
                </item>
@@ -213,7 +213,7 @@ QTabBar::tab:hover {
 }</string>
                  </property>
                  <property name="text">
-                  <string>dominantes</string>
+                  <string>dominante</string>
                  </property>
                 </widget>
                </item>
