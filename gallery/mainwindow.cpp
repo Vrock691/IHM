@@ -154,4 +154,8 @@ MainWindow::MainWindow(QWidget *parent)
     void MainWindow::onTabChanged(TabModel* model) {
         currentTab = model;
         clearSelection();
+
+        if (model) {
+            qDebug() << "Onglet sélectionné :" << model->getName() << "index =" << model->getIndex();
+        }
     }

@@ -19,6 +19,7 @@ TabContainer::TabContainer(QWidget *parent)
         for (int i = 0; i < (int) _tabs.size(); i++) {
             instanciateTab(_tabs[i], i);
         }
+        setCurrentTabId(0);
     } else {
         newTab("Accueil");
     }
@@ -70,35 +71,62 @@ void TabContainer::instanciateTab(TabModel* model, int index)
 
     // Connexion clic sur onglet
     connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
+        int currentIndex = -1;
+        for (int i = 0; i < _tabs.size(); ++i) {
+            TabButtonWidget* t = qobject_cast<TabButtonWidget*>(ui->tabBarLayout->itemAt(i)->widget());
+            if (t == tabBtn){
+                currentIndex = i;
+                break;
+            }
+        }
+        if (currentIndex != -1) setCurrentTabId(currentIndex);
+    });
+/*
+    connect(tabBtn, &TabButtonWidget::clicked, this, [=]() {
         // Désactive tous les onglets
         for (QObject* obj : ui->tabBarContainer->children()) {
-            TabButtonWidget* t = qobject_cast<TabButtonWidget*>(obj);
             if (t) t->setActive(false);
         }
 
         tabBtn->setActive(true);
         emit tabChanged(model);
     });
-
-    // Suppression onglet
+*/
     connect(tabBtn, &TabButtonWidget::closeRequested, this, [=]() {
-        if (ui->tabBarLayout->count() <= 2) return;
-        tabBtn->deleteLater();
-        auto it = std::find(_tabs.begin(), _tabs.end(), model);
-        if (it != _tabs.end()) {
-            _tabs.erase(it);
-            emit tabChanged(nullptr);
+        int removedIndex = -1;
+        for (int i = 0; i < (int)_tabs.size(); ++i) {
+            if (_tabs[i] == model) {
+                removedIndex = i;
+                break;
+            }
         }
 
-        QString configsPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        QString configFilePath = QString("%1/configs/tabs/%2.json")
-                                     .arg(configsPath)
-                                     .arg(model->getIndex());
-        QFile file(configFilePath);
-        file.remove();
+        if (removedIndex == -1) return;
 
+        tabBtn->deleteLater();
+        _tabs.erase(_tabs.begin() + removedIndex);
         delete model;
+
+        for (int i = removedIndex; i < (int)_tabs.size(); ++i) {
+            _tabs[i]->setIndex(i);
+        }
+
+        if (_tabs.empty()) {
+            _currentTabId = -1;
+            emit tabChanged(nullptr);
+            return;
+        }
+
+        if (_currentTabId == removedIndex) {
+            int newIndex = removedIndex - 1;
+            if (newIndex < 0) newIndex = 0;
+            setCurrentTabId(newIndex);
+        } else if (_currentTabId > removedIndex) {
+            _currentTabId--;
+        }
     });
+
+
 
     // Renommage onglet
     connect(tabBtn, &TabButtonWidget::renameRequested, this, [=]() {
@@ -125,7 +153,11 @@ void TabContainer::newTab(const QString name) {
     SerializationService service;
     service.serializeTabModel(*newModel);
     instanciateTab(newModel, _tabs.size());
+    //_tabs.push_back(newModel);
+
     _tabs.push_back(newModel);
+    setCurrentTabId(_tabs.size() - 1);
+
 }
 
 bool TabContainer::filterImageModelByCurrentTabFilters(ImageModel* model) {
@@ -141,3 +173,21 @@ TabContainer::~TabContainer()
         delete _tabs[i];
     }
 }
+
+void TabContainer::setCurrentTabId(int id) {
+    _currentTabId = id;
+
+    for (int i = 0; i < _tabs.size(); ++i) {
+        TabButtonWidget* tabBtn = qobject_cast<TabButtonWidget*>(
+            ui->tabBarLayout->itemAt(i)->widget()
+            );
+        if (!tabBtn) continue;
+
+        tabBtn->setActive(i == id);
+    }
+
+    if (id >= 0 && id < _tabs.size())
+        emit tabChanged(_tabs[id]);
+}
+
+
