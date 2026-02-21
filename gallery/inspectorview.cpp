@@ -185,40 +185,13 @@ InspectorView::InspectorView(QWidget *parent)
 
     // ------- Gestion des couleurs dominantes ------- //
 
-    QVBoxLayout* colorsTitleLayout = qobject_cast<QVBoxLayout*>(ui->colorsTitleContainer);
-    colorsTitleLayout->setSpacing(0);
-    colorsTitleLayout->setContentsMargins(0, 0, 0, 0);
+    QLayout* oldColorsLayout = ui->dominantColorsContainer->layout();
+    if (oldColorsLayout) delete oldColorsLayout;
 
-    ui->colorsTitle1->setContentsMargins(0, 0, 0, 0);
-    ui->colorsTitle2->setContentsMargins(0, 0, 0, 0);
-
-    // Création du layout vertical pour les couleurs
+    // Créer un layout vide (il sera rempli plus tard via showDominantColors)
     QVBoxLayout* colorsLayout = new QVBoxLayout();
     colorsLayout->setContentsMargins(0,0,0,0);
     colorsLayout->setSpacing(4);
-
-    // Couleurs codées en dur (il faut qu'on récupére les vraies couleurs et qu'on les stocke ici
-    QStringList colors = { "#AABBCC", "#334455", "#FF9900" };
-
-    for (const QString& color : colors) {
-        // Widget ligne
-        QWidget* rowWidget = new QWidget(ui->dominantColorsContainer);
-        QHBoxLayout* rowLayout = new QHBoxLayout(rowWidget);
-        rowLayout->setContentsMargins(0,0,0,0);
-        rowLayout->setSpacing(4);
-
-        QFrame* square = new QFrame(rowWidget);
-        square->setFixedSize(24,24);
-        square->setStyleSheet(QString("background-color: %1; border-radius:3px;").arg(color));
-
-        QLabel* label = new QLabel(color, rowWidget);
-
-        rowLayout->addWidget(square);
-        rowLayout->addWidget(label);
-        rowLayout->addStretch();
-
-        colorsLayout->addWidget(rowWidget);
-    }
 
     // Affecte le layout vertical au container
     ui->dominantColorsContainer->setLayout(colorsLayout);
@@ -240,6 +213,11 @@ bool InspectorView::eventFilter(QObject *obj, QEvent *event)
 void InspectorView::setSelected(ImageModel* imageModel)
 {
     _selected = imageModel;
+
+    if (_selected) {
+        QImage img(QString::fromStdString(_selected->path()));
+        showDominantColors(img);
+    }
 
     refreshUi();
 }
@@ -512,3 +490,38 @@ void InspectorView::showCropUi(QRect rect){
     ui->spinX2->setValue(rect.right());
     ui->spinY2->setValue(rect.bottom());
 }
+
+void InspectorView::showDominantColors(const QImage &image)
+{
+    QVBoxLayout* colorsLayout = qobject_cast<QVBoxLayout*>(ui->dominantColorsContainer->layout());
+    if (!colorsLayout) return;
+
+    QLayoutItem* child;
+    while ((child = colorsLayout->takeAt(0)) != nullptr) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+
+    QColor majorColor = ColorService::getMajorityColor(image);
+
+    QWidget* rowWidget = new QWidget(ui->dominantColorsContainer);
+    QHBoxLayout* rowLayout = new QHBoxLayout(rowWidget);
+    rowLayout->setContentsMargins(0,0,0,0);
+    rowLayout->setSpacing(4);
+
+    QFrame* square = new QFrame(rowWidget);
+    square->setFixedSize(24,24);
+    square->setStyleSheet(QString("background-color: %1; border-radius:3px;")
+                              .arg(majorColor.name()));
+
+    QLabel* label = new QLabel(majorColor.name(), rowWidget);
+
+    rowLayout->addWidget(square);
+    rowLayout->addWidget(label);
+    rowLayout->addStretch();
+
+    colorsLayout->addWidget(rowWidget);
+}
+
+

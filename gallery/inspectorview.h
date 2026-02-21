@@ -5,6 +5,7 @@
 #include "ui_inspectorview.h"
 #include "imagemodel.h"
 #include "serializationservice.h"
+#include "ColorService.h"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -38,6 +39,7 @@ protected slots:
     void setDescription(const QString& text);
     void setFeeling(int index);
     void setCropModel();
+    void showDominantColors(const QImage &image);
 
 private:
     Ui::InspectorView *ui;
