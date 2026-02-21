@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>⭠</string>
+      <string>&lt;</string>
      </property>
     </widget>
    </item>
@@ -51,7 +51,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>⭢</string>
+      <string>&gt;</string>
      </property>
     </widget>
    </item>

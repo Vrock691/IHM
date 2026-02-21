@@ -1,4 +1,5 @@
 #include "indexationservice.h"
+#include "qimage.h"
 #include <QDir>
 #include <QFileInfoList>
 
@@ -17,9 +18,11 @@ QVector<ImageModel> IndexationService::indexFiles(const QString &folderPath)
     for (int i = 0; i < files.size(); i++) {
         const QFileInfo &file = files[i];
         QString path = file.absoluteFilePath();
+        QImage img(path);
 
-        models.append(ImageModel(path.toStdString()));
-
+        if (!img.isNull()) {
+            models.append(ImageModel(path.toStdString()));
+        }
     }
 
     QFileInfoList subDirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);

@@ -37,7 +37,20 @@ GalleryView::GalleryView(QWidget *parent)
 
     ui->scrollArea->setStyleSheet("background: transparent;");
 
-    _allImages = getImages();
+    connect(this, &GalleryView::widgetLoaded, this, &GalleryView::startIndexation);
+    connect(this, &GalleryView::indexationFinished, this, &GalleryView::showIndexedPictures);
+}
+
+void GalleryView::startIndexation() {
+    if (!imageIndexed) {
+        _allImages = getImages();
+        imageIndexed = true;
+        emit indexationFinished();
+    }
+}
+
+void GalleryView::showIndexedPictures() {
+    ui->indexStatus->clear();
     refreshModel();
 }
 
@@ -59,8 +72,8 @@ std::vector<ImageModel*> GalleryView::getImages()
     QString picturesPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     qDebug() << "Chemin racine des images :" << picturesPath;
 
-    QVector<ImageModel> qFileImages = indexService.indexFiles(":/images"); // à remplacer par picturesPath
-    //QVector<ImageModel> qFileImages = indexService.indexFiles("/home");
+    //QVector<ImageModel> qFileImages = indexService.indexFiles(":/images"); // en cas de beug
+    QVector<ImageModel> qFileImages = indexService.indexFiles(picturesPath);
     qDebug() << "Fin de l'indexation";
 
     std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
@@ -83,6 +96,7 @@ std::vector<ImageModel*> GalleryView::getImages()
             unionImages.push_back(new ImageModel(image));  // on crée un pointeur, pas une copie valeur
     }
 
+    emit indexationFinished();
     return unionImages;
 }
 

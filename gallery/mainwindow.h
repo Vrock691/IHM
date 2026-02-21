@@ -34,9 +34,11 @@ private:
     QStackedWidget* _imageStack = nullptr;
     int _currentIndex = -1;
 
+protected:
+    void changeEvent(QEvent *event) override;
 
-
-
+signals:
+    void onWindowLaunched();
 
 private slots:
     void onGalleryRequestSelect(ImageModel imageModel);
@@ -47,6 +49,5 @@ private slots:
     void setSelected(ImageModel* imageModel);
     void openViewer();
     void clearSelection();
-
 };
 #endif // MAINWINDOW_H
