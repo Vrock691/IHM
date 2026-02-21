@@ -25,6 +25,9 @@ private:
     void newTab(const QString name);
     void instanciateTab(TabModel* model, int index);
 
+    void setCurrentTabId(int id);
+    int _currentTabId = -1;
+
     Ui::TabContainer *ui;
     std::vector<TabModel*> _tabs;
     TabModel* _currentTab;

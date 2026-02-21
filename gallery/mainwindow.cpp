@@ -167,4 +167,8 @@ MainWindow::MainWindow(QWidget *parent)
         _tabContainer->setCurrentTab(currentTab);
         _sideBarEmpty->setCurrentTab(currentTab);
         clearSelection();
+
+        if (model) {
+            qDebug() << "Onglet sélectionné :" << model->getName() << "index =" << model->getIndex();
+        }
     }
