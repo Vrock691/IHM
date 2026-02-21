@@ -114,7 +114,7 @@ QTabBar::tab:hover {
 }</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -405,6 +405,81 @@ QTabBar::tab:hover {
       <attribute name="title">
        <string>Tab 2</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+	font: 700 14pt &quot;Arial&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>Rognage</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="styleSheet">
+            <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>Haut-gauche</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="styleSheet">
+            <string notr="true">QLabel {
+    color: #B5B5B5;
+    font: 700 12pt &quot;Arial&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>Bas-droite</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="spinX1"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QSpinBox" name="spinY1"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="spinX2"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="QSpinBox" name="spinY2"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

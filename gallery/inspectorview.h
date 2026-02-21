@@ -36,6 +36,7 @@ protected slots:
     void removeTag(const QString& text);
     void setDescription(const QString& text);
     void setFeeling(int index);
+    void setCropModel();
 
 private:
     Ui::InspectorView *ui;
@@ -54,6 +55,7 @@ private:
     void showDescriptionUi(const QString& text);
     void showFeelingUi(const Feeling feeling);
     bool eventFilter(QObject *obj, QEvent *event);
+    void showCropUi(QRect rect);
 };
 
 #endif // INSPECTORVIEW_H

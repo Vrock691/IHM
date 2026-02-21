@@ -24,6 +24,8 @@ private:
     QPixmap _pixmap;
     bool _expandToKeepRatio;
 
+    void show();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 };
