@@ -10,9 +10,9 @@ ImageViewer::ImageViewer(QWidget *parent)
 {
     ui->setupUi(this);
 
-    _closeButton = new QPushButton("✕", this); // petite croix
+    _closeButton = new QPushButton("✕", this);
     _closeButton->setFixedSize(30, 30);
-    _closeButton->move(width() - 40, 10); // coin supérieur droit
+    _closeButton->move(width() - 40, 10);
     _closeButton->setStyleSheet(R"(
     QPushButton {
         background-color: rgba(0,0,0,0.5);
