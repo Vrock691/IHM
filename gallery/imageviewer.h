@@ -40,6 +40,7 @@ private:
     Ui::ImageViewer *ui;
     ImageRenderer* _renderer = nullptr;
     std::vector<ImageModel> _images;
+    QPushButton* _closeButton;
 
 protected :
     bool eventFilter(QObject* obj, QEvent* event);

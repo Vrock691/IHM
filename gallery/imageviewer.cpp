@@ -10,6 +10,25 @@ ImageViewer::ImageViewer(QWidget *parent)
 {
     ui->setupUi(this);
 
+    _closeButton = new QPushButton("✕", this); // petite croix
+    _closeButton->setFixedSize(30, 30);
+    _closeButton->move(width() - 40, 10); // coin supérieur droit
+    _closeButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        font-size: 16px;
+        border-radius: 15px;
+    }
+    QPushButton:hover {
+        background-color: rgba(255,0,0,0.8);
+    }
+)");
+    _closeButton->raise();
+    connect(_closeButton, &QPushButton::clicked, this, &ImageViewer::clickedOutsideImage);
+
+
     qDebug() << "ImageViewer créé";
 
     connect(ui->nextButton, &QPushButton::clicked,
@@ -73,3 +92,4 @@ void ImageViewer::updateNavigation(bool hasPrevious, bool hasNext)
     ui->nextButton->setEnabled(hasNext);
 
 }
+
