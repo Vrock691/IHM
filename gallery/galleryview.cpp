@@ -54,12 +54,15 @@ std::vector<ImageModel*> GalleryView::getCurrentImages()
 std::vector<ImageModel*> GalleryView::getImages()
 {
     IndexationService indexService = IndexationService();
+    qDebug() << "Début de l'indexation";
     QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
+    //QVector<ImageModel> qFileImages = indexService.indexFiles("/home");
+    qDebug() << "Fin de l'indexation";
     std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
 
     SerializationService serialisationService = {};
     std::vector<ImageModel*> deserializedImages = serialisationService.deserializeImageModels();
-    std::vector<ImageModel*> unionImages(deserializedImages.begin(), deserializedImages.end());
+    std::vector<ImageModel*> unionImages = {};
 
     foreach (ImageModel image, fileImages) {
         auto foundInDeserialized = std::find_if(
@@ -70,9 +73,9 @@ std::vector<ImageModel*> GalleryView::getImages()
 
         bool isInDeserialized = foundInDeserialized != deserializedImages.end();
         if (isInDeserialized)
-            continue;
-
-        unionImages.push_back(new ImageModel(image));  // on crée un pointeur, pas une copie valeur
+            unionImages.push_back(*foundInDeserialized);
+        else
+            unionImages.push_back(new ImageModel(image));  // on crée un pointeur, pas une copie valeur
     }
 
     return unionImages;
