@@ -1,6 +1,10 @@
 #include "sidebarempty.h"
 #include "starsfilter.cpp"
 #include "feelingfilter.cpp"
+#include "defaultorderer.cpp"
+#include "olderfirstorderer.cpp"
+#include "lastmodifiedorderer.cpp"
+#include "scoreorderer.cpp"
 #include "serializationservice.h"
 
 SideBarEmpty::SideBarEmpty(QWidget *parent)
@@ -18,6 +22,10 @@ SideBarEmpty::SideBarEmpty(QWidget *parent)
             color: #555555;
         }
     )");
+
+    connect(ui->orderComboBox, &QComboBox::currentIndexChanged, this, [this](int index) {
+        setOrderer(index);
+    });
 
     connect(ui->onestar, &QCheckBox::checkStateChanged, this, [this]() {
         setStarFilter(ui->onestar->isChecked(), 1);
@@ -70,6 +78,7 @@ void SideBarEmpty::refreshModel()
         return;
     }
 
+    showOrdererUi(_currentTab->getOrderer()->id());
     updateStarsCheckboxes();
     updateFeelingsCheckboxes();
 }
@@ -80,6 +89,33 @@ void SideBarEmpty::saveAndPushChanges()
     service.serializeTabModel(*_currentTab);
     emit onModelChanged();
 }
+
+void SideBarEmpty::setOrderer(int index)
+{
+    if (_currentTab == nullptr)
+        return;
+
+    QVariant data = ui->orderComboBox->itemData(index);
+    AvailableOrderers ordererType = static_cast<AvailableOrderers>(data.toInt());
+
+    std::shared_ptr<IOrderer> orderer = nullptr;
+
+    if (ordererType == DEFAULT_ORDERER)
+        orderer = std::shared_ptr<IOrderer>(new DefaultOrderer());
+    else if (ordererType == OLDER_FIRST_ORDERER)
+        orderer = std::shared_ptr<IOrderer>(new OlderFirstOrderer());
+    else if (ordererType == LAST_MODIFICATION_FIRST)
+        orderer = std::shared_ptr<IOrderer>(new LastModificationOrderer());
+    else if (ordererType == SCORE_ORDERED)
+        orderer = std::shared_ptr<IOrderer>(new ScoreOrderer());
+    else {
+        throw "Orderer not recognized";
+    }
+
+    _currentTab->setOrderer(orderer);
+    saveAndPushChanges();
+}
+
 
 void SideBarEmpty::setStarFilter(bool isEnabled, int starAmount)
 {
@@ -117,6 +153,28 @@ void SideBarEmpty::setFeelingFilter(bool isEnabled, Feeling feeling)
     }
     _currentTab->setFilters(filters);
     saveAndPushChanges();
+}
+
+void SideBarEmpty::showOrdererUi(const AvailableOrderers orderer)
+{
+    ui->orderComboBox->clear();
+    ui->orderComboBox->setPlaceholderText("Sélectionner...");
+
+    std::vector<AvailableOrderers> orderers = getOrderers();
+    std::vector<QString> ordererNames = getOrderersNames();
+
+    for (int i = 0; i < orderers.size(); i++) {
+        ui->orderComboBox->addItem(ordererNames[i], QVariant::fromValue((int)orderers[i]));
+    }
+
+    int index = -1;
+    for (int i = 0; i < orderers.size(); i++) {
+        if (orderers[i] == orderer) {
+            index = i;
+        }
+    }
+
+    ui->orderComboBox->setCurrentIndex(index);
 }
 
 void SideBarEmpty::updateStarsCheckboxes()

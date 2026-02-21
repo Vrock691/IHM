@@ -97,6 +97,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     void MainWindow::onImageClicked(ImageModel* imageModel)
     {
+        qDebug() << "ImageClicked";
         if (_selected == imageModel)
             openViewer();
         else
@@ -136,26 +137,31 @@ MainWindow::MainWindow(QWidget *parent)
 
     void MainWindow::onGalleryRequestSelect(ImageModel imageModel)
     {
+        qDebug() << "SelectImage";
         setSelected(&imageModel);
     }
 
     void MainWindow::onInspectorModelChanged()
     {
+        qDebug() << "InspectorModelChanged";
         _galleryView->refreshModel();
     }
 
     void MainWindow::onSidebarEmptyModelChanged()
     {
+        qDebug() << "SidebarEmptyModelChanged";
         _galleryView->refreshModel();
     }
 
     void MainWindow::clearSelection()
     {
+        qDebug() << "ClearSelection";
         _selected = nullptr;
         _sidebarStack->setCurrentWidget(_sideBarEmpty);
     }
 
     void MainWindow::onTabChanged(TabModel* model) {
+        qDebug() << "TabChanged";
         currentTab = model;
         _tabContainer->setCurrentTab(currentTab);
         _sideBarEmpty->setCurrentTab(currentTab);

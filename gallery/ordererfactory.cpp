@@ -2,6 +2,7 @@
 #include "defaultorderer.cpp"
 #include "olderfirstorderer.cpp"
 #include "lastmodifiedorderer.cpp"
+#include "scoreorderer.cpp"
 
 OrdererFactory::OrdererFactory() {}
 
@@ -14,6 +15,8 @@ std::shared_ptr<IOrderer> OrdererFactory::parse(QJsonObject json) {
         return std::shared_ptr<IOrderer>(new OlderFirstOrderer());
     } else if (filterIDString == "LAST_MODIFICATION_FIRST") {
         return std::shared_ptr<IOrderer>(new LastModificationOrderer());
+    } else if (filterIDString == "SCORE_ORDERED") {
+        return std::shared_ptr<IOrderer>(new ScoreOrderer());
     }
     else {
         throw "Orderer id not recognized";

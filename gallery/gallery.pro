@@ -25,6 +25,7 @@ SOURCES += \
     indexationservice.cpp \
     olderfirstorderer.cpp \
     ordererfactory.cpp \
+    scoreorderer.cpp \
     starsfilter.cpp \
     tabmodel.cpp \
     serializationservice.cpp \

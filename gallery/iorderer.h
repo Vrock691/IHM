@@ -7,8 +7,29 @@
 enum AvailableOrderers {
     DEFAULT_ORDERER,
     OLDER_FIRST_ORDERER,
-    LAST_MODIFICATION_FIRST
+    LAST_MODIFICATION_FIRST,
+    SCORE_ORDERED
 };
+
+inline std::vector<AvailableOrderers> getOrderers()
+{
+    return {
+        DEFAULT_ORDERER,
+        //OLDER_FIRST_ORDERER,
+        LAST_MODIFICATION_FIRST,
+        SCORE_ORDERED
+    };
+}
+
+inline std::vector<QString> getOrderersNames()
+{
+    return {
+        "Défaut",
+        //"Date de création",
+        "Date de modification",
+        "Note"
+    };
+}
 
 struct IOrderer {
 public:
