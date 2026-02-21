@@ -55,9 +55,14 @@ std::vector<ImageModel*> GalleryView::getImages()
 {
     IndexationService indexService = IndexationService();
     qDebug() << "Début de l'indexation";
-    QVector<ImageModel> qFileImages = indexService.indexFiles(":/images");
+
+    QString picturesPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    qDebug() << "Chemin racine des images :" << picturesPath;
+
+    QVector<ImageModel> qFileImages = indexService.indexFiles(":/images"); // à remplacer par picturesPath
     //QVector<ImageModel> qFileImages = indexService.indexFiles("/home");
     qDebug() << "Fin de l'indexation";
+
     std::vector<ImageModel> fileImages(qFileImages.begin(), qFileImages.end());
 
     SerializationService serialisationService = {};
