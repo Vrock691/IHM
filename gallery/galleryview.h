@@ -23,6 +23,12 @@ public:
 signals:
     void onRequestSelect(ImageModel* imageModel);
     void imageClicked(ImageModel* imageModel);
+    void indexationFinished();
+    void widgetLoaded();
+
+protected slots:
+    void showIndexedPictures();
+    void startIndexation();
 
 private:
     Ui::GalleryVue *ui;
@@ -37,7 +43,7 @@ private:
     QVBoxLayout* _tabLayout;
     void populate();
     std::vector<ImageModel*> getImages();
-
+    bool imageIndexed = false;
 };
 
 #endif // GALLERYVIEW_H

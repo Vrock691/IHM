@@ -30,6 +30,13 @@
     <layout class="QVBoxLayout" name="tabLayout"/>
    </item>
    <item>
+    <widget class="QLabel" name="indexStatus">
+     <property name="text">
+      <string>Indexation en cours...</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -39,8 +46,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>695</width>
-        <height>369</height>
+        <width>699</width>
+        <height>351</height>
        </rect>
       </property>
      </widget>

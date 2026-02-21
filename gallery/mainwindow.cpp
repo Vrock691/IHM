@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(_inspectorView, &InspectorView::onModelChanged, this, &MainWindow::onInspectorModelChanged);
         connect(_tabContainer, &TabContainer::tabChanged, this, &MainWindow::onTabChanged);
         connect(_galleryView, &GalleryView::imageClicked, this, &MainWindow::onImageClicked);
+        connect(this, &MainWindow::onWindowLaunched, _galleryView, &GalleryView::widgetLoaded);
         connect(_imageViewer, &ImageViewer::clickedOutsideImage, this, [this](){
             _imageStack->setCurrentWidget(_galleryView);
         });
@@ -94,6 +95,14 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::~MainWindow()
     {
         delete ui;
+    }
+
+    void MainWindow::changeEvent(QEvent *event)
+    {
+        if (event->type() == QEvent::ActivationChange && isActiveWindow()) {
+            emit onWindowLaunched();
+        }
+        QWidget::changeEvent(event); // always call base
     }
 
     void MainWindow::onImageClicked(ImageModel* imageModel)
