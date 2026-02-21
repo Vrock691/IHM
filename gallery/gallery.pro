@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     defaultfilter.cpp \
     defaultorderer.cpp \
+    feelingfilter.cpp \
     filterfactory.cpp \
     galleryview.cpp \
     imagecell.cpp \
@@ -22,12 +23,16 @@ SOURCES += \
     mainwindow.cpp \
     meta.cpp \
     indexationservice.cpp \
+    olderfirstorderer.cpp \
     ordererfactory.cpp \
+    scoreorderer.cpp \
+    starsfilter.cpp \
     tabmodel.cpp \
     serializationservice.cpp \
     sidebarempty.cpp \
     tabbuttonwidget.cpp \
-    tabcontainer.cpp
+    tabcontainer.cpp \
+    lastmodifiedorderer.cpp
 
 HEADERS += \
     color.h \

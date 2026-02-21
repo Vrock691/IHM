@@ -14,7 +14,9 @@ public:
     ~TabContainer();
 
     bool filterImageModelByCurrentTabFilters(ImageModel* image);
-    std::vector<ImageModel*> orderImageModelsByCurrentTabOrderer(std::vector<ImageModel*> images);
+    std::shared_ptr<IOrderer> getCurrentTabOrderer();
+    void setCurrentTab(TabModel* model);
+    void init();
 
 signals:
     void tabChanged(TabModel* model);
@@ -28,6 +30,7 @@ private:
 
     Ui::TabContainer *ui;
     std::vector<TabModel*> _tabs;
+    TabModel* _currentTab;
 };
 
 #endif // TABMANAGER_H

@@ -8,7 +8,8 @@
 
 TabContainer::TabContainer(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::TabContainer)
+    ui(new Ui::TabContainer),
+    _currentTab(nullptr)
 {
     ui->setupUi(this);
 
@@ -22,7 +23,10 @@ TabContainer::TabContainer(QWidget *parent)
         setCurrentTabId(0);
     } else {
         newTab("Accueil");
+        if (!_tabs.empty()) _currentTab = _tabs[0];
     }
+
+    //emit tabChanged(_currentTab);   // Ne sert à rien, personne aucun connect possible avant le constructeur
 
     // Bouton + pour ajouter un onglet
     connect(ui->addTabButton, &QPushButton::clicked, this, [=]() {
@@ -62,6 +66,11 @@ TabContainer::TabContainer(QWidget *parent)
             background-color: #3a3a3a;
         }
     )");
+}
+
+void TabContainer::init()
+{
+    emit tabChanged(_currentTab);
 }
 
 void TabContainer::instanciateTab(TabModel* model, int index)
@@ -147,8 +156,8 @@ void TabContainer::instanciateTab(TabModel* model, int index)
 }
 
 void TabContainer::newTab(const QString name) {
-    std::unique_ptr<IOrderer> default_orderer = std::unique_ptr<IOrderer>(new DefaultOrderer());
-    TabModel* newModel = new TabModel(_tabs.size(), name, {}, std::move(default_orderer));
+    std::shared_ptr<IOrderer> default_orderer = std::shared_ptr<IOrderer>(new DefaultOrderer());
+    TabModel* newModel = new TabModel(_tabs.size(), name, {}, default_orderer);
 
     SerializationService service;
     service.serializeTabModel(*newModel);
@@ -161,9 +170,21 @@ void TabContainer::newTab(const QString name) {
 }
 
 bool TabContainer::filterImageModelByCurrentTabFilters(ImageModel* model) {
-    Q_UNUSED(model);
-    // TODO: Implémenter la vérification par les filtres
+    const auto& filters = _currentTab->getFilters();
+    for (const auto& filter : filters) {
+        if (!filter->isAcceptable(model)) {
+            return false;
+        }
+    }
     return true;
+}
+
+void TabContainer::setCurrentTab(TabModel* model) {
+    _currentTab = model;
+}
+
+std::shared_ptr<IOrderer> TabContainer::getCurrentTabOrderer() {
+    return _currentTab->getOrderer();
 }
 
 TabContainer::~TabContainer()

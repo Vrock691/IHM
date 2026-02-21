@@ -1,14 +1,24 @@
 #include "filterfactory.h"
 #include "defaultfilter.cpp"
+#include "starsfilter.cpp"
+#include "feelingfilter.cpp"
 
 FilterFactory::FilterFactory() {}
 
-std::unique_ptr<IFilter> FilterFactory::parse(QJsonObject json) {
+std::shared_ptr<IFilter> FilterFactory::parse(QJsonObject json) {
     QString filterID = json["id"].toString();
 
     if (filterID == "DEFAULT_FILTER") {
-        return std::unique_ptr<IFilter>(new DefaultFilter());
-    } // Insérer les prochaine instanciations de filtres ici
+        return std::shared_ptr<IFilter>(new DefaultFilter());
+    }
+    else if (filterID == "STARS_FILTER") {
+        int value = json["value"].toInt();
+        return std::shared_ptr<IFilter>(new StarsFilter(value));
+    }
+    else if (filterID == "FEELING_FILTER") {
+        Feeling feeling = static_cast<Feeling>(json["feeling"].toInt());
+        return std::shared_ptr<IFilter>(new FeelingFilter(feeling));
+    }
     else {
         throw "Filter id not recognized";
     }

@@ -1,9 +1,10 @@
 #include "ifilter.h"
+#include "imagemodel.h"
 #include "qjsonobject.h"
 
 class DefaultFilter : public IFilter {
 public:
-    bool isAcceptable() override {
+    bool isAcceptable(ImageModel* model) override {
         return true;
     }
 
