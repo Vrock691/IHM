@@ -69,6 +69,7 @@ void SideBarEmpty::setCurrentTab(TabModel* tab)
 {
     _currentTab = tab;
     refreshModel();
+    saveAndPushChanges();
 }
 
 void SideBarEmpty::refreshModel()
@@ -157,6 +158,8 @@ void SideBarEmpty::setFeelingFilter(bool isEnabled, Feeling feeling)
 
 void SideBarEmpty::showOrdererUi(const AvailableOrderers orderer)
 {
+    ui->orderComboBox->blockSignals(true);
+
     ui->orderComboBox->clear();
     ui->orderComboBox->setPlaceholderText("Sélectionner...");
 
@@ -175,10 +178,18 @@ void SideBarEmpty::showOrdererUi(const AvailableOrderers orderer)
     }
 
     ui->orderComboBox->setCurrentIndex(index);
+
+    ui->orderComboBox->blockSignals(false);
 }
 
 void SideBarEmpty::updateStarsCheckboxes()
 {
+    ui->onestar->blockSignals(true);
+    ui->twoStars->blockSignals(true);
+    ui->threestars->blockSignals(true);
+    ui->fourstars->blockSignals(true);
+    ui->fivestars->blockSignals(true);
+
     if (std::find_if(
             _currentTab->getFilters().begin(),
             _currentTab->getFilters().end(),
@@ -223,10 +234,22 @@ void SideBarEmpty::updateStarsCheckboxes()
         ui->fivestars->setCheckState(Qt::Checked);
     else
         ui->fivestars->setCheckState(Qt::Unchecked);
+
+    ui->onestar->blockSignals(false);
+    ui->twoStars->blockSignals(false);
+    ui->threestars->blockSignals(false);
+    ui->fourstars->blockSignals(false);
+    ui->fivestars->blockSignals(false);
 }
 
 void SideBarEmpty::updateFeelingsCheckboxes()
 {
+    ui->heureux->blockSignals(true);
+    ui->sad->blockSignals(true);
+    ui->inspired->blockSignals(true);
+    ui->calm->blockSignals(true);
+    ui->excite->blockSignals(true);
+
     if (std::find_if(
             _currentTab->getFilters().begin(),
             _currentTab->getFilters().end(),
@@ -276,5 +299,11 @@ void SideBarEmpty::updateFeelingsCheckboxes()
         ui->excite->setCheckState(Qt::Checked);
     else
         ui->excite->setCheckState(Qt::Unchecked);
+
+    ui->heureux->blockSignals(false);
+    ui->sad->blockSignals(false);
+    ui->inspired->blockSignals(false);
+    ui->calm->blockSignals(false);
+    ui->excite->blockSignals(false);
 }
 
