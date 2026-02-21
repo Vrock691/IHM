@@ -21,7 +21,14 @@ private:
     Ui::SideBarEmpty *ui;
     TabModel* _currentTab = nullptr;
 
+    void saveAndPushChanges();
+    void setOrderer(int index);
+    void setStarFilter(bool isEnabled, int starAmount);
+    void setFeelingFilter(bool isEnabled, Feeling feeling);
 
+    void showOrdererUi(const AvailableOrderers orderer);
+    void updateStarsCheckboxes();
+    void updateFeelingsCheckboxes();
 };
 
 #endif // SIDEBAREMPTY_H

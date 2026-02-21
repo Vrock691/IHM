@@ -9,7 +9,7 @@ class OrdererFactory
 {
 public:
     OrdererFactory();
-    std::unique_ptr<IOrderer> parse(QJsonObject json);
+    std::shared_ptr<IOrderer> parse(QJsonObject json);
 };
 
 #endif // ORDERERFACTORY_H
