@@ -14,13 +14,10 @@ ImageRenderer::ImageRenderer(ImageModel* imageModel, bool expandToKeepRatio, QWi
     image.load(QString::fromStdString(_imageModel->path()));
 
     _pixmap = QPixmap::fromImage(image);
-    if (_expandToKeepRatio)
-        _pixmap.scaled(_pixmap.size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-    else
-        _pixmap.scaled(_pixmap.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->_label->setPixmap(_pixmap);
     ui->_label->setMinimumSize(50, 50);
     ui->_label->setAlignment(Qt::AlignCenter);
+    show();
 }
 
 ImageRenderer::~ImageRenderer()
@@ -31,6 +28,11 @@ ImageRenderer::~ImageRenderer()
 void ImageRenderer::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
+    show();
+}
+
+void ImageRenderer::show()
+{
     QPixmap transformedPixmap;
 
     if (_expandToKeepRatio)
